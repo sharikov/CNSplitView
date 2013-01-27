@@ -52,101 +52,11 @@ typedef enum {
 /** @name Properties */
 
 @property (nonatomic, assign) CNSplitViewToolbarEdge anchoredEdge;
-
-///**
-// Boolean value that indicates whether the button bar should draw a top border line.
-// 
-// @param YES     Will draw a border line on the top edge.
-// @param NO      Don't draw any border line on the top edge.
-// */
-//@property (nonatomic, assign, getter = hasTopBorder) BOOL topBorder;
-//
-///**
-// Boolean value that indicates whether the button bar should draw a right border line.
-// 
-// @param YES     Will draw a border line on the right edge.
-// @param NO      Don't draw any border line on the right edge.
-// */
-//@property (nonatomic, assign, getter = hasRightBorder) BOOL rightBorder;
-//
-///**
-// Boolean value that indicates whether the button bar should draw a bottom border line.
-// 
-// @param YES     Will draw a border line on the bottom edge.
-// @param NO      Don't draw any border line on the bottom edge.
-// */
-//@property (nonatomic, assign, getter = hasBottomBorder) BOOL bottomBorder;
-//
-///**
-// Boolean value that indicates whether the button bar should draw a left border line.
-// 
-// @param YES     Will draw a border line on the left edge.
-// @param NO      Don't draw any border line on the left edge.
-// */
-//@property (nonatomic, assign, getter = hasLeftBorder) BOOL leftBorder;
-
-///**
-// The color of the top border line.
-// 
-// The default value is:
-// 
-//    [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0];
-// 
-// @param topBorderColor  An object of type `NSColor`.
-// */
-//@property (nonatomic, strong) NSColor *topBorderColor;
-//
-///**
-// The color of the right border line.
-// 
-// The default value is:
-// 
-//    [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0];
-// 
-// @param rightBorderColor  An object of type `NSColor`.
-// */
-//@property (nonatomic, strong) NSColor *rightBorderColor;
-//
-///**
-// The color of the bottom border line.
-// 
-// The default value is:
-// 
-//    [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0];
-// 
-// @param bottomBorderColor  An object of type `NSColor`.
-// */
-//@property (nonatomic, strong) NSColor *bottomBorderColor;
-//
-///**
-// The color of the left border line.
-// 
-// The default value is:
-// 
-//    [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0];
-// 
-// @param leftBorderColor  An object of type `NSColor`.
-// */
-//@property (nonatomic, strong) NSColor *leftBorderColor;
+@property (nonatomic, assign) CGFloat height;
 
 
 
 /** @name Initialization */
-
-/**
- Creates and returns an initialized object of an anchored button bar.
- 
- By default, the returned buttonbar will be anchored to the **bottom edge** of `anchorSplitView's` subview with given `viewIndex`.
- 
- @param anchorSplitView     An object that is inherited by any instance of `NSView`.
- @param viewIndex           The index of anchorSplitView's subview the buttonbar should be anchored to.
-*/
-- (id)initWithAnchorSplitView:(id)anchorSplitView anchorToViewAtIndex:(NSUInteger)viewIndex;
-
-/**
- ...
- */
-- (id)initWithAnchorSplitView:(id)anchorSplitView anchorToViewAtIndex:(NSUInteger)viewIndex onAnchoredEdge:(CNSplitViewToolbarEdge)anchoredEdge;
 
 
 /** @name Button handling */

@@ -33,7 +33,9 @@
 #import "CNSplitViewToolbarButtonCell.h"
 
 
-static CGFloat kAnchoredButtonBarHeight = 24.0;
+static CGFloat kDefaultToolbarHeight = 24.0;
+static NSColor *topBorderDefaultColor, *bottomBorderDefaultColor;
+static NSGradient *buttonBarGradient;
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,16 +48,9 @@ static CGFloat kAnchoredButtonBarHeight = 24.0;
 @property (strong) NSMutableArray *buttons;
 @property (strong) id neighbourView;
 @property (strong) id anchorViewsFirstSubview;
-@property (strong) NSColor *topBorderDefaultColor;
-@property (strong) NSColor *rightBorderDefaultColor;
-@property (strong) NSColor *bottomBorderDefaultColor;
-@property (strong) NSColor *leftBorderDefaultColor;
-@property (strong) NSGradient *buttonBarGradient;
 
-- (void)adjustRectForNeighbourView:(id)neighbourView withButtonBarHeight:(CGFloat)barHeight onAnchoredEdge:(CNSplitViewToolbarEdge)anchoredEdge;
 - (CGFloat)buttonBarInteriorWidth;
 - (CGFloat)buttonBarInteriorHeight;
-- (NSSplitView*)embeddingSplitView;
 @end
 
 
@@ -63,77 +58,36 @@ static CGFloat kAnchoredButtonBarHeight = 24.0;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Initialzation
 
++ (void)initialize
+{
+    topBorderDefaultColor       = [NSColor colorWithCalibratedRed:0.50 green:0.50 blue:0.50 alpha:1.0];
+    bottomBorderDefaultColor    = [NSColor colorWithCalibratedRed:0.50 green:0.50 blue:0.50 alpha:1.0];
+    buttonBarGradient           = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0]
+                                                                endingColor:[NSColor colorWithCalibratedRed:0.95 green:0.95 blue:0.95 alpha:1.0]];
+
+}
+
 - (id)init
 {
     self = [super init];
     if (self) {
-        _topBorderDefaultColor      = [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0];
-        _rightBorderDefaultColor    = [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0];
-        _bottomBorderDefaultColor   = [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0];
-        _leftBorderDefaultColor     = [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0];
-        _buttonBarGradient          = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0]
-                                                                    endingColor: [NSColor colorWithCalibratedRed:0.95 green:0.95 blue:0.95 alpha:1.0]];
-
-        _frame = NSZeroRect;
-        _anchoredEdge = CNSplitViewToolbarEdgeBottom;
-        _buttonBarInteriorHeight = kAnchoredButtonBarHeight - 1;
-
-        _buttons = [[NSMutableArray alloc] init];
-        _neighbourView = nil;
-        offsetLeft = 0;
-        offsetRight = 0;
+        [self commonConfiguration];
     }
     return self;
 }
 
-- (id)initWithAnchorSplitView:(id)anchorSplitView anchorToViewAtIndex:(NSUInteger)viewIndex
+- (void)commonConfiguration
 {
-    return [self initWithAnchorSplitView:anchorSplitView anchorToViewAtIndex:viewIndex onAnchoredEdge:_anchoredEdge];
-}
+    _frame = NSZeroRect;
+    _height = kDefaultToolbarHeight;
+    _buttonBarInteriorHeight = _height - 1;
 
-- (id)initWithAnchorSplitView:(id)anchorSplitView anchorToViewAtIndex:(NSUInteger)viewIndex onAnchoredEdge:(CNSplitViewToolbarEdge)anchoredEdge
-{
-    self = [self init];
-    if (self) {
-
-        @try {
-            NSException *ex = [NSException exceptionWithName:@"CNWrongAnchorView"
-                                                      reason:[NSString stringWithFormat:@"A class of kind NSSplitView expected, but got %@ instead.", anchorSplitView]
-                                                    userInfo:nil];
-
-            if ([anchorSplitView isKindOfClass:[NSSplitView class]]) {
-                self.anchoredEdge = anchoredEdge;
-                self.neighbourView = [[anchorSplitView subviews] objectAtIndex:viewIndex];
-
-                /// inject the button bar into the anchored views superview
-                if ([[self.neighbourView subviews] count] > 0) {
-                    self.anchorViewsFirstSubview = [[self.neighbourView subviews] objectAtIndex:0];
-                } else {
-                    self.anchorViewsFirstSubview = self.neighbourView;
-                }
-
-                /// rebuild the rect for the anchor view
-                [self adjustRectForNeighbourView:self.anchorViewsFirstSubview
-                             withButtonBarHeight:kAnchoredButtonBarHeight
-                                  onAnchoredEdge:self.anchoredEdge];
-
-                self = [super initWithFrame:[self buttonBarRectWithHeight:kAnchoredButtonBarHeight
-                                                           onAnchoredEdge:self.anchoredEdge]];
-                if (self) {
-                    [self setAutoresizingMask:NSViewWidthSizable | (self.anchoredEdge == CNSplitViewToolbarEdgeBottom ? NSViewMaxYMargin : NSViewMinYMargin)];
-                    offsetRight = NSWidth(self.frame);
-                    [self.neighbourView addSubview:self];
-                }
-
-            } else {
-                @throw ex;
-            }
-        }
-        @catch (NSException *ex) {
-            @throw;
-        }
-    }
-    return self;
+    _buttons = [[NSMutableArray alloc] init];
+    _neighbourView = nil;
+    offsetLeft = 0;
+    offsetRight = 0;
+    _anchoredEdge = CNSplitViewToolbarEdgeUndefined;
+    [self setAnchoredEdge:CNSplitViewToolbarEdgeBottom];
 }
 
 
@@ -144,38 +98,39 @@ static CGFloat kAnchoredButtonBarHeight = 24.0;
 - (void)drawRect:(NSRect)dirtyRect
 {
     NSBezierPath *buttonBarPath = [NSBezierPath bezierPathWithRect:dirtyRect];
-    [self.buttonBarGradient drawInBezierPath:buttonBarPath angle:90];
+    [buttonBarGradient drawInBezierPath:buttonBarPath angle:90];
 
-    /// the top border line
-    NSBezierPath *topLinePath = [NSBezierPath bezierPathWithRect:NSMakeRect(0, NSHeight(dirtyRect) - 1, NSWidth(dirtyRect), 1.0)];
-    [[NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0] setFill];
-    [topLinePath fill];
+    NSRect borderLineRect = NSMakeRect(0, (self.anchoredEdge == CNSplitViewToolbarEdgeTop ? 0 : NSHeight(dirtyRect) - 1),
+                                       NSWidth(dirtyRect), 1.0f);
+    NSBezierPath *borderLinePath = [NSBezierPath bezierPathWithRect:borderLineRect];
+    [(self.anchoredEdge == CNSplitViewToolbarEdgeTop ? bottomBorderDefaultColor : topBorderDefaultColor) setFill];
+    [borderLinePath fill];
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Accessors
+
+- (void)setAnchoredEdge:(CNSplitViewToolbarEdge)anchoredEdge
+{
+    _anchoredEdge = anchoredEdge;
+    CNLog(@"_anchoredEdge: %i", _anchoredEdge);
+    [self setAutoresizingMask:NSViewWidthSizable | (_anchoredEdge == CNSplitViewToolbarEdgeBottom ? NSViewMaxYMargin : NSViewMinYMargin)];
+
+    if (_anchoredEdge == CNSplitViewToolbarEdgeTop) {
+        [self.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSPoint adjustedOrigin = [(NSView *)obj frame].origin;
+            adjustedOrigin.y++;
+            [(NSView *)obj setFrameOrigin:adjustedOrigin];
+        }];
+    }
 }
 
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Private Helper
-
-- (void)adjustRectForNeighbourView:(id)neighbourView withButtonBarHeight:(CGFloat)barHeight onAnchoredEdge:(CNSplitViewToolbarEdge)anchoredEdge
-{
-    NSRect neighbourViewRect = [neighbourView frame];
-    NSRect adjustedRect = NSMakeRect(neighbourViewRect.origin.x,
-                                     (anchoredEdge == CNSplitViewToolbarEdgeBottom ? neighbourViewRect.origin.y + barHeight : neighbourViewRect.origin.y),
-                                     neighbourViewRect.size.width,
-                                     neighbourViewRect.size.height - barHeight);
-    [neighbourView setFrame:adjustedRect];
-}
-
-- (NSRect)buttonBarRectWithHeight:(CGFloat)barHeight onAnchoredEdge:(CNSplitViewToolbarEdge)anchoredEdge
-{
-    CGFloat anchorViewWidth  = NSWidth([[self neighbourView] frame]);
-    CGFloat anchorViewHeight = NSHeight([[self neighbourView] frame]);
-    NSRect buttonBarRect = NSMakeRect(0, (anchoredEdge == CNSplitViewToolbarEdgeTop ? anchorViewHeight : 0),
-                                      anchorViewWidth,
-                                      kAnchoredButtonBarHeight);
-    return buttonBarRect;
-}
 
 - (CGFloat)buttonBarInteriorWidth
 {
@@ -184,23 +139,8 @@ static CGFloat kAnchoredButtonBarHeight = 24.0;
 
 - (CGFloat)buttonBarInteriorHeight
 {
-    _buttonBarInteriorHeight = kAnchoredButtonBarHeight - 1;
+    _buttonBarInteriorHeight = self.height - 1;
     return _buttonBarInteriorHeight;
-}
-
-- (NSSplitView*)embeddingSplitView
-{
-	NSSplitView *embeddingSplitView = nil;
-	id currentView = self;
-
-	while (![currentView isKindOfClass:[NSSplitView class]] && currentView != nil)
-	{
-		currentView = [currentView superview];
-		if ([currentView isKindOfClass:[NSSplitView class]])
-			embeddingSplitView = currentView;
-	}
-
-	return embeddingSplitView;
 }
 
 
@@ -221,39 +161,37 @@ static CGFloat kAnchoredButtonBarHeight = 24.0;
     CGFloat buttonWidth = aButton.toolbarButtonWidth;
     /// text + image
     if (textSize.width > 0 && imageSize.width > 0) {
-        buttonWidth = kImageInset + imageSize.width + kImageTextDistance + textSize.width + kTextInset;
+        buttonWidth = kCNSplitViewToolbarButtonImageInset + imageSize.width + kCNSplitViewToolbarButtonImageTextDistance + textSize.width + kCNSplitViewToolbarButtonTextInset;
     }
     /// image only
     else if (textSize.width == 0 && imageSize.width > 0) {
-        CGFloat width = (kImageInset + imageSize.width + kImageInset);
+        CGFloat width = (kCNSplitViewToolbarButtonImageInset + imageSize.width + kCNSplitViewToolbarButtonImageInset);
         buttonWidth = (aButton.toolbarButtonWidth > width ? aButton.toolbarButtonWidth : width);
     }
     /// text only
     else if (textSize.width > 0 && imageSize.width == 0) {
-        buttonWidth = kTextInset + textSize.width + kTextInset;
+        buttonWidth = kCNSplitViewToolbarButtonTextInset + textSize.width + kCNSplitViewToolbarButtonTextInset;
     }
     buttonWidth = (buttonWidth < aButton.toolbarButtonWidth ? aButton.toolbarButtonWidth : buttonWidth);
-    buttonSize = NSMakeSize(buttonWidth, [self buttonBarInteriorHeight]);
-
+    buttonSize = NSMakeSize(buttonWidth, self.height - 1);
 
     /// set the correct button alignment
     switch (aButton.toolbarAlign) {
         case CNSplitViewToolbarButtonAlignLeft: {
             aButton.autoresizingMask = NSViewMaxXMargin;
-//            aButton.frame = NSMakeRect(offsetLeft, (self.hasBottomBorder ? 1 : 0), buttonSize.width, buttonSize.height);
-            aButton.frame = NSMakeRect(offsetLeft, 0, buttonSize.width, buttonSize.height);
+            aButton.frame = NSMakeRect(offsetLeft, (self.anchoredEdge == CNSplitViewToolbarEdgeBottom ? 0 : 1), buttonSize.width, buttonSize.height);
             offsetLeft += NSWidth(aButton.frame);
             break;
         }
 
         case CNSplitViewToolbarButtonAlignRight: {
             aButton.autoresizingMask = NSViewMinXMargin;
-//            aButton.frame = NSMakeRect(offsetRight - buttonSize.width, (self.hasBottomBorder ? 1 : 0), buttonSize.width, buttonSize.height);
-            aButton.frame = NSMakeRect(offsetRight - buttonSize.width, 0, buttonSize.width, buttonSize.height);
+            aButton.frame = NSMakeRect(offsetRight - buttonSize.width, (self.anchoredEdge == CNSplitViewToolbarEdgeBottom ? 0 : 1), buttonSize.width, buttonSize.height);
             offsetRight -= buttonSize.width;
             break;
         }
     }
+    CNLogForRect(aButton.frame);
     [self addSubview:aButton];
 }
 

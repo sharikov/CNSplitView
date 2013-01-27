@@ -10,7 +10,7 @@ Here is a shot of the included example application:
 
 
 ###Requirements
-`CNSplitViewController` was written using ARC and should run on 10.7 and above. Also you have to add the QuartzCore Framework to your project.
+`CNSplitView` was written using ARC and should run on 10.7 and above. Also you have to add the QuartzCore Framework to your project.
 
 
 ###Contribution

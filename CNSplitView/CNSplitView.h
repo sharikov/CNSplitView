@@ -31,6 +31,7 @@
 #import <Cocoa/Cocoa.h>
 #import "CNSplitViewDefinitions.h"
 #import "CNSplitViewToolbar.h"
+#import "CNSplitViewToolbarButton.h"
 
 
 /**
@@ -54,13 +55,12 @@
 /**
  ...
  */
-- (void)addToolBar:(CNSplitViewToolbar *)theToolBar besidesSubviewAtIndex:(NSUInteger)theSubviewIndex onEdge:(CNSplitViewToolbarEdge)theEdge;
+- (void)addToolbar:(CNSplitViewToolbar *)theToolbar besidesSubviewAtIndex:(NSUInteger)theSubviewIndex onEdge:(CNSplitViewToolbarEdge)theEdge;
 
 /**
  ...
  */
-- (void)addToolBar:(CNSplitViewToolbar *)theToolBar besidesSubviewAtIndex:(NSUInteger)theSubviewIndex onEdge:(CNSplitViewToolbarEdge)theEdge animated:(BOOL)animated;
-
+- (void)addToolbar:(CNSplitViewToolbar *)theToolbar besidesSubviewAtIndex:(NSUInteger)theSubviewIndex onEdge:(CNSplitViewToolbarEdge)theEdge animated:(BOOL)animated;
 
 
 #pragma mark - Managing the Delegate and the Data Source

@@ -64,7 +64,7 @@
 
 - (void)commonConfiguration
 {
-    _dividerColor = [NSColor lightGrayColor];
+    _dividerColor = [NSColor colorWithCalibratedRed:0.50 green:0.50 blue:0.50 alpha:1.0];
 }
 
 
@@ -72,14 +72,38 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Configuring & Handling Toolbars
 
-- (void)addToolBar:(CNSplitViewToolbar *)theToolBar besidesSubviewAtIndex:(NSUInteger)theSubviewIndex onEdge:(CNSplitViewToolbarEdge)theEdge
+- (void)addToolbar:(CNSplitViewToolbar *)theToolbar besidesSubviewAtIndex:(NSUInteger)theSubviewIndex onEdge:(CNSplitViewToolbarEdge)theEdge
 {
-
+    [self addToolbar:theToolbar besidesSubviewAtIndex:theSubviewIndex onEdge:theEdge animated:NO];
 }
 
-- (void)addToolBar:(CNSplitViewToolbar *)theToolBar besidesSubviewAtIndex:(NSUInteger)theSubviewIndex onEdge:(CNSplitViewToolbarEdge)theEdge animated:(BOOL)animated
+- (void)addToolbar:(CNSplitViewToolbar *)theToolbar besidesSubviewAtIndex:(NSUInteger)theSubviewIndex onEdge:(CNSplitViewToolbarEdge)theEdge animated:(BOOL)animated
 {
-    
+    NSView *anchoredView = [[self subviews] objectAtIndex:theSubviewIndex];
+    NSView *toolbarContainer = [[NSView alloc] initWithFrame:anchoredView.bounds];
+    [self replaceSubview:anchoredView with:toolbarContainer];
+
+    NSRect anchorViewRect = anchoredView.bounds;
+    NSRect anchorViewAdjustedRect = NSMakeRect(NSMinX(anchorViewRect),
+                                               (theEdge == CNSplitViewToolbarEdgeBottom ? theToolbar.height : 0),
+                                               NSWidth(anchorViewRect),
+                                               NSHeight(anchorViewRect) - theToolbar.height);
+    anchoredView.frame = anchorViewAdjustedRect;
+    [anchoredView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+
+    /// place the toolbar
+    theToolbar.anchoredEdge = theEdge;
+    theToolbar.frame = NSMakeRect(0, (theEdge == CNSplitViewToolbarEdgeBottom ? 0 : NSMaxY(anchorViewAdjustedRect)),
+                                  NSWidth(anchorViewAdjustedRect),
+                                  theToolbar.height);
+
+    /// we need a new container view for our toolbar + anchoredView
+    [toolbarContainer addSubview:theToolbar];
+    [toolbarContainer addSubview:anchoredView];
+    [toolbarContainer setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+
+    CNLogForRect(anchorViewAdjustedRect);
+    CNLogForRect(theToolbar.frame);
 }
 
 
@@ -102,6 +126,16 @@
     NSRect rectForDividerHandle = NSZeroRect;
 
     return rectForDividerHandle;
+}
+
+- (void)adjustRectForNeighbourView:(id)neighbourView withButtonBarHeight:(CGFloat)barHeight onAnchoredEdge:(CNSplitViewToolbarEdge)anchoredEdge
+{
+    NSRect neighbourViewRect = [neighbourView frame];
+    NSRect adjustedRect = NSMakeRect(neighbourViewRect.origin.x,
+                                     (anchoredEdge == CNSplitViewToolbarEdgeBottom ? neighbourViewRect.origin.y + barHeight : neighbourViewRect.origin.y),
+                                     neighbourViewRect.size.width,
+                                     neighbourViewRect.size.height - barHeight);
+    [neighbourView setFrame:adjustedRect];
 }
 
 

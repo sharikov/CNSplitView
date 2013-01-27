@@ -23,6 +23,7 @@
 /* Begin PBXBuildFile section */
 		FD7F866716A047A500D7BA7C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD7F866616A047A500D7BA7C /* QuartzCore.framework */; };
 		FD9178E516B2CA380026E4D9 /* CNSplitView-Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = FD9178E416B2CA380026E4D9 /* CNSplitView-Icon.icns */; };
+		FDD47B3516B471D000ADAB76 /* CNBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD47B3416B471D000ADAB76 /* CNBaseView.m */; };
 		FDDC62D01695B39F00BE7A82 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDDC62CF1695B39F00BE7A82 /* Cocoa.framework */; };
 		FDDC62DA1695B39F00BE7A82 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FDDC62D81695B39F00BE7A82 /* InfoPlist.strings */; };
 		FDDC62DC1695B39F00BE7A82 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FDDC62DB1695B39F00BE7A82 /* main.m */; };
@@ -30,7 +31,6 @@
 		FDDC62E31695B39F00BE7A82 /* CNAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FDDC62E21695B39F00BE7A82 /* CNAppDelegate.m */; };
 		FDDC62E61695B39F00BE7A82 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDDC62E41695B39F00BE7A82 /* MainMenu.xib */; };
 		FDDC630F1695B4A900BE7A82 /* CNSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = FDDC63051695B4A900BE7A82 /* CNSplitView.m */; };
-		FDDC63101695B4A900BE7A82 /* CNSplitViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = FDDC63081695B4A900BE7A82 /* CNSplitViewLayout.m */; };
 		FDDC63111695B4A900BE7A82 /* CNSplitViewToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = FDDC630A1695B4A900BE7A82 /* CNSplitViewToolbar.m */; };
 		FDDC63121695B4A900BE7A82 /* CNSplitViewToolbarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FDDC630C1695B4A900BE7A82 /* CNSplitViewToolbarButton.m */; };
 		FDDC63131695B4A900BE7A82 /* CNSplitViewToolbarButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FDDC630E1695B4A900BE7A82 /* CNSplitViewToolbarButtonCell.m */; };
@@ -40,6 +40,8 @@
 		FD7F866616A047A500D7BA7C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		FD9178E416B2CA380026E4D9 /* CNSplitView-Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "CNSplitView-Icon.icns"; path = "../CNSplitView-Icon.icns"; sourceTree = "<group>"; };
 		FD9178E616B2D4EF0026E4D9 /* CNLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CNLog.h; sourceTree = "<group>"; };
+		FDD47B3316B471D000ADAB76 /* CNBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNBaseView.h; sourceTree = "<group>"; };
+		FDD47B3416B471D000ADAB76 /* CNBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CNBaseView.m; sourceTree = "<group>"; };
 		FDDC62CC1695B39F00BE7A82 /* CNSplitView Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CNSplitView Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDDC62CF1695B39F00BE7A82 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		FDDC62D21695B39F00BE7A82 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -56,8 +58,6 @@
 		FDDC63041695B4A900BE7A82 /* CNSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNSplitView.h; sourceTree = "<group>"; };
 		FDDC63051695B4A900BE7A82 /* CNSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CNSplitView.m; sourceTree = "<group>"; };
 		FDDC63061695B4A900BE7A82 /* CNSplitViewDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNSplitViewDefinitions.h; sourceTree = "<group>"; };
-		FDDC63071695B4A900BE7A82 /* CNSplitViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNSplitViewLayout.h; sourceTree = "<group>"; };
-		FDDC63081695B4A900BE7A82 /* CNSplitViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CNSplitViewLayout.m; sourceTree = "<group>"; };
 		FDDC63091695B4A900BE7A82 /* CNSplitViewToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNSplitViewToolbar.h; sourceTree = "<group>"; };
 		FDDC630A1695B4A900BE7A82 /* CNSplitViewToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CNSplitViewToolbar.m; sourceTree = "<group>"; };
 		FDDC630B1695B4A900BE7A82 /* CNSplitViewToolbarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNSplitViewToolbarButton.h; sourceTree = "<group>"; };
@@ -82,8 +82,19 @@
 		FD7F861416A034E600D7BA7C /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				FDD47B3216B471D000ADAB76 /* CNBaseView */,
 			);
 			path = Libraries;
+			sourceTree = "<group>";
+		};
+		FDD47B3216B471D000ADAB76 /* CNBaseView */ = {
+			isa = PBXGroup;
+			children = (
+				FDD47B3316B471D000ADAB76 /* CNBaseView.h */,
+				FDD47B3416B471D000ADAB76 /* CNBaseView.m */,
+			);
+			name = CNBaseView;
+			path = CNBaseView/CNBaseView;
 			sourceTree = "<group>";
 		};
 		FDDC62C31695B39F00BE7A82 = {
@@ -156,8 +167,6 @@
 				FDDC63041695B4A900BE7A82 /* CNSplitView.h */,
 				FDDC63051695B4A900BE7A82 /* CNSplitView.m */,
 				FDDC63061695B4A900BE7A82 /* CNSplitViewDefinitions.h */,
-				FDDC63071695B4A900BE7A82 /* CNSplitViewLayout.h */,
-				FDDC63081695B4A900BE7A82 /* CNSplitViewLayout.m */,
 				FDDC63091695B4A900BE7A82 /* CNSplitViewToolbar.h */,
 				FDDC630A1695B4A900BE7A82 /* CNSplitViewToolbar.m */,
 				FDDC630B1695B4A900BE7A82 /* CNSplitViewToolbarButton.h */,
@@ -257,10 +266,10 @@
 				FDDC62DC1695B39F00BE7A82 /* main.m in Sources */,
 				FDDC62E31695B39F00BE7A82 /* CNAppDelegate.m in Sources */,
 				FDDC630F1695B4A900BE7A82 /* CNSplitView.m in Sources */,
-				FDDC63101695B4A900BE7A82 /* CNSplitViewLayout.m in Sources */,
 				FDDC63111695B4A900BE7A82 /* CNSplitViewToolbar.m in Sources */,
 				FDDC63121695B4A900BE7A82 /* CNSplitViewToolbarButton.m in Sources */,
 				FDDC63131695B4A900BE7A82 /* CNSplitViewToolbarButtonCell.m in Sources */,
+				FDD47B3516B471D000ADAB76 /* CNBaseView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

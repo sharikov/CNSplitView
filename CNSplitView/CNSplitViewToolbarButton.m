@@ -102,5 +102,26 @@ static CGFloat kDefaultButtonWidth = 28.0;
     [(CNSplitViewToolbarButtonCell *)[self cell] setImagePosition:aPosition];
 }
 
+- (void)setToolbarButtonType:(CNSplitViewToolbarButtonType)toolbarButtonType
+{
+    _toolbarButtonType = toolbarButtonType;
+    switch (_toolbarButtonType) {
+        case CNSplitViewToolbarButtonTypeAdd:           self.image = [NSImage imageNamed:NSImageNameAddTemplate]; break;
+        case CNSplitViewToolbarButtonTypeRemove:        self.image = [NSImage imageNamed:NSImageNameRemoveTemplate]; break;
+        case CNSplitViewToolbarButtonTypeQuickLook:     self.image = [NSImage imageNamed:NSImageNameQuickLookTemplate]; break;
+        case CNSplitViewToolbarButtonTypeAction:        self.image = [NSImage imageNamed:NSImageNameActionTemplate]; break;
+        case CNSplitViewToolbarButtonTypeShare:         self.image = [NSImage imageNamed:NSImageNameShareTemplate]; break;
+        case CNSplitViewToolbarButtonTypeIconView:      self.image = [NSImage imageNamed:NSImageNameIconViewTemplate]; break;
+        case CNSplitViewToolbarButtonTypeListView:      self.image = [NSImage imageNamed:NSImageNameListViewTemplate]; break;
+        case CNSplitViewToolbarButtonTypeLockLocked:    self.image = [NSImage imageNamed:NSImageNameLockLockedTemplate]; break;
+        case CNSplitViewToolbarButtonTypeLockUnlocked:  self.image = [NSImage imageNamed:NSImageNameLockUnlockedTemplate]; break;
+        case CNSplitViewToolbarButtonTypeGoRight:       self.image = [NSImage imageNamed:NSImageNameGoRightTemplate]; break;
+        case CNSplitViewToolbarButtonTypeGoLeft:        self.image = [NSImage imageNamed:NSImageNameGoLeftTemplate]; break;
+        case CNSplitViewToolbarButtonTypeStopProgress:  self.image = [NSImage imageNamed:NSImageNameStopProgressTemplate]; break;
+        case CNSplitViewToolbarButtonTypeRefresh:       self.image = [NSImage imageNamed:NSImageNameRefreshTemplate]; break;
+        default: break;
+    }
+}
+
 
 @end

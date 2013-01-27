@@ -89,34 +89,27 @@ static NSBezierPath *delimiterLine;
     NSSize imageSize = image.size;
     NSRect imageRect = NSZeroRect;
 
-    /// calculate the rect with given button title
     if (![self.attributedTitle.string isEqualToString:@""]) {
         switch (self.imagePosition) {
-            case NSImageRight: {
-                imageRect = NSMakeRect(NSWidth(controlView.frame) - imageSize.width - kImageInset, (NSHeight(controlView.frame) - imageSize.height) / 2, imageSize.width, imageSize.height);
+            case NSImageRight:
+                imageRect = NSMakeRect(NSWidth(controlView.frame) - imageSize.width - kCNSplitViewToolbarButtonImageInset, (NSHeight(controlView.frame) - imageSize.height) / 2, imageSize.width, imageSize.height);
                 break;
-            }
-
             case NSImageLeft:
-            default: {
-                imageRect = NSMakeRect(kImageInset, (NSHeight(controlView.frame) - imageSize.height) / 2, imageSize.width, imageSize.height);
+            default:
+                imageRect = NSMakeRect(kCNSplitViewToolbarButtonImageInset, (NSHeight(controlView.frame) - imageSize.height) / 2, imageSize.width, imageSize.height);
                 break;
-            }
         }
     }
-    /// calculate the rect without a given button title
     else {
         imageRect = NSMakeRect((NSWidth(controlView.frame) - imageSize.width) / 2, (NSHeight(controlView.frame) - imageSize.height) / 2, imageSize.width, imageSize.height);
     }
 
-    /// button is enabled
     if (self.isEnabled) {
         switch (self.isHighlighted) {
             case YES:   [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:0.90 respectFlipped:YES hints:nil]; break;
             case NO:    [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:0.875 respectFlipped:YES hints:nil]; break;
         }
     }
-    /// button is disabled
     else {
         [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:(self.imageDimsWhenDisabled ? 0.40 : 1.00) respectFlipped:YES hints:nil];
     }

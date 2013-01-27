@@ -31,31 +31,48 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-variable"
-static int kTextInset = 8;
-static int kImageInset = 8;
-static int kImageTextDistance = 10;
 
-
-/// button bar stuff
 typedef enum {
-    CNSplitViewToolbarEdgeBottom = 0,
+    CNSplitViewToolbarEdgeUndefined = 0,
+    CNSplitViewToolbarEdgeBottom,
     CNSplitViewToolbarEdgeTop
 } CNSplitViewToolbarEdge;
 
 
-/// button stuff
 typedef enum {
     CNSplitViewToolbarButtonAlignLeft = 0,
     CNSplitViewToolbarButtonAlignRight
 } CNSplitViewToolbarButtonAlign;
 
 
+/**
+ @see http://developer.apple.com/library/mac/#documentation/userexperience/conceptual/applehiguidelines/SystemProvidedIcons/SystemProvidedIcons.html
+ */
 typedef enum {
     CNSplitViewToolbarButtonTypePlain = 0,
     CNSplitViewToolbarButtonTypeAdd,
     CNSplitViewToolbarButtonTypeRemove,
-    CNSplitViewToolbarButtonTypeGeneral,
-    CNSplitViewToolbarButtonTypeSplitViewHandle
+    CNSplitViewToolbarButtonTypeQuickLook,
+    CNSplitViewToolbarButtonTypeAction,
+    CNSplitViewToolbarButtonTypeShare,
+    CNSplitViewToolbarButtonTypeIconView,
+    CNSplitViewToolbarButtonTypeListView,
+    CNSplitViewToolbarButtonTypeLockLocked,
+    CNSplitViewToolbarButtonTypeLockUnlocked,
+    CNSplitViewToolbarButtonTypeGoRight,
+    CNSplitViewToolbarButtonTypeGoLeft,
+    CNSplitViewToolbarButtonTypeStopProgress,
+    CNSplitViewToolbarButtonTypeRefresh,
 } CNSplitViewToolbarButtonType;
+
+static CGFloat kCNSplitViewToolbarButtonTextInset = 10.0f;
+static CGFloat kCNSplitViewToolbarButtonImageInset = 10.0f;
+static CGFloat kCNSplitViewToolbarButtonImageTextDistance = 10.0f;
+
+
+typedef enum {
+    CNSplitViewToolbarDraggingHandlePositionLeft    = 0 << 0,
+    CNSplitViewToolbarDraggingHandlePositionRight   = 1 << 0
+} CNSplitViewToolbarDraggingHandlePosition;
 
 #pragma clang diagnostic pop
