@@ -24,6 +24,7 @@
 		FD7F866716A047A500D7BA7C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD7F866616A047A500D7BA7C /* QuartzCore.framework */; };
 		FD9178E516B2CA380026E4D9 /* CNSplitView-Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = FD9178E416B2CA380026E4D9 /* CNSplitView-Icon.icns */; };
 		FDD47B3516B471D000ADAB76 /* CNBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD47B3416B471D000ADAB76 /* CNBaseView.m */; };
+		FDD47B3716B4BF7600ADAB76 /* SplitLeaf-Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FDD47B3616B4BF7600ADAB76 /* SplitLeaf-Icon.png */; };
 		FDDC62D01695B39F00BE7A82 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDDC62CF1695B39F00BE7A82 /* Cocoa.framework */; };
 		FDDC62DA1695B39F00BE7A82 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FDDC62D81695B39F00BE7A82 /* InfoPlist.strings */; };
 		FDDC62DC1695B39F00BE7A82 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FDDC62DB1695B39F00BE7A82 /* main.m */; };
@@ -42,6 +43,7 @@
 		FD9178E616B2D4EF0026E4D9 /* CNLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CNLog.h; sourceTree = "<group>"; };
 		FDD47B3316B471D000ADAB76 /* CNBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNBaseView.h; sourceTree = "<group>"; };
 		FDD47B3416B471D000ADAB76 /* CNBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CNBaseView.m; sourceTree = "<group>"; };
+		FDD47B3616B4BF7600ADAB76 /* SplitLeaf-Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplitLeaf-Icon.png"; sourceTree = "<group>"; };
 		FDDC62CC1695B39F00BE7A82 /* CNSplitView Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CNSplitView Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDDC62CF1695B39F00BE7A82 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		FDDC62D21695B39F00BE7A82 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -157,6 +159,7 @@
 				FDDC62DB1695B39F00BE7A82 /* main.m */,
 				FDDC62DD1695B39F00BE7A82 /* CNSplitView Example-Prefix.pch */,
 				FDDC62DE1695B39F00BE7A82 /* Credits.rtf */,
+				FDD47B3616B4BF7600ADAB76 /* SplitLeaf-Icon.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 				FDDC62E01695B39F00BE7A82 /* Credits.rtf in Resources */,
 				FDDC62E61695B39F00BE7A82 /* MainMenu.xib in Resources */,
 				FD9178E516B2CA380026E4D9 /* CNSplitView-Icon.icns in Resources */,
+				FDD47B3716B4BF7600ADAB76 /* SplitLeaf-Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

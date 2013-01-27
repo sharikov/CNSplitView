@@ -6,7 +6,11 @@
 
 Here is a shot of the included example application:
 
-![CNSplitView Example Application](https://dl.dropbox.com/u/34133216/WebImages/Github/CNBackstageController.png)
+![CNSplitView Example Application](https://dl.dropbox.com/u/34133216/WebImages/Github/CNSplitView-Example.png)
+
+
+###Graphics & Icons
+The icon used to show in the example application (green leaf) was taken from [IconFinder](http://www.iconfinder.com/icondetails/35391/256/garden_green_leaf_nature_organic_plant_icon). It is published under the [CC License Attribution-Noncommercial 3.0](http://creativecommons.org/licenses/by-nc/3.0/) and was created by [Bruno Maia, IconTexto](http://www.icontexto.com).
 
 
 ###Requirements

@@ -15,6 +15,11 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    self.secondView.text = @"A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.";
+    self.secondView.textBoxWidth = 380;
+    self.secondView.icon = [NSImage imageNamed:@"SplitLeaf-Icon"];
+    self.secondView.iconVerticalOffset = 70;
+
     CNSplitViewToolbar *toolbar = [[CNSplitViewToolbar alloc] init];
 
     CNSplitViewToolbarButton *button1 = [[CNSplitViewToolbarButton alloc] init];
@@ -39,7 +44,7 @@
     [toolbar addButton:button3];
     [toolbar addButton:button4];
 
-    [self.splitView addToolbar:toolbar besidesSubviewAtIndex:1 onEdge:CNSplitViewToolbarEdgeBottom];
+    [self.splitView addToolbar:toolbar besidesSubviewAtIndex:0 onEdge:CNSplitViewToolbarEdgeBottom];
 }
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex

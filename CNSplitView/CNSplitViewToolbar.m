@@ -80,7 +80,7 @@ static NSGradient *buttonBarGradient;
 {
     _frame = NSZeroRect;
     _height = kDefaultToolbarHeight;
-    _buttonBarInteriorHeight = _height - 1;
+    _buttonBarInteriorHeight = _height - 1;     // 1 means the thickness of the top or bottom border line
 
     _buttons = [[NSMutableArray alloc] init];
     _neighbourView = nil;
