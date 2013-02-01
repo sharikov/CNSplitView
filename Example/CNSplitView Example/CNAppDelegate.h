@@ -19,6 +19,7 @@
 @property (strong, nonatomic) IBOutlet CNBaseView *secondView;
 
 @property (strong) IBOutlet NSButton *showHideToolbarCheckbox;
+@property (strong) IBOutlet NSButton *useAnimationsCheckbox;
 @property (strong) IBOutlet NSButton *enableDisableToolbarItemsCheckbox;
 @property (strong) IBOutlet NSButton *enableDisableToolbarItemsDelimiterCheckbox;
 @property (strong) IBOutlet NSButton *centerToolbarItemsCheckbox;
@@ -27,6 +28,7 @@
 
 
 - (IBAction)showHideToolbarAction:(id)sender;
+- (IBAction)useAnimationsAction:(id)sender;
 - (IBAction)enableDisableToolbarItemsAction:(id)sender;
 - (IBAction)enableDisableToolbarItemsDelimiterAction:(id)sender;
 - (IBAction)centerToolbarItemsAction:(id)sender;

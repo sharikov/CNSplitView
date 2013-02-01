@@ -14,6 +14,7 @@
 
 @interface CNAppDelegate () {
     CNSplitViewToolbar *toolbar;
+    BOOL useAnimations;
 }
 @end
 
@@ -26,6 +27,7 @@
     self.secondView.icon = [NSImage imageNamed:@"SplitLeaf-Icon"];
     self.secondView.iconVerticalOffset = 70;
 
+    useAnimations = NO;
     toolbar = [[CNSplitViewToolbar alloc] init];
 
     CNSplitViewToolbarButton *button1 = [[CNSplitViewToolbarButton alloc] init];
@@ -53,16 +55,19 @@
     [toolbar addButton:button4];
 
     self.splitView.delegate = self;
-    [self.splitView setVertical:YES];
     [self.splitView addToolbar:toolbar besidesSubviewAtIndex:0 onEdge:CNSplitViewToolbarEdgeBottom];
 }
 
 - (IBAction)showHideToolbarAction:(id)sender
 {
-    NSNumber *visibility;
-    if ([(NSButton *)sender state] == NSOnState)    visibility = [NSNumber numberWithInteger:CNSplitViewToolbarVisibilityVisible];
-    else                                            visibility = [NSNumber numberWithInteger:CNSplitViewToolbarVisibilityHidden];
-    [[NSNotificationCenter defaultCenter] postNotificationName:CNSplitViewShowHideToolbarNotification object:visibility];
+    if ([(NSButton *)sender state] == NSOnState)    [self.splitView showToolbarAnimated:useAnimations];
+    else                                            [self.splitView hideToolbarAnimated:useAnimations];
+}
+
+- (IBAction)useAnimationsAction:(id)sender
+{
+    if ([(NSButton *)sender state] == NSOnState)    useAnimations = YES;
+    else                                            useAnimations = NO;
 }
 
 - (IBAction)enableDisableToolbarItemsAction:(id)sender

@@ -60,7 +60,18 @@
 /**
  ...
  */
-- (void)addToolbar:(CNSplitViewToolbar *)theToolbar besidesSubviewAtIndex:(NSUInteger)theSubviewIndex onEdge:(CNSplitViewToolbarEdge)theEdge animated:(BOOL)animated;
+- (void)showToolbarAnimated:(BOOL)animated;
+
+/**
+ ...
+ */
+- (void)hideToolbarAnimated:(BOOL)animated;
+
+/**
+ ...
+ */
+- (void)toggleToolbarVisibilityAnimated:(BOOL)animated;
+
 
 
 #pragma mark - Managing the Delegate and the Data Source

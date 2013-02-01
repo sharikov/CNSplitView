@@ -68,7 +68,6 @@ extern NSString *CNSplitViewInjectReferenceNotification;
 extern NSString *CNSplitViewToolbarItemsEnableNotification;
 extern NSString *CNSplitViewToolbarItemsDisableNotification;
 extern NSString *CNSplitViewDraggingHandleEnableDisableNotification;
-extern NSString *CNSplitViewShowHideToolbarNotification;
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

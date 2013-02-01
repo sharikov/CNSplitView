@@ -26,18 +26,22 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
-*/
+ */
 
+#import <QuartzCore/QuartzCore.h>
 #import "CNSplitView.h"
 
 
 static NSColor *kDefaultDeviderColor;
+static CGFloat kDefaultAnimationDuration;
 NSString *CNSplitViewInjectReferenceNotification = @"InjectReferenceNotification";
-NSString *CNSplitViewShowHideToolbarNotification = @"ShowHideToolbarNotification";
-
 
 @interface CNSplitView () {
     NSColor *_dividerColor;
+    NSView *_toolbarContainer;
+    NSView *_anchoredView;
+    CNSplitViewToolbar *_toolbar;
+    BOOL _toolbarIsVisible;
 }
 @end
 
@@ -48,6 +52,7 @@ NSString *CNSplitViewShowHideToolbarNotification = @"ShowHideToolbarNotification
 + (void)initialize
 {
     kDefaultDeviderColor = [NSColor colorWithCalibratedRed:0.50 green:0.50 blue:0.50 alpha:1.0];
+    kDefaultAnimationDuration = 0.21;
 }
 
 - (id)init
@@ -72,8 +77,10 @@ NSString *CNSplitViewShowHideToolbarNotification = @"ShowHideToolbarNotification
 {
     _dividerColor = kDefaultDeviderColor;
     _draggingHandleEnabled = NO;
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showHideToolbar:) name:CNSplitViewShowHideToolbarNotification object:nil];
+    _toolbarContainer = nil;
+    _anchoredView = nil;
+    _toolbar = nil;
+    _toolbarIsVisible = NO;
 }
 
 
@@ -83,47 +90,85 @@ NSString *CNSplitViewShowHideToolbarNotification = @"ShowHideToolbarNotification
 
 - (void)addToolbar:(CNSplitViewToolbar *)theToolbar besidesSubviewAtIndex:(NSUInteger)theSubviewIndex onEdge:(CNSplitViewToolbarEdge)theEdge
 {
-    [self addToolbar:theToolbar besidesSubviewAtIndex:theSubviewIndex onEdge:theEdge animated:NO];
-}
-
-- (void)addToolbar:(CNSplitViewToolbar *)theToolbar besidesSubviewAtIndex:(NSUInteger)theSubviewIndex onEdge:(CNSplitViewToolbarEdge)theEdge animated:(BOOL)animated
-{
-    NSView *anchoredView = [[self subviews] objectAtIndex:theSubviewIndex];
-    NSView *toolbarContainer = [[NSView alloc] initWithFrame:anchoredView.bounds];
-    [self replaceSubview:anchoredView with:toolbarContainer];
-    [self setDelegate:theToolbar];
-
-    NSRect anchorViewRect = anchoredView.bounds;
-    NSRect anchorViewAdjustedRect = NSMakeRect(NSMinX(anchorViewRect),
-                                               (theEdge == CNSplitViewToolbarEdgeBottom ? theToolbar.height : 0),
-                                               NSWidth(anchorViewRect),
-                                               NSHeight(anchorViewRect) - theToolbar.height);
-    anchoredView.frame = anchorViewAdjustedRect;
-    [anchoredView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-
-    /// place the toolbar
-    theToolbar.anchoredEdge = theEdge;
-    theToolbar.frame = NSMakeRect(0, (theEdge == CNSplitViewToolbarEdgeBottom ? 0 : NSMaxY(anchorViewAdjustedRect)),
-                                  NSWidth(anchorViewAdjustedRect),
-                                  theToolbar.height);
-    /// we need a new container view for our toolbar + anchoredView
-    [toolbarContainer addSubview:theToolbar];
-    [toolbarContainer addSubview:anchoredView];
-    [toolbarContainer setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-
     /// via notification we inject a refernce to ourself into the toolbar
     [[NSNotificationCenter defaultCenter] postNotificationName:CNSplitViewInjectReferenceNotification object:self];
+
+    _anchoredView = [[self subviews] objectAtIndex:theSubviewIndex];
+    [_anchoredView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+
+    /// we need a new container view for our toolbar + anchoredView
+    _toolbarContainer = [[NSView alloc] initWithFrame:_anchoredView.frame];
+    [_toolbarContainer setWantsLayer:YES];
+    [_toolbarContainer setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+
+    [self replaceSubview:_anchoredView with:_toolbarContainer];
+    [self adjustSubviews];
+
+    _toolbar = theToolbar;
+    _toolbar.anchoredEdge = theEdge;
+    [_toolbar setFrame:NSMakeRect(NSMinX(_anchoredView.frame),
+                                  NSMinY(_anchoredView.frame) - _toolbar.height,
+                                  NSWidth(_anchoredView.frame),
+                                  _toolbar.height)];
+    [self setDelegate:_toolbar];
+
+    [_toolbarContainer addSubview:_toolbar];
+    [_toolbarContainer addSubview:_anchoredView];
 }
 
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Notifications
-
-- (void)showHideToolbar:(NSNotification *)notification
+- (void)showToolbarAnimated:(BOOL)animated
 {
-    CNLog(@"showHideToolbar: %li", [(NSNumber *)[notification object] integerValue]);
+    [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
+        context.duration = (animated ? kDefaultAnimationDuration : 0);
+        context.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+
+        NSRect adjustedAnchoredViewRect = NSMakeRect(NSMinX(_anchoredView.frame),
+                                                     NSMinY(_anchoredView.frame) + _toolbar.height,
+                                                     NSWidth(_anchoredView.frame),
+                                                     NSHeight(_anchoredView.frame) - _toolbar.height);
+        [[_anchoredView animator] setFrame:adjustedAnchoredViewRect];
+
+        /// place the toolbar
+        NSPoint adjustedToolbarOrigin = NSMakePoint(NSMinX(_toolbar.frame),
+                                                    (_toolbar.anchoredEdge == CNSplitViewToolbarEdgeBottom ? 0 : NSMinY(_anchoredView.frame)));
+        [[_toolbar animator] setFrameOrigin:adjustedToolbarOrigin];
+
+    } completionHandler:^{
+        _toolbarIsVisible = YES;
+    }];
 }
+
+- (void)hideToolbarAnimated:(BOOL)animated
+{
+    [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
+        context.duration = (animated ? kDefaultAnimationDuration : 0);
+        context.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+
+        NSRect adjustedAnchoredViewRect = NSMakeRect(NSMinX(_anchoredView.frame),
+                                                     NSMinY(_anchoredView.frame) - _toolbar.height,
+                                                     NSWidth(_anchoredView.frame),
+                                                     NSHeight(_anchoredView.frame) + _toolbar.height);
+        [[_anchoredView animator] setFrame:adjustedAnchoredViewRect];
+
+        /// place the toolbar
+        NSPoint adjustedToolbarOrigin = NSMakePoint(NSMinX(_toolbar.frame),
+                                                    (_toolbar.anchoredEdge == CNSplitViewToolbarEdgeBottom ? -_toolbar.height : NSMinY(_anchoredView.frame)));
+        [[_toolbar animator] setFrameOrigin:adjustedToolbarOrigin];
+
+    } completionHandler:^{
+        _toolbarIsVisible = NO;
+    }];
+}
+
+- (void)toggleToolbarVisibilityAnimated:(BOOL)animated
+{
+    if (_toolbarIsVisible) {
+        [self hideToolbarAnimated:animated];
+    } else {
+        [self showToolbarAnimated:animated];
+    }
+}
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
