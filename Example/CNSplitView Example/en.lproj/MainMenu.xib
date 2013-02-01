@@ -1313,7 +1313,7 @@
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
-				<string key="NSWindowContentMinSize">{750, 400}</string>
+				<string key="NSWindowContentMinSize">{730, 400}</string>
 				<object class="NSView" key="NSWindowView" id="439893737">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -1508,7 +1508,6 @@
 									<string key="NSFrameSize">{400, 436}</string>
 									<reference key="NSSuperview" ref="10427536"/>
 									<reference key="NSWindow"/>
-									<reference key="NSNextKeyView"/>
 									<string key="NSReuseIdentifierKey">_NS:11</string>
 									<string key="NSClassName">CNBaseView</string>
 								</object>
@@ -1796,7 +1795,7 @@
 					<reference key="NSNextKeyView" ref="10427536"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
-				<string key="NSMinSize">{750, 422}</string>
+				<string key="NSMinSize">{730, 422}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">CNSplitView Example</string>
 				<bool key="NSAutorecalculatesContentBorderThicknessMinY">NO</bool>

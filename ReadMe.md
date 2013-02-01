@@ -20,7 +20,7 @@ The usage of `CNSplitView` is quite simple. In Interfacebuilder just create a ne
 
 On the code side you keep going that easy way. The code of the example application looks like this:
 
-```ObjC
+```Objective-C
 CNSplitViewToolbarButton *button1 = [[CNSplitViewToolbarButton alloc] init];
 button1.toolbarButtonImage = CNSplitViewToolbarButtonImageAdd;
 button1.keyEquivalent = @"n";
