@@ -8,6 +8,7 @@
 	<array>
 		<string>*.m</string>
 		<string>CNAppDelegate.*</string>
+		<string>CNBaseView</string>
 	</array>
 	<key>--print-settings</key>
 	<true/>
