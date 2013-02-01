@@ -80,4 +80,6 @@ static CGFloat kCNSplitViewToolbarButtonTextInset = 10.0;
 static CGFloat kCNSplitViewToolbarButtonImageInset = 10.0;
 static CGFloat kCNSplitViewToolbarButtonImageToTextDistance = 10.0;
 
+static CGFloat kDefaultColorHighlightLevel = 0.42;
+
 #pragma clang diagnostic pop

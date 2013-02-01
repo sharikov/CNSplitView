@@ -44,7 +44,7 @@
     CNSplitViewToolbarButton *button4 = [[CNSplitViewToolbarButton alloc] init];
     button4.toolbarButtonAlign = CNSplitViewToolbarButtonAlignRight;
     button4.toolbarButtonType = CNSplitViewToolbarButtonTypeRefresh;
-//    button4.title = @"Refresh";
+    button4.title = @"Refresh";
 
     [toolbar addButton:button1];
     [toolbar addButton:button2];

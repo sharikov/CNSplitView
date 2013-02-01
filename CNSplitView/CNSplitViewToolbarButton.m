@@ -61,6 +61,8 @@ static CGFloat kDefaultButtonWidth = 28.0;
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableMe) name:kEnableToolbarItemsNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disableMe) name:kDisableToolbarItemsNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowStatusChanged) name:NSWindowDidBecomeKeyNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowStatusChanged) name:NSWindowDidResignKeyNotification object:nil];
     }
     return self;
 }
@@ -80,6 +82,11 @@ static CGFloat kDefaultButtonWidth = 28.0;
     [self setEnabled:NO];
 }
 
+- (void)windowStatusChanged
+{
+    [self setNeedsDisplay:YES];
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Accessors
@@ -91,9 +98,9 @@ static CGFloat kDefaultButtonWidth = 28.0;
 
     NSFont *font = [NSFont fontWithName:@"Helvetiva Neue" size:11.0];
 
-    NSColor *textColor = [[NSColor blackColor] colorWithAlphaComponent:0.9];
+    NSColor *textColor = [NSColor controlTextColor];
     NSShadow* textShadow = [[NSShadow alloc] init];
-    [textShadow setShadowColor: [[NSColor whiteColor] colorWithAlphaComponent:0.75]];
+    [textShadow setShadowColor: [NSColor whiteColor]];
     [textShadow setShadowOffset: NSMakeSize(0, -1)];
     [textShadow setShadowBlurRadius: 0];
 

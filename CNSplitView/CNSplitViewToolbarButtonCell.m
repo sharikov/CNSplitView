@@ -33,9 +33,9 @@
 #import "CNSplitViewToolbarButtonCell.h"
 
 
-static NSGradient   *btnGradient,
-                    *btnHighlightGradient;
-
+static NSGradient *btnGradient, *btnHighlightGradient;
+static NSColor *gradientStartColor, *gradientEndColor;
+static CGFloat kDefaultImageFraction = 0;
 
 @implementation CNSplitViewToolbarButtonCell
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,11 +43,36 @@ static NSGradient   *btnGradient,
 
 + (void)initialize
 {
-    btnGradient = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedRed:0.95 green:0.95 blue:0.95 alpha:1.0]
-                                                endingColor: [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0]];
-
-    btnHighlightGradient = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedRed:0.78 green:0.78 blue:0.78 alpha:1.0]
+    gradientStartColor = [NSColor colorWithCalibratedRed:0.95 green:0.95 blue:0.95 alpha:1.0];
+    gradientEndColor = [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0];
+     btnHighlightGradient = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedRed:0.78 green:0.78 blue:0.78 alpha:1.0]
                                                          endingColor: [NSColor colorWithCalibratedRed:0.90 green:0.90 blue:0.90 alpha:1.0]];
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidBecomeKey) name:NSWindowDidBecomeKeyNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidResignKey) name:NSWindowDidResignKeyNotification object:nil];
+    }
+    return self;
+}
+
+
+
+- (void)windowDidBecomeKey
+{
+    btnGradient = [[NSGradient alloc] initWithStartingColor: gradientStartColor
+                                                endingColor: gradientEndColor];
+    kDefaultImageFraction = 0.875;
+}
+
+- (void)windowDidResignKey
+{
+    btnGradient = [[NSGradient alloc] initWithStartingColor: [gradientStartColor highlightWithLevel:kDefaultColorHighlightLevel]
+                                                endingColor: [gradientEndColor highlightWithLevel:kDefaultColorHighlightLevel]];
+    kDefaultImageFraction = 0.42;
 }
 
 
@@ -102,13 +127,13 @@ static NSGradient   *btnGradient,
                 break;
             }
             case NO: {
-                [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:0.875 respectFlipped:YES hints:nil];
+                [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:kDefaultImageFraction respectFlipped:YES hints:nil];
                 break;
             }
         }
     }
     else {
-        [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:(self.imageDimsWhenDisabled ? 0.40 : 1.00) respectFlipped:YES hints:nil];
+        [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:(self.imageDimsWhenDisabled ? 0.42 : 1.00) respectFlipped:YES hints:nil];
     }
 }
 
