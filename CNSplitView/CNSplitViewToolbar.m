@@ -29,27 +29,31 @@
  */
 
 
+#import "CNSplitView.h"
 #import "CNSplitViewToolbar.h"
 #import "CNSplitViewToolbarButtonCell.h"
+#import "CNSplitViewDraggingHandle.h"
 
 
-static NSSize   kDefaultDraggingHandleSize;
-static CGFloat  kDefaultToolbarHeight = 24.0, kDefaultItemDelimiterWidth = 1.0;
+static CGFloat  kDefaultToolbarHeight, kDefaultItemDelimiterWidth;
+static CGFloat  kDefaultVerticalDraggingHandleWidth, kDefaultHorizontalDraggingHandleWidth;
 static NSColor  *kDefaultBorderColor, *kDefaultGradientStartColor, *kDefaultGradientEndColor;
 static NSColor  *delimiterGradientEndColor, *delimiterGradientMiddleColor, *delimiterGradientCenterColor;
 
-NSString *kEnableToolbarItemsNotification = @"EnableToolbarItemsNotification";
-NSString *kDisableToolbarItemsNotification = @"DisableToolbarItemsNotification";
+NSString *CNSplitViewToolbarItemsEnableNotification = @"ToolbarItemsEnableNotification";
+NSString *CNSplitViewToolbarItemsDisableNotification = @"ToolbarItemsDisableNotification";
+NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleEnableDisableNotification";
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 @interface CNSplitViewToolbar () {
     NSRect _previousToolbarRect;
     NSMutableArray *_delimiterOffsets;
+    CNSplitView *_enclosingSplitView;
+    NSMutableArray *_buttons;
+    CNSplitViewDraggingHandle *_draggingHandle;
 }
-@property (strong) NSMutableArray *buttons;
 
-- (NSRect)rectForDividerDraggingHandle;
 - (void)drawItemDelimiter;
 - (void)recalculateItemPositions;
 @end
@@ -61,7 +65,6 @@ NSString *kDisableToolbarItemsNotification = @"DisableToolbarItemsNotification";
 
 + (void)initialize
 {
-    kDefaultDraggingHandleSize      = NSMakeSize(20, kDefaultToolbarHeight);
     kDefaultBorderColor             = [NSColor colorWithCalibratedRed:0.50 green:0.50 blue:0.50 alpha:1.0];
     kDefaultGradientStartColor      = [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0];
     kDefaultGradientEndColor        = [NSColor colorWithCalibratedRed:0.95 green:0.95 blue:0.95 alpha:1.0];
@@ -69,6 +72,10 @@ NSString *kDisableToolbarItemsNotification = @"DisableToolbarItemsNotification";
     delimiterGradientMiddleColor    = [NSColor colorWithCalibratedRed: 0.78 green: 0.78 blue: 0.78 alpha: 0.5];
     delimiterGradientCenterColor    = [NSColor colorWithCalibratedRed: 0.42 green: 0.42 blue: 0.42 alpha: 1];
 
+    kDefaultToolbarHeight = 24.0;
+    kDefaultItemDelimiterWidth = 1.0;
+    kDefaultVerticalDraggingHandleWidth = 17.0;
+    kDefaultHorizontalDraggingHandleWidth = 25.0;
 }
 
 - (id)init
@@ -85,30 +92,30 @@ NSString *kDisableToolbarItemsNotification = @"DisableToolbarItemsNotification";
     _frame = NSZeroRect;
     _height = kDefaultToolbarHeight;
     _itemDelimiterEnabled = YES;
-    _draggingHandleEnabled = YES;
     _contentAlign = CNSplitViewToolbarContentAlignItemDirected;
-    _backgroundGradientStartColor = kDefaultGradientStartColor;
-    _backgroundGradientEndColor = kDefaultGradientEndColor;
-    _borderColor = kDefaultBorderColor;
 
     _buttons = [[NSMutableArray alloc] init];
     _previousToolbarRect = NSZeroRect;
     _delimiterOffsets = [NSMutableArray array];
+    _enclosingSplitView = nil;
+    _draggingHandle = nil;
     _anchoredEdge = CNSplitViewToolbarEdgeUndefined;
     [self setAnchoredEdge:CNSplitViewToolbarEdgeBottom];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowStatusChanged) name:NSWindowDidBecomeKeyNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowStatusChanged) name:NSWindowDidResignKeyNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(injectEnclosingSplitView:) name:CNSplitViewInjectReferenceNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(draggingHandleEnableDisable:) name:CNSplitViewDraggingHandleEnableDisableNotification object:nil];
 }
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Public API
+#pragma mark - API
 
 - (void)addButton:(CNSplitViewToolbarButton *)aButton
 {
-    if (!self.buttons)
-        self.buttons = [[NSMutableArray alloc] init];
+    if (!_buttons)
+        _buttons = [[NSMutableArray alloc] init];
 
     /// calculate or set the correct button width
     NSSize buttonSize = NSZeroSize;
@@ -139,70 +146,31 @@ NSString *kDisableToolbarItemsNotification = @"DisableToolbarItemsNotification";
     }
     aButton.frame = NSMakeRect(0, 0, buttonSize.width, buttonSize.height);
 
-    [self.buttons addObject:aButton];
+    [_buttons addObject:aButton];
     [self addSubview:aButton];
 }
 
 - (void)removeButton:(CNSplitViewToolbarButton *)aButton
 {
-    [self.buttons removeObject:aButton];
+    [_buttons removeObject:aButton];
     [aButton removeFromSuperview];
 }
 
 - (void)removeAllButtons
 {
     self.subviews = [NSArray array];
-    [self.buttons removeAllObjects];
+    [_buttons removeAllObjects];
     [self setNeedsDisplay:YES];
 }
 
 - (void)enable
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kEnableToolbarItemsNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:CNSplitViewToolbarItemsEnableNotification object:nil];
 }
 
 - (void)disable
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDisableToolbarItemsNotification object:nil];
-}
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark - NSNotificationCenter
-
-- (void)windowStatusChanged
-{
-    [self setNeedsDisplay:YES];
-}
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark - NSView
-
-- (void)drawRect:(NSRect)dirtyRect
-{
-    BOOL isKeyWindow = [[self window] isKeyWindow];
-    
-    NSColor *startColor = (isKeyWindow ? self.backgroundGradientStartColor : [self.backgroundGradientStartColor highlightWithLevel:kDefaultColorHighlightLevel]);
-    NSColor *endColor = (isKeyWindow ? self.backgroundGradientEndColor : [self.backgroundGradientEndColor highlightWithLevel:kDefaultColorHighlightLevel]);
-    NSGradient *toolbarKeyWindowGradient = [[NSGradient alloc] initWithStartingColor: startColor endingColor: endColor];
-    NSBezierPath *buttonBarPath = [NSBezierPath bezierPathWithRect:dirtyRect];
-    [toolbarKeyWindowGradient drawInBezierPath:buttonBarPath angle:90];
-
-    CGFloat posY = (self.anchoredEdge == CNSplitViewToolbarEdgeTop ? 0 : NSHeight(dirtyRect) - 1);
-    NSRect borderLineRect = NSMakeRect(0, posY, NSWidth(dirtyRect), 1.0);
-    NSBezierPath *borderLinePath = [NSBezierPath bezierPathWithRect:borderLineRect];
-    NSColor *borderColor = (isKeyWindow ? self.borderColor : [self.borderColor highlightWithLevel:kDefaultColorHighlightLevel]);
-    [borderColor setFill];
-    [borderLinePath fill];
-
-    if (!NSEqualRects(self.bounds, _previousToolbarRect))
-        [self recalculateItemPositions];
-    _previousToolbarRect = self.bounds;
-
-    [self drawItemDelimiter];
+    [[NSNotificationCenter defaultCenter] postNotificationName:CNSplitViewToolbarItemsDisableNotification object:nil];
 }
 
 
@@ -226,16 +194,6 @@ NSString *kDisableToolbarItemsNotification = @"DisableToolbarItemsNotification";
     }
 }
 
-- (void)setBackgroundGradientStartColor:(NSColor *)backgroundGradientStartColor
-{
-    _backgroundGradientStartColor = backgroundGradientStartColor;
-}
-
-- (void)setBackgroundGradientEndColor:(NSColor *)backgroundGradientEndColor
-{
-    _backgroundGradientEndColor = backgroundGradientEndColor;
-}
-
 - (void)setItemDelimiterEnabled:(BOOL)itemDelimiterEnabled
 {
     _itemDelimiterEnabled = itemDelimiterEnabled;
@@ -253,20 +211,37 @@ NSString *kDisableToolbarItemsNotification = @"DisableToolbarItemsNotification";
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Private Helper
+#pragma mark - Notifications
 
-- (NSRect)rectForDividerDraggingHandle
+- (void)windowStatusChanged
 {
-    NSRect rectForDividerHandle = NSZeroRect;
-
-    //    if (self.isDraggingHandleEnabled) {
-    //        rectForDividerHandle = NSMakeRect(NSMaxX(self.bounds)-20.0, NSMaxY(self.bounds), 20.0, NSHeight(self.bounds));
-    //        NSBezierPath *handlePath = [NSBezierPath bezierPathWithRect:rectForDividerHandle];
-    //        [[NSColor lightGrayColor] set];
-    //        [handlePath stroke];
-    //    }
-    return rectForDividerHandle;
+    [self setNeedsDisplay:YES];
 }
+
+- (void)injectEnclosingSplitView:(NSNotification *)notification
+{
+    _enclosingSplitView = [notification object];
+}
+
+- (void)draggingHandleEnableDisable:(NSNotification *)notification
+{
+    [_draggingHandle removeFromSuperview];
+    _draggingHandle = nil;
+
+    BOOL draggingHandleEnabled = [(NSNumber *)[notification object] boolValue];
+    if (draggingHandleEnabled) {
+        _draggingHandle = [[CNSplitViewDraggingHandle alloc] init];
+        _draggingHandle.vertical = _enclosingSplitView.isVertical;
+        [self addSubview:_draggingHandle];
+    }
+    [self recalculateItemPositions];
+    [self setNeedsDisplay:YES];
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Private Helper
 
 - (void)drawItemDelimiter
 {
@@ -292,14 +267,15 @@ NSString *kDisableToolbarItemsNotification = @"DisableToolbarItemsNotification";
 
 - (void)recalculateItemPositions
 {
-    __block CGFloat leftOffset = 0,
-    rightOffset = NSWidth(self.frame)
-    ;
+    __block CGFloat leftOffset = 0;
+    CGFloat draggingHandleWidth = ([_enclosingSplitView isVertical] ? kDefaultVerticalDraggingHandleWidth : kDefaultHorizontalDraggingHandleWidth);
+    __block CGFloat rightOffset = (_enclosingSplitView.isDraggingHandleEnabled ? NSWidth(self.frame) - draggingHandleWidth : NSWidth(self.frame));
+
     [_delimiterOffsets removeAllObjects];
 
     switch (self.contentAlign) {
         case CNSplitViewToolbarContentAlignItemDirected: {
-            [self.buttons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [_buttons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 if ([obj isKindOfClass:[CNSplitViewToolbarButton class]]) {
                     CNSplitViewToolbarButton *theButton = (CNSplitViewToolbarButton *)obj;
 
@@ -324,7 +300,7 @@ NSString *kDisableToolbarItemsNotification = @"DisableToolbarItemsNotification";
             __block CGFloat allButtonsWidth = 0;
 
             /// calculate the left offset related to all button widths
-            [self.buttons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [_buttons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 if ([obj isKindOfClass:[CNSplitViewToolbarButton class]]) {
                     CNSplitViewToolbarButton *theButton = (CNSplitViewToolbarButton *)obj;
                     allButtonsWidth += NSWidth(theButton.frame) + (self.isItemDelimiterEnabled ? kDefaultItemDelimiterWidth : 0);
@@ -333,7 +309,7 @@ NSString *kDisableToolbarItemsNotification = @"DisableToolbarItemsNotification";
             leftOffset = ceil((NSWidth(self.bounds) - allButtonsWidth) / 2);
 
             /// calculate the button positions
-            [self.buttons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [_buttons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 if ([obj isKindOfClass:[CNSplitViewToolbarButton class]]) {
                     CNSplitViewToolbarButton *theButton = (CNSplitViewToolbarButton *)obj;
                     theButton.autoresizingMask = NSViewNotSizable;
@@ -353,6 +329,46 @@ NSString *kDisableToolbarItemsNotification = @"DisableToolbarItemsNotification";
     }
 }
 
+- (BOOL)containsSubView:(NSView *)subview
+{
+    __block BOOL containsSubView = NO;
+    [[self subviews] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([subview isEqualTo:(NSView *)obj]) {
+            containsSubView = YES;
+            *stop = YES;
+        }
+    }];
+    return containsSubView;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - NSView
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+    BOOL isKeyWindow = [[self window] isKeyWindow];
+
+    NSColor *startColor = (isKeyWindow ? kDefaultGradientStartColor : [kDefaultGradientStartColor highlightWithLevel:kDefaultColorHighlightLevel]);
+    NSColor *endColor = (isKeyWindow ? kDefaultGradientEndColor : [kDefaultGradientEndColor highlightWithLevel:kDefaultColorHighlightLevel]);
+    NSGradient *toolbarKeyWindowGradient = [[NSGradient alloc] initWithStartingColor: startColor endingColor: endColor];
+    NSBezierPath *buttonBarPath = [NSBezierPath bezierPathWithRect:dirtyRect];
+    [toolbarKeyWindowGradient drawInBezierPath:buttonBarPath angle:90];
+
+    CGFloat posY = (self.anchoredEdge == CNSplitViewToolbarEdgeTop ? 0 : NSHeight(dirtyRect) - 1);
+    NSRect borderLineRect = NSMakeRect(0, posY, NSWidth(dirtyRect), 1.0);
+    NSBezierPath *borderLinePath = [NSBezierPath bezierPathWithRect:borderLineRect];
+    NSColor *borderColor = (isKeyWindow ? kDefaultBorderColor : [kDefaultBorderColor highlightWithLevel:kDefaultColorHighlightLevel]);
+    [borderColor setFill];
+    [borderLinePath fill];
+
+    if (!NSEqualRects(self.bounds, _previousToolbarRect))
+        [self recalculateItemPositions];
+    _previousToolbarRect = self.bounds;
+
+    [self drawItemDelimiter];
+}
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -360,9 +376,22 @@ NSString *kDisableToolbarItemsNotification = @"DisableToolbarItemsNotification";
 
 - (NSRect)splitView:(NSSplitView *)splitView additionalEffectiveRectOfDividerAtIndex:(NSInteger)dividerIndex
 {
-    NSRect additionalEffectiveRect = [self rectForDividerDraggingHandle];
+    NSRect draggingHandleRect = NSZeroRect;
+
+    NSView *aSubView = [[splitView subviews] objectAtIndex:dividerIndex];
+    if (_enclosingSplitView.isDraggingHandleEnabled) {
+        CGFloat posY = NSMinY(aSubView.frame) - (self.anchoredEdge == CNSplitViewToolbarEdgeTop ? -1 : 1);
+        if ([_enclosingSplitView isVertical]) {
+            _draggingHandle.frame = NSMakeRect(NSMaxX(aSubView.frame) - kDefaultVerticalDraggingHandleWidth, posY, kDefaultVerticalDraggingHandleWidth, NSHeight(self.bounds));
+
+        } else {
+            _draggingHandle.frame = NSMakeRect(NSMaxX(aSubView.frame) - kDefaultHorizontalDraggingHandleWidth, posY, kDefaultHorizontalDraggingHandleWidth, NSHeight(self.bounds));
+        }
+        _draggingHandle.autoresizingMask = NSViewMinXMargin;
+        draggingHandleRect = [_draggingHandle convertRect:[_draggingHandle bounds] toView:splitView];
+    }
     
-    return additionalEffectiveRect;
+    return draggingHandleRect;
 }
 
 

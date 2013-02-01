@@ -32,6 +32,8 @@
 
 
 static NSColor *kDefaultDeviderColor;
+NSString *CNSplitViewInjectReferenceNotification = @"InjectReferenceNotification";
+NSString *CNSplitViewShowHideToolbarNotification = @"ShowHideToolbarNotification";
 
 
 @interface CNSplitView () {
@@ -40,7 +42,6 @@ static NSColor *kDefaultDeviderColor;
 @end
 
 @implementation CNSplitView
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Initialization
 
@@ -70,6 +71,9 @@ static NSColor *kDefaultDeviderColor;
 - (void)commonConfiguration
 {
     _dividerColor = kDefaultDeviderColor;
+    _draggingHandleEnabled = NO;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showHideToolbar:) name:CNSplitViewShowHideToolbarNotification object:nil];
 }
 
 
@@ -102,13 +106,24 @@ static NSColor *kDefaultDeviderColor;
     theToolbar.frame = NSMakeRect(0, (theEdge == CNSplitViewToolbarEdgeBottom ? 0 : NSMaxY(anchorViewAdjustedRect)),
                                   NSWidth(anchorViewAdjustedRect),
                                   theToolbar.height);
-
     /// we need a new container view for our toolbar + anchoredView
     [toolbarContainer addSubview:theToolbar];
     [toolbarContainer addSubview:anchoredView];
     [toolbarContainer setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+
+    /// via notification we inject a refernce to ourself into the toolbar
+    [[NSNotificationCenter defaultCenter] postNotificationName:CNSplitViewInjectReferenceNotification object:self];
 }
 
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Notifications
+
+- (void)showHideToolbar:(NSNotification *)notification
+{
+    CNLog(@"showHideToolbar: %li", [(NSNumber *)[notification object] integerValue]);
+}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,6 +132,19 @@ static NSColor *kDefaultDeviderColor;
 - (void)setDeviderColor:(NSColor *)theColor
 {
     _dividerColor = theColor;
+}
+
+- (void)setDraggingHandleEnabled:(BOOL)draggingHandleEnabled
+{
+    _draggingHandleEnabled = draggingHandleEnabled;
+    [[NSNotificationCenter defaultCenter] postNotificationName:CNSplitViewDraggingHandleEnableDisableNotification object:[NSNumber numberWithBool:_draggingHandleEnabled]];
+}
+
+- (void)setVertical:(BOOL)flag
+{
+    [super setVertical:flag];
+    [self adjustSubviews];
+    [[NSNotificationCenter defaultCenter] postNotificationName:CNSplitViewDraggingHandleEnableDisableNotification object:[NSNumber numberWithBool:self.draggingHandleEnabled]];
 }
 
 

@@ -34,12 +34,24 @@
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// SplitView related parameter
+typedef enum {
+    CNSplitViewDeviderOrientationVertical = 0,
+    CNSplitViewDeviderOrientationHorizontal
+} CNSplitViewDeviderOrientation;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Toolbar related parameter
 typedef enum {
     CNSplitViewToolbarEdgeUndefined = 0,
     CNSplitViewToolbarEdgeBottom,
     CNSplitViewToolbarEdgeTop
 } CNSplitViewToolbarEdge;
+
+typedef enum {
+    CNSplitViewToolbarVisibilityHidden = 0,
+    CNSplitViewToolbarVisibilityVisible
+} CNSplitViewToolbarVisibility;
 
 typedef enum {
     CNSplitViewToolbarContentAlignItemDirected = 0,
@@ -52,29 +64,32 @@ typedef enum {
 } CNSplitViewToolbarButtonAlign;
 
 /// Notifications
-extern NSString *kEnableToolbarItemsNotification;
-extern NSString *kDisableToolbarItemsNotification;
+extern NSString *CNSplitViewInjectReferenceNotification;
+extern NSString *CNSplitViewToolbarItemsEnableNotification;
+extern NSString *CNSplitViewToolbarItemsDisableNotification;
+extern NSString *CNSplitViewDraggingHandleEnableDisableNotification;
+extern NSString *CNSplitViewShowHideToolbarNotification;
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Toolbar button related parameter
 /// @see http://developer.apple.com/library/mac/#documentation/userexperience/conceptual/applehiguidelines/SystemProvidedIcons/SystemProvidedIcons.html
 typedef enum {
-    CNSplitViewToolbarButtonTypePlain = 0,
-    CNSplitViewToolbarButtonTypeAdd,
-    CNSplitViewToolbarButtonTypeRemove,
-    CNSplitViewToolbarButtonTypeQuickLook,
-    CNSplitViewToolbarButtonTypeAction,
-    CNSplitViewToolbarButtonTypeShare,
-    CNSplitViewToolbarButtonTypeIconView,
-    CNSplitViewToolbarButtonTypeListView,
-    CNSplitViewToolbarButtonTypeLockLocked,
-    CNSplitViewToolbarButtonTypeLockUnlocked,
-    CNSplitViewToolbarButtonTypeGoRight,
-    CNSplitViewToolbarButtonTypeGoLeft,
-    CNSplitViewToolbarButtonTypeStopProgress,
-    CNSplitViewToolbarButtonTypeRefresh,
-} CNSplitViewToolbarButtonType;
+    CNSplitViewToolbarButtonImagePlain = 0,
+    CNSplitViewToolbarButtonImageAdd,
+    CNSplitViewToolbarButtonImageRemove,
+    CNSplitViewToolbarButtonImageQuickLook,
+    CNSplitViewToolbarButtonImageAction,
+    CNSplitViewToolbarButtonImageShare,
+    CNSplitViewToolbarButtonImageIconView,
+    CNSplitViewToolbarButtonImageListView,
+    CNSplitViewToolbarButtonImageLockLocked,
+    CNSplitViewToolbarButtonImageLockUnlocked,
+    CNSplitViewToolbarButtonImageGoRight,
+    CNSplitViewToolbarButtonImageGoLeft,
+    CNSplitViewToolbarButtonImageStopProgress,
+    CNSplitViewToolbarButtonImageRefresh,
+} CNSplitViewToolbarButtonImage;
 
 static CGFloat kCNSplitViewToolbarButtonTextInset = 10.0;
 static CGFloat kCNSplitViewToolbarButtonImageInset = 10.0;

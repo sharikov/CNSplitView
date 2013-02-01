@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		FD4DEBBD16BBECF900CE120A /* CNSplitViewDraggingHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = FD4DEBBC16BBECF900CE120A /* CNSplitViewDraggingHandle.m */; };
 		FD7F866716A047A500D7BA7C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD7F866616A047A500D7BA7C /* QuartzCore.framework */; };
 		FD9178E516B2CA380026E4D9 /* CNSplitView-Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = FD9178E416B2CA380026E4D9 /* CNSplitView-Icon.icns */; };
 		FDD47B3516B471D000ADAB76 /* CNBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD47B3416B471D000ADAB76 /* CNBaseView.m */; };
@@ -38,6 +39,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FD4DEBBB16BBECF900CE120A /* CNSplitViewDraggingHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNSplitViewDraggingHandle.h; sourceTree = "<group>"; };
+		FD4DEBBC16BBECF900CE120A /* CNSplitViewDraggingHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CNSplitViewDraggingHandle.m; sourceTree = "<group>"; };
 		FD7F866616A047A500D7BA7C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		FD9178E416B2CA380026E4D9 /* CNSplitView-Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "CNSplitView-Icon.icns"; path = "../CNSplitView-Icon.icns"; sourceTree = "<group>"; };
 		FD9178E616B2D4EF0026E4D9 /* CNLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CNLog.h; sourceTree = "<group>"; };
@@ -170,6 +173,8 @@
 				FDDC63061695B4A900BE7A82 /* CNSplitViewDefinitions.h */,
 				FDDC63041695B4A900BE7A82 /* CNSplitView.h */,
 				FDDC63051695B4A900BE7A82 /* CNSplitView.m */,
+				FD4DEBBB16BBECF900CE120A /* CNSplitViewDraggingHandle.h */,
+				FD4DEBBC16BBECF900CE120A /* CNSplitViewDraggingHandle.m */,
 				FDDC63091695B4A900BE7A82 /* CNSplitViewToolbar.h */,
 				FDDC630A1695B4A900BE7A82 /* CNSplitViewToolbar.m */,
 				FDDC630B1695B4A900BE7A82 /* CNSplitViewToolbarButton.h */,
@@ -274,6 +279,7 @@
 				FDDC63121695B4A900BE7A82 /* CNSplitViewToolbarButton.m in Sources */,
 				FDDC63131695B4A900BE7A82 /* CNSplitViewToolbarButtonCell.m in Sources */,
 				FDD47B3516B471D000ADAB76 /* CNBaseView.m in Sources */,
+				FD4DEBBD16BBECF900CE120A /* CNSplitViewDraggingHandle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

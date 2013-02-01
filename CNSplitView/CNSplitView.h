@@ -71,4 +71,10 @@
  */
 - (void)setDeviderColor:(NSColor *)theColor;
 
+/**
+ ...
+ */
+@property (assign, nonatomic, getter = isDraggingHandleEnabled) BOOL draggingHandleEnabled;
+
+
 @end

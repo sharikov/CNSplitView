@@ -45,7 +45,7 @@ static CGFloat kDefaultImageFraction, kDefaultImageEnabledFraction, kDefaultImag
 {
     gradientStartColor = [NSColor colorWithCalibratedRed:0.95 green:0.95 blue:0.95 alpha:1.0];
     gradientEndColor = [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0];
-     btnHighlightGradient = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedRed:0.78 green:0.78 blue:0.78 alpha:1.0]
+    btnHighlightGradient = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedRed:0.78 green:0.78 blue:0.78 alpha:1.0]
                                                          endingColor: [NSColor colorWithCalibratedRed:0.90 green:0.90 blue:0.90 alpha:1.0]];
     kDefaultImageFraction = 0.0;
     kDefaultImageEnabledFraction = 1.0;

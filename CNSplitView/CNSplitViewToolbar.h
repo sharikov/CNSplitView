@@ -66,18 +66,7 @@
 /**
  ...
  */
-@property (assign, getter = isDraggingHandleEnabled) BOOL draggingHandleEnabled;
-
-/**
- ...
- */
 @property (assign, nonatomic) CNSplitViewToolbarContentAlign contentAlign;
-
-@property (strong, nonatomic) NSColor *backgroundGradientStartColor;
-
-@property (strong, nonatomic) NSColor *backgroundGradientEndColor;
-
-@property (strong, nonatomic) NSColor *borderColor;
 
 
 
