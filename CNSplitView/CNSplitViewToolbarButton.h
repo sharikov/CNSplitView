@@ -41,7 +41,7 @@
 /**
  ...
  */
-@property (nonatomic, assign) CNSplitViewToolbarButtonAlign toolbarAlign;
+@property (nonatomic, assign) CNSplitViewToolbarButtonAlign toolbarButtonAlign;
 
 /**
  ...

@@ -33,10 +33,8 @@
 #import "CNSplitViewToolbarButtonCell.h"
 
 
-static NSGradient *btnGradient, *btnHighlightGradient;
-static NSGradient *delimiterLineGradient;
-static NSColor *delimiterGradientEndColor, *delimiterGradientCenterColor;
-static NSBezierPath *delimiterLine;
+static NSGradient   *btnGradient,
+                    *btnHighlightGradient;
 
 
 @implementation CNSplitViewToolbarButtonCell
@@ -45,21 +43,11 @@ static NSBezierPath *delimiterLine;
 
 + (void)initialize
 {
-    btnGradient = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0]
-                                                endingColor: [NSColor colorWithCalibratedRed:0.95 green:0.95 blue:0.95 alpha:1.0]];
+    btnGradient = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedRed:0.95 green:0.95 blue:0.95 alpha:1.0]
+                                                endingColor: [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0]];
 
-    btnHighlightGradient = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedRed:0.68 green:0.68 blue:0.68 alpha:1.0]
+    btnHighlightGradient = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedRed:0.78 green:0.78 blue:0.78 alpha:1.0]
                                                          endingColor: [NSColor colorWithCalibratedRed:0.90 green:0.90 blue:0.90 alpha:1.0]];
-
-    /// button delimiter
-    delimiterGradientEndColor = [NSColor colorWithCalibratedRed: 0.78 green: 0.78 blue: 0.78 alpha: 0.1];
-    delimiterGradientCenterColor = [NSColor colorWithCalibratedRed: 0.53 green: 0.53 blue: 0.53 alpha: 1];
-    delimiterLineGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                             delimiterGradientEndColor, 0.0,
-                             [NSColor colorWithCalibratedRed: 0.78 green: 0.78 blue: 0.78 alpha: 0.5], 0.10,
-                             delimiterGradientCenterColor, 0.50,
-                             [NSColor colorWithCalibratedRed: 0.78 green: 0.78 blue: 0.78 alpha: 0.5], 0.90,
-                             delimiterGradientEndColor, 1.0, nil];
 }
 
 
@@ -70,18 +58,9 @@ static NSBezierPath *delimiterLine;
 {
     NSBezierPath *buttonPath = [NSBezierPath bezierPathWithRect:cellFrame];
     switch (self.isHighlighted) {
-        case YES: [btnHighlightGradient drawInRect:[buttonPath bounds] angle:-90]; break;
-        case NO: [btnGradient drawInRect:[buttonPath bounds] angle:-90]; break;
+        case YES: [btnHighlightGradient drawInBezierPath:buttonPath angle:90]; break;
+        case NO: [btnGradient drawInBezierPath:buttonPath angle:90]; break;
     }
-    [self drawDelimiterForRect:controlView.frame];
-}
-
-- (void)drawDelimiterForRect:(NSRect)rect
-{
-    CGFloat posX = (self.align == CNSplitViewToolbarButtonAlignLeft ? NSWidth(rect) - 1 : 0);
-    NSRect delimiterRect = NSMakeRect(posX, rect.origin.y+1, 1.0, NSHeight(rect) - 2);
-    delimiterLine = [NSBezierPath bezierPathWithRect:delimiterRect];
-    [delimiterLineGradient drawInBezierPath:delimiterLine angle:90];
 }
 
 - (void)drawImage:(NSImage*)image withFrame:(NSRect)frame inView:(NSView*)controlView
@@ -91,23 +70,41 @@ static NSBezierPath *delimiterLine;
 
     if (![self.attributedTitle.string isEqualToString:@""]) {
         switch (self.imagePosition) {
-            case NSImageRight:
-                imageRect = NSMakeRect(NSWidth(controlView.frame) - imageSize.width - kCNSplitViewToolbarButtonImageInset, (NSHeight(controlView.frame) - imageSize.height) / 2, imageSize.width, imageSize.height);
+            case NSImageRight: {
+                imageRect = NSMakeRect(NSWidth(controlView.frame) - imageSize.width - kCNSplitViewToolbarButtonImageInset,
+                                       (NSHeight(controlView.frame) - imageSize.height) / 2,
+                                       imageSize.width,
+                                       imageSize.height);
                 break;
+            }
             case NSImageLeft:
-            default:
-                imageRect = NSMakeRect(kCNSplitViewToolbarButtonImageInset, (NSHeight(controlView.frame) - imageSize.height) / 2, imageSize.width, imageSize.height);
+            default: {
+                imageRect = NSMakeRect(kCNSplitViewToolbarButtonImageInset,
+                                       (NSHeight(controlView.frame) - imageSize.height) / 2,
+                                       imageSize.width,
+                                       imageSize.height);
                 break;
+            }
         }
     }
     else {
-        imageRect = NSMakeRect((NSWidth(controlView.frame) - imageSize.width) / 2, (NSHeight(controlView.frame) - imageSize.height) / 2, imageSize.width, imageSize.height);
+        imageRect = NSMakeRect((NSWidth(controlView.frame) - imageSize.width) / 2,
+                               (NSHeight(controlView.frame) - imageSize.height) / 2,
+                               imageSize.width,
+                               imageSize.height);
     }
 
     if (self.isEnabled) {
         switch (self.isHighlighted) {
-            case YES:   [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:0.90 respectFlipped:YES hints:nil]; break;
-            case NO:    [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:0.875 respectFlipped:YES hints:nil]; break;
+            case YES: {
+                imageRect.origin = NSMakePoint(NSMinX(imageRect), NSMinY(imageRect)+1);
+                [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:0.90 respectFlipped:YES hints:nil];
+                break;
+            }
+            case NO: {
+                [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:0.875 respectFlipped:YES hints:nil];
+                break;
+            }
         }
     }
     else {
@@ -117,7 +114,9 @@ static NSBezierPath *delimiterLine;
 
 - (NSRect)drawTitle:(NSAttributedString*)title withFrame:(NSRect)frame inView:(NSView*)controlView
 {
-    [title drawWithRect:frame options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading];
+    if (self.isHighlighted)
+        frame.origin = NSMakePoint(NSMinX(frame), NSMinY(frame)+1);
+    [title drawWithRect:frame options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading];
     return frame;
 }
 

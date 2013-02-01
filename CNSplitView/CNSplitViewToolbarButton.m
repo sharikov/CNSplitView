@@ -47,8 +47,8 @@ static CGFloat kDefaultButtonWidth = 28.0;
 {
     self = [super init];
     if (self) {
-        _toolbarAlign = CNSplitViewToolbarButtonAlignLeft;
-        [(CNSplitViewToolbarButtonCell *)[self cell] setAlign:_toolbarAlign];
+        _toolbarButtonAlign = CNSplitViewToolbarButtonAlignLeft;
+        [(CNSplitViewToolbarButtonCell *)[self cell] setAlign:_toolbarButtonAlign];
         
         _toolbarButtonType = CNSplitViewToolbarButtonTypePlain;
         _toolbarButtonWidth = kDefaultButtonWidth;
@@ -58,10 +58,27 @@ static CGFloat kDefaultButtonWidth = 28.0;
         [self setButtonType:NSMomentaryPushInButton];
         [self setBezelStyle:NSSmallSquareBezelStyle];
         [self setTitle:@""];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableMe) name:kEnableToolbarItemsNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disableMe) name:kDisableToolbarItemsNotification object:nil];
     }
     return self;
 }
 
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Notifications
+
+- (void)enableMe
+{
+    [self setEnabled:YES];
+}
+
+- (void)disableMe
+{
+    [self setEnabled:NO];
+}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,10 +107,10 @@ static CGFloat kDefaultButtonWidth = 28.0;
     [self setAttributedTitle:attributedTitle];
 }
 
-- (void)setToolbarAlign:(CNSplitViewToolbarButtonAlign)align
+- (void)setToolbarButtonAlign:(CNSplitViewToolbarButtonAlign)align
 {
-    _toolbarAlign = align;
-    [(CNSplitViewToolbarButtonCell *)[self cell] setAlign:_toolbarAlign];
+    _toolbarButtonAlign = align;
+    [(CNSplitViewToolbarButtonCell *)[self cell] setAlign:_toolbarButtonAlign];
 }
 
 - (void)setImagePosition:(NSCellImagePosition)aPosition

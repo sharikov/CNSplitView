@@ -31,18 +31,23 @@
 #import "CNSplitView.h"
 
 
+static NSColor *kDefaultDeviderColor;
+
 
 @interface CNSplitView () {
     NSColor *_dividerColor;
 }
-
-- (NSRect)rectForDividerDraggingHandle;
 @end
 
 @implementation CNSplitView
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Initialization
+
++ (void)initialize
+{
+    kDefaultDeviderColor = [NSColor colorWithCalibratedRed:0.50 green:0.50 blue:0.50 alpha:1.0];
+}
 
 - (id)init
 {
@@ -64,7 +69,7 @@
 
 - (void)commonConfiguration
 {
-    _dividerColor = [NSColor colorWithCalibratedRed:0.50 green:0.50 blue:0.50 alpha:1.0];
+    _dividerColor = kDefaultDeviderColor;
 }
 
 
@@ -82,6 +87,7 @@
     NSView *anchoredView = [[self subviews] objectAtIndex:theSubviewIndex];
     NSView *toolbarContainer = [[NSView alloc] initWithFrame:anchoredView.bounds];
     [self replaceSubview:anchoredView with:toolbarContainer];
+    [self setDelegate:theToolbar];
 
     NSRect anchorViewRect = anchoredView.bounds;
     NSRect anchorViewAdjustedRect = NSMakeRect(NSMinX(anchorViewRect),
@@ -101,9 +107,6 @@
     [toolbarContainer addSubview:theToolbar];
     [toolbarContainer addSubview:anchoredView];
     [toolbarContainer setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-
-    CNLogForRect(anchorViewAdjustedRect);
-    CNLogForRect(theToolbar.frame);
 }
 
 
@@ -120,13 +123,6 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Private Helper
-
-- (NSRect)rectForDividerDraggingHandle
-{
-    NSRect rectForDividerHandle = NSZeroRect;
-
-    return rectForDividerHandle;
-}
 
 - (void)adjustRectForNeighbourView:(id)neighbourView withButtonBarHeight:(CGFloat)barHeight onAnchoredEdge:(CNSplitViewToolbarEdge)anchoredEdge
 {
@@ -145,22 +141,6 @@
 - (NSColor *)dividerColor
 {
     return _dividerColor;
-}
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark - NSSplitView Delegate
-
-- (NSRect)splitView:(NSSplitView *)splitView additionalEffectiveRectOfDividerAtIndex:(NSInteger)dividerIndex
-{
-    NSRect additionalEffectiveRect = NSZeroRect;
-    if ([self.delegate respondsToSelector:_cmd])
-        additionalEffectiveRect = [self.delegate splitView:splitView additionalEffectiveRectOfDividerAtIndex:dividerIndex];
-    else
-        additionalEffectiveRect = [self rectForDividerDraggingHandle];
-
-    return additionalEffectiveRect;
 }
 
 

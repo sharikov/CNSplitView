@@ -42,17 +42,42 @@
  */
 
 
-typedef enum {
-    CNAnchoredButtonBarSubviewFirst = 0,
-    CNAnchoredButtonBarSubviewSecond
-} CNAnchoredButtonBarSubview;
 
-@interface CNSplitViewToolbar : NSView
+@interface CNSplitViewToolbar : NSView <NSSplitViewDelegate>
 
 /** @name Properties */
 
-@property (nonatomic, assign) CNSplitViewToolbarEdge anchoredEdge;
+
+/**
+ ...
+ */
 @property (nonatomic, assign) CGFloat height;
+
+/**
+ ...
+ */
+@property (nonatomic, assign) CNSplitViewToolbarEdge anchoredEdge;
+
+/**
+ ...
+ */
+@property (assign, nonatomic, getter = isItemDelimiterEnabled) BOOL itemDelimiterEnabled;
+
+/**
+ ...
+ */
+@property (assign, getter = isDraggingHandleEnabled) BOOL draggingHandleEnabled;
+
+/**
+ ...
+ */
+@property (assign, nonatomic) CNSplitViewToolbarContentAlign contentAlign;
+
+@property (strong, nonatomic) NSColor *backgroundGradientStartColor;
+
+@property (strong, nonatomic) NSColor *backgroundGradientEndColor;
+
+@property (strong, nonatomic) NSColor *borderColor;
 
 
 
@@ -71,7 +96,7 @@ typedef enum {
  
  @param button    A present `CNAnchoredButton` object that should be removed.
  */
-- (void)removeButton:(CNSplitViewToolbarButton*)button;
+- (void)removeButton:(CNSplitViewToolbarButton*)aButton;
 
 /**
  Removes all placed buttons.

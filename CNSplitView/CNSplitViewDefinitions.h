@@ -32,22 +32,33 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-variable"
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Toolbar related parameter
 typedef enum {
     CNSplitViewToolbarEdgeUndefined = 0,
     CNSplitViewToolbarEdgeBottom,
     CNSplitViewToolbarEdgeTop
 } CNSplitViewToolbarEdge;
 
+typedef enum {
+    CNSplitViewToolbarContentAlignItemDirected = 0,
+    CNSplitViewToolbarContentAlignCentered
+} CNSplitViewToolbarContentAlign;
 
 typedef enum {
     CNSplitViewToolbarButtonAlignLeft = 0,
     CNSplitViewToolbarButtonAlignRight
 } CNSplitViewToolbarButtonAlign;
 
+/// Notifications
+extern NSString *kEnableToolbarItemsNotification;
+extern NSString *kDisableToolbarItemsNotification;
 
-/**
- @see http://developer.apple.com/library/mac/#documentation/userexperience/conceptual/applehiguidelines/SystemProvidedIcons/SystemProvidedIcons.html
- */
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Toolbar button related parameter
+/// @see http://developer.apple.com/library/mac/#documentation/userexperience/conceptual/applehiguidelines/SystemProvidedIcons/SystemProvidedIcons.html
 typedef enum {
     CNSplitViewToolbarButtonTypePlain = 0,
     CNSplitViewToolbarButtonTypeAdd,
@@ -65,14 +76,8 @@ typedef enum {
     CNSplitViewToolbarButtonTypeRefresh,
 } CNSplitViewToolbarButtonType;
 
-static CGFloat kCNSplitViewToolbarButtonTextInset = 10.0f;
-static CGFloat kCNSplitViewToolbarButtonImageInset = 10.0f;
-static CGFloat kCNSplitViewToolbarButtonImageTextDistance = 10.0f;
-
-
-typedef enum {
-    CNSplitViewToolbarDraggingHandlePositionLeft    = 0 << 0,
-    CNSplitViewToolbarDraggingHandlePositionRight   = 1 << 0
-} CNSplitViewToolbarDraggingHandlePosition;
+static CGFloat kCNSplitViewToolbarButtonTextInset = 10.0;
+static CGFloat kCNSplitViewToolbarButtonImageInset = 10.0;
+static CGFloat kCNSplitViewToolbarButtonImageToTextDistance = 10.0;
 
 #pragma clang diagnostic pop
