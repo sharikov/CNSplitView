@@ -35,7 +35,7 @@
 
 static NSGradient *btnGradient, *btnHighlightGradient;
 static NSColor *gradientStartColor, *gradientEndColor;
-static CGFloat kDefaultImageFraction = 0;
+static CGFloat kDefaultImageFraction, kDefaultImageEnabledFraction, kDefaultImageDisabledFraction;
 
 @implementation CNSplitViewToolbarButtonCell
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,33 +47,40 @@ static CGFloat kDefaultImageFraction = 0;
     gradientEndColor = [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0];
      btnHighlightGradient = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedRed:0.78 green:0.78 blue:0.78 alpha:1.0]
                                                          endingColor: [NSColor colorWithCalibratedRed:0.90 green:0.90 blue:0.90 alpha:1.0]];
+    kDefaultImageFraction = 0.0;
+    kDefaultImageEnabledFraction = 1.0;
+    kDefaultImageDisabledFraction = 0.42;
 }
 
 - (id)init
 {
     self = [super init];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidBecomeKey) name:NSWindowDidBecomeKeyNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidResignKey) name:NSWindowDidResignKeyNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parentWindowDidBecomeKey) name:NSWindowDidBecomeKeyNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parentWindowDidResignKey) name:NSWindowDidResignKeyNotification object:nil];
     }
     return self;
 }
 
 
 
-- (void)windowDidBecomeKey
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Notifications
+
+- (void)parentWindowDidBecomeKey
 {
     btnGradient = [[NSGradient alloc] initWithStartingColor: gradientStartColor
                                                 endingColor: gradientEndColor];
-    kDefaultImageFraction = 0.875;
+    kDefaultImageFraction = kDefaultImageEnabledFraction;
 }
 
-- (void)windowDidResignKey
+- (void)parentWindowDidResignKey
 {
     btnGradient = [[NSGradient alloc] initWithStartingColor: [gradientStartColor highlightWithLevel:kDefaultColorHighlightLevel]
                                                 endingColor: [gradientEndColor highlightWithLevel:kDefaultColorHighlightLevel]];
-    kDefaultImageFraction = 0.42;
+    kDefaultImageFraction = kDefaultImageDisabledFraction;
 }
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -120,20 +127,13 @@ static CGFloat kDefaultImageFraction = 0;
     }
 
     if (self.isEnabled) {
-        switch (self.isHighlighted) {
-            case YES: {
-                imageRect.origin = NSMakePoint(NSMinX(imageRect), NSMinY(imageRect)+1);
-                [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:0.90 respectFlipped:YES hints:nil];
-                break;
-            }
-            case NO: {
-                [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:kDefaultImageFraction respectFlipped:YES hints:nil];
-                break;
-            }
-        }
+        if (self.isHighlighted)
+            imageRect.origin = NSMakePoint(NSMinX(imageRect), NSMinY(imageRect)+1);
+        [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:kDefaultImageFraction respectFlipped:YES hints:nil];
     }
     else {
-        [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:(self.imageDimsWhenDisabled ? 0.42 : 1.00) respectFlipped:YES hints:nil];
+        CGFloat fraction = (self.imageDimsWhenDisabled ? kDefaultImageDisabledFraction : kDefaultImageEnabledFraction);
+        [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:fraction respectFlipped:YES hints:nil];
     }
 }
 
