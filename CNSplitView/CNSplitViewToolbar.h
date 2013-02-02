@@ -43,7 +43,7 @@
 
 
 
-@interface CNSplitViewToolbar : NSView <NSSplitViewDelegate>
+@interface CNSplitViewToolbar : NSView <CNSplitViewDelegate>
 
 /** @name Properties */
 

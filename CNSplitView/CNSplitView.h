@@ -30,6 +30,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "CNSplitViewDefinitions.h"
+#import "CNSplitViewDelegate.h"
 #import "CNSplitViewToolbar.h"
 #import "CNSplitViewToolbarButton.h"
 
@@ -41,13 +42,12 @@
 
 
 
-
 @interface CNSplitView : NSSplitView
 
 #pragma mark - Initializing a CNSplitView Object
 /** @name Initializing a CNSplitView Object */
 
-
+@property (strong) id<CNSplitViewDelegate> delegate;
 
 #pragma mark - Configuring & Handling Toolbars
 /** @name Configuring & Handling Toolbars */

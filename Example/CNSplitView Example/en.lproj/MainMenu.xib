@@ -1341,7 +1341,7 @@
 															<string key="NSFrameSize">{400, 436}</string>
 															<reference key="NSSuperview" ref="586252735"/>
 															<reference key="NSWindow"/>
-															<reference key="NSNextKeyView" ref="469520983"/>
+															<reference key="NSNextKeyView" ref="592632489"/>
 															<string key="NSReuseIdentifierKey">_NS:13</string>
 															<bool key="NSEnabled">YES</bool>
 															<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -1482,6 +1482,7 @@
 													<string key="NSFrame">{{1, 119}, {238, 15}}</string>
 													<reference key="NSSuperview" ref="398456365"/>
 													<reference key="NSWindow"/>
+													<reference key="NSNextKeyView" ref="1043426697"/>
 													<string key="NSReuseIdentifierKey">_NS:60</string>
 													<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 													<int key="NSsFlags">1</int>
@@ -1508,6 +1509,7 @@
 									<string key="NSFrameSize">{400, 436}</string>
 									<reference key="NSSuperview" ref="10427536"/>
 									<reference key="NSWindow"/>
+									<reference key="NSNextKeyView" ref="398456365"/>
 									<string key="NSReuseIdentifierKey">_NS:11</string>
 									<string key="NSClassName">CNBaseView</string>
 								</object>
@@ -1656,7 +1658,7 @@
 							<string key="NSFrame">{{656, 37}, {117, 11}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="268483867"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:1535</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="980419961">
@@ -2629,14 +2631,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="10427536"/>
-						<reference key="destination" ref="976324537"/>
-					</object>
-					<int key="connectionID">558</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">textField</string>
 						<object class="NSTableCellView" key="source" id="592632489">
 							<nil key="NSNextResponder"/>
@@ -2647,6 +2641,7 @@
 									<int key="NSvFlags">266</int>
 									<string key="NSFrame">{{0, 1}, {397, 14}}</string>
 									<reference key="NSSuperview" ref="592632489"/>
+									<reference key="NSNextKeyView" ref="793244346"/>
 									<string key="NSReuseIdentifierKey">_NS:101</string>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSTextFieldCell" key="NSCell" id="277848633">
@@ -2721,6 +2716,7 @@
 									<int key="NSvFlags">266</int>
 									<string key="NSFrame">{{25, 0}, {372, 17}}</string>
 									<reference key="NSSuperview" ref="793244346"/>
+									<reference key="NSNextKeyView" ref="469520983"/>
 									<string key="NSReuseIdentifierKey">_NS:80</string>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSTextFieldCell" key="NSCell" id="168675882">
@@ -4219,7 +4215,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">689</int>
+			<int key="maxID">696</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4231,6 +4227,7 @@
 						<string key="draggingHandleEnabledAction:">id</string>
 						<string key="enableDisableToolbarItemsAction:">id</string>
 						<string key="enableDisableToolbarItemsDelimiterAction:">id</string>
+						<string key="selectToolbarEdgeAction:">id</string>
 						<string key="showHideToolbarAction:">id</string>
 						<string key="splitViewOrientationAction:">id</string>
 						<string key="useAnimationsAction:">id</string>
@@ -4250,6 +4247,10 @@
 						</object>
 						<object class="IBActionInfo" key="enableDisableToolbarItemsDelimiterAction:">
 							<string key="name">enableDisableToolbarItemsDelimiterAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="selectToolbarEdgeAction:">
+							<string key="name">selectToolbarEdgeAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="showHideToolbarAction:">
@@ -4272,6 +4273,7 @@
 						<string key="enableDisableToolbarItemsDelimiterCheckbox">NSButton</string>
 						<string key="firstView">CNBaseView</string>
 						<string key="secondView">CNBaseView</string>
+						<string key="selectToolbarEdgeRadiobox">NSMatrix</string>
 						<string key="showHideToolbarCheckbox">NSButton</string>
 						<string key="splitView">CNSplitView</string>
 						<string key="splitViewOrientationPopUp">NSPopUpButton</string>
@@ -4302,6 +4304,10 @@
 						<object class="IBToOneOutletInfo" key="secondView">
 							<string key="name">secondView</string>
 							<string key="candidateClassName">CNBaseView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="selectToolbarEdgeRadiobox">
+							<string key="name">selectToolbarEdgeRadiobox</string>
+							<string key="candidateClassName">NSMatrix</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="showHideToolbarCheckbox">
 							<string key="name">showHideToolbarCheckbox</string>

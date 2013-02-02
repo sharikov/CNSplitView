@@ -42,6 +42,7 @@ NSString *CNSplitViewInjectReferenceNotification = @"InjectReferenceNotification
     NSView *_anchoredView;
     CNSplitViewToolbar *_toolbar;
     BOOL _toolbarIsVisible;
+    BOOL _animationIsRunning;
 }
 @end
 
@@ -52,7 +53,7 @@ NSString *CNSplitViewInjectReferenceNotification = @"InjectReferenceNotification
 + (void)initialize
 {
     kDefaultDeviderColor = [NSColor colorWithCalibratedRed:0.50 green:0.50 blue:0.50 alpha:1.0];
-    kDefaultAnimationDuration = 0.21;
+    kDefaultAnimationDuration = 0.10;
 }
 
 - (id)init
@@ -81,6 +82,7 @@ NSString *CNSplitViewInjectReferenceNotification = @"InjectReferenceNotification
     _anchoredView = nil;
     _toolbar = nil;
     _toolbarIsVisible = NO;
+    _animationIsRunning = NO;
 }
 
 
@@ -106,10 +108,8 @@ NSString *CNSplitViewInjectReferenceNotification = @"InjectReferenceNotification
 
     _toolbar = theToolbar;
     _toolbar.anchoredEdge = theEdge;
-    [_toolbar setFrame:NSMakeRect(NSMinX(_anchoredView.frame),
-                                  NSMinY(_anchoredView.frame) - _toolbar.height,
-                                  NSWidth(_anchoredView.frame),
-                                  _toolbar.height)];
+    CGFloat posY = (_toolbar.anchoredEdge == CNSplitViewToolbarEdgeBottom ? NSMinY(_anchoredView.frame) - _toolbar.height : NSHeight(_anchoredView.frame));
+    [_toolbar setFrame:NSMakeRect(NSMinX(_anchoredView.frame), posY, NSWidth(_anchoredView.frame), _toolbar.height)];
     [self setDelegate:_toolbar];
 
     [_toolbarContainer addSubview:_toolbar];
@@ -118,45 +118,61 @@ NSString *CNSplitViewInjectReferenceNotification = @"InjectReferenceNotification
 
 - (void)showToolbarAnimated:(BOOL)animated
 {
-    [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
-        context.duration = (animated ? kDefaultAnimationDuration : 0);
-        context.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    if (_animationIsRunning)
+        return;
 
+    __block CGFloat posY;
+    _animationIsRunning = YES;
+
+    [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
+        context.duration = (animated ? kDefaultAnimationDuration : 0.01);
+        context.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+
+        posY = (_toolbar.anchoredEdge == CNSplitViewToolbarEdgeBottom ? NSMinY(_anchoredView.frame) + _toolbar.height : 0);
         NSRect adjustedAnchoredViewRect = NSMakeRect(NSMinX(_anchoredView.frame),
-                                                     NSMinY(_anchoredView.frame) + _toolbar.height,
+                                                     posY,
                                                      NSWidth(_anchoredView.frame),
                                                      NSHeight(_anchoredView.frame) - _toolbar.height);
         [[_anchoredView animator] setFrame:adjustedAnchoredViewRect];
 
         /// place the toolbar
-        NSPoint adjustedToolbarOrigin = NSMakePoint(NSMinX(_toolbar.frame),
-                                                    (_toolbar.anchoredEdge == CNSplitViewToolbarEdgeBottom ? 0 : NSMinY(_anchoredView.frame)));
+        posY = (_toolbar.anchoredEdge == CNSplitViewToolbarEdgeBottom ? 0 : NSHeight(_anchoredView.frame) - _toolbar.height);
+        NSPoint adjustedToolbarOrigin = NSMakePoint(NSMinX(_toolbar.frame), posY);
         [[_toolbar animator] setFrameOrigin:adjustedToolbarOrigin];
 
     } completionHandler:^{
         _toolbarIsVisible = YES;
+        _animationIsRunning = NO;
     }];
 }
 
 - (void)hideToolbarAnimated:(BOOL)animated
 {
-    [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
-        context.duration = (animated ? kDefaultAnimationDuration : 0);
-        context.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    if (_animationIsRunning)
+        return;
 
+    __block CGFloat posY;
+    _animationIsRunning = YES;
+
+    [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
+        context.duration = (animated ? kDefaultAnimationDuration : 0.01);
+        context.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+
+        posY = (_toolbar.anchoredEdge == CNSplitViewToolbarEdgeBottom ? NSMinY(_anchoredView.frame) - _toolbar.height : 0);
         NSRect adjustedAnchoredViewRect = NSMakeRect(NSMinX(_anchoredView.frame),
-                                                     NSMinY(_anchoredView.frame) - _toolbar.height,
+                                                     posY,
                                                      NSWidth(_anchoredView.frame),
                                                      NSHeight(_anchoredView.frame) + _toolbar.height);
         [[_anchoredView animator] setFrame:adjustedAnchoredViewRect];
 
         /// place the toolbar
-        NSPoint adjustedToolbarOrigin = NSMakePoint(NSMinX(_toolbar.frame),
-                                                    (_toolbar.anchoredEdge == CNSplitViewToolbarEdgeBottom ? -_toolbar.height : NSMinY(_anchoredView.frame)));
+        posY = (_toolbar.anchoredEdge == CNSplitViewToolbarEdgeBottom ? -_toolbar.height : NSHeight(_anchoredView.frame) + _toolbar.height);
+        NSPoint adjustedToolbarOrigin = NSMakePoint(NSMinX(_toolbar.frame), posY);
         [[_toolbar animator] setFrameOrigin:adjustedToolbarOrigin];
 
     } completionHandler:^{
         _toolbarIsVisible = NO;
+        _animationIsRunning = NO;
     }];
 }
 

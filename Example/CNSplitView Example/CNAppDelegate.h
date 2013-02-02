@@ -10,21 +10,21 @@
 #import "CNBaseView.h"
 #import "CNSplitView.h"
 
-@interface CNAppDelegate : NSObject <NSApplicationDelegate, NSSplitViewDelegate>
+@interface CNAppDelegate : NSObject <NSApplicationDelegate, CNSplitViewDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
-@property (strong) IBOutlet CNSplitView *splitView;
+@property (assign) IBOutlet CNSplitView *splitView;
 
-@property (strong, nonatomic) IBOutlet CNBaseView *firstView;
-@property (strong, nonatomic) IBOutlet CNBaseView *secondView;
+@property (assign, nonatomic) IBOutlet CNBaseView *firstView;
+@property (assign, nonatomic) IBOutlet CNBaseView *secondView;
 
-@property (strong) IBOutlet NSButton *showHideToolbarCheckbox;
-@property (strong) IBOutlet NSButton *useAnimationsCheckbox;
-@property (strong) IBOutlet NSButton *enableDisableToolbarItemsCheckbox;
-@property (strong) IBOutlet NSButton *enableDisableToolbarItemsDelimiterCheckbox;
-@property (strong) IBOutlet NSButton *centerToolbarItemsCheckbox;
-@property (strong) IBOutlet NSButton *draggingHandleEnabledCheckbox;
-@property (strong) IBOutlet NSPopUpButton *splitViewOrientationPopUp;
+@property (assign) IBOutlet NSButton *showHideToolbarCheckbox;
+@property (assign) IBOutlet NSButton *useAnimationsCheckbox;
+@property (assign) IBOutlet NSButton *enableDisableToolbarItemsCheckbox;
+@property (assign) IBOutlet NSButton *enableDisableToolbarItemsDelimiterCheckbox;
+@property (assign) IBOutlet NSButton *centerToolbarItemsCheckbox;
+@property (assign) IBOutlet NSButton *draggingHandleEnabledCheckbox;
+@property (assign) IBOutlet NSPopUpButton *splitViewOrientationPopUp;
 
 
 - (IBAction)showHideToolbarAction:(id)sender;
