@@ -1,8 +1,6 @@
 ##Overview
 `CNSplitView` is an feature enhanced derivative of `NSSplitView`. It has support for sticky top or bottom toolbars for each of its subviews. You can configure `CNSplitView` to add toolbars with buttons and/or drag handles, you can define the orientation of each button inside the toolbar or center it all.
 
-`CNSplitView` is part of the [CocoaPods project](http://cocoapods.org) ([Specs on Github](https://github.com/CocoaPods/Specs)).
-
 
 Here are two shots of the included example application:
 
