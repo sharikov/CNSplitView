@@ -49,13 +49,13 @@
     button4.toolbarButtonImage = CNSplitViewToolbarButtonImageRefresh;
     button4.title = @"Refresh";
 
-    [toolbar addButton:button1];
-    [toolbar addButton:button2];
-    [toolbar addButton:button3];
-    [toolbar addButton:button4];
+    [toolbar addItem:button1];
+    [toolbar addItem:button2];
+    [toolbar addItem:button3];
+    [toolbar addItem:button4];
 
     self.splitView.delegate = self;
-    [self.splitView addToolbar:toolbar besidesSubviewAtIndex:0 onEdge:CNSplitViewToolbarEdgeBottom];
+    [self.splitView addToolbar:toolbar besidesSubviewAtIndex:0 onEdge:CNSplitViewToolbarEdgeTop];
 }
 
 - (IBAction)showHideToolbarAction:(id)sender

@@ -78,19 +78,19 @@
 /**
  ...
  */
-- (void)addButton:(CNSplitViewToolbarButton*)aButton;
+- (void)addItem:(CNSplitViewToolbarButton*)theItem;
 
 /**
  Removes a given `CNAnchoredButton`.
  
  @param button    A present `CNAnchoredButton` object that should be removed.
  */
-- (void)removeButton:(CNSplitViewToolbarButton*)aButton;
+- (void)removeItem:(CNSplitViewToolbarButton*)theItem;
 
 /**
  Removes all placed buttons.
  */
-- (void)removeAllButtons;
+- (void)removeAllItems;
 
 /**
  Disable all receiver buttons.

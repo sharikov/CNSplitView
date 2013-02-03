@@ -1340,7 +1340,6 @@
 															<array class="NSMutableArray" key="NSSubviews"/>
 															<string key="NSFrameSize">{400, 436}</string>
 															<reference key="NSSuperview" ref="586252735"/>
-															<reference key="NSWindow"/>
 															<reference key="NSNextKeyView" ref="592632489"/>
 															<string key="NSReuseIdentifierKey">_NS:13</string>
 															<bool key="NSEnabled">YES</bool>
@@ -1456,7 +1455,6 @@
 													</array>
 													<string key="NSFrameSize">{400, 436}</string>
 													<reference key="NSSuperview" ref="398456365"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="846580491"/>
 													<string key="NSReuseIdentifierKey">_NS:11</string>
 													<reference key="NSDocView" ref="846580491"/>
@@ -1468,7 +1466,6 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{224, 17}, {15, 102}}</string>
 													<reference key="NSSuperview" ref="398456365"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="521579559"/>
 													<string key="NSReuseIdentifierKey">_NS:15</string>
 													<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -1481,7 +1478,6 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{1, 119}, {238, 15}}</string>
 													<reference key="NSSuperview" ref="398456365"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="1043426697"/>
 													<string key="NSReuseIdentifierKey">_NS:60</string>
 													<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -1493,7 +1489,6 @@
 											</array>
 											<string key="NSFrameSize">{400, 436}</string>
 											<reference key="NSSuperview" ref="132855392"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="586252735"/>
 											<string key="NSReuseIdentifierKey">_NS:9</string>
 											<int key="NSsFlags">133680</int>
@@ -1508,7 +1503,6 @@
 									</array>
 									<string key="NSFrameSize">{400, 436}</string>
 									<reference key="NSSuperview" ref="10427536"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="398456365"/>
 									<string key="NSReuseIdentifierKey">_NS:11</string>
 									<string key="NSClassName">CNBaseView</string>
@@ -1519,7 +1513,6 @@
 									<array class="NSMutableArray" key="NSSubviews"/>
 									<string key="NSFrame">{{401, 0}, {389, 436}}</string>
 									<reference key="NSSuperview" ref="10427536"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="54863985"/>
 									<string key="NSReuseIdentifierKey">_NS:13</string>
 									<string key="NSClassName">CNBaseView</string>
@@ -1527,7 +1520,6 @@
 							</array>
 							<string key="NSFrame">{{0, 64}, {790, 436}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="132855392"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSIsVertical">YES</bool>
@@ -1539,7 +1531,6 @@
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{17, 41}, {95, 18}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="79699638"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -1571,7 +1562,6 @@
 							<int key="NSvFlags">289</int>
 							<string key="NSFrame">{{324, 41}, {141, 18}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="753474689"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -1598,7 +1588,6 @@
 							<int key="NSvFlags">289</int>
 							<string key="NSFrame">{{656, 12}, {117, 22}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSPopUpButtonCell" key="NSCell" id="637396559">
@@ -1657,8 +1646,6 @@
 							<int key="NSvFlags">289</int>
 							<string key="NSFrame">{{656, 37}, {117, 11}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:1535</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="980419961">
@@ -1687,7 +1674,6 @@
 							<int key="NSvFlags">289</int>
 							<string key="NSFrame">{{494, 41}, {139, 18}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1059069045"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -1714,7 +1700,6 @@
 							<int key="NSvFlags">289</int>
 							<string key="NSFrame">{{494, 23}, {141, 18}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="405164189"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -1741,7 +1726,6 @@
 							<int key="NSvFlags">289</int>
 							<string key="NSFrame">{{494, 5}, {135, 18}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="840745611"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -1768,7 +1752,6 @@
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{33, 23}, {104, 18}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="10300996"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -1793,7 +1776,6 @@
 					</array>
 					<string key="NSFrameSize">{790, 500}</string>
 					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="10427536"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
@@ -4215,144 +4197,9 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">696</int>
+			<int key="maxID">698</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">CNAppDelegate</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="centerToolbarItemsAction:">id</string>
-						<string key="draggingHandleEnabledAction:">id</string>
-						<string key="enableDisableToolbarItemsAction:">id</string>
-						<string key="enableDisableToolbarItemsDelimiterAction:">id</string>
-						<string key="selectToolbarEdgeAction:">id</string>
-						<string key="showHideToolbarAction:">id</string>
-						<string key="splitViewOrientationAction:">id</string>
-						<string key="useAnimationsAction:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="centerToolbarItemsAction:">
-							<string key="name">centerToolbarItemsAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="draggingHandleEnabledAction:">
-							<string key="name">draggingHandleEnabledAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="enableDisableToolbarItemsAction:">
-							<string key="name">enableDisableToolbarItemsAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="enableDisableToolbarItemsDelimiterAction:">
-							<string key="name">enableDisableToolbarItemsDelimiterAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="selectToolbarEdgeAction:">
-							<string key="name">selectToolbarEdgeAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showHideToolbarAction:">
-							<string key="name">showHideToolbarAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="splitViewOrientationAction:">
-							<string key="name">splitViewOrientationAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="useAnimationsAction:">
-							<string key="name">useAnimationsAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="centerToolbarItemsCheckbox">NSButton</string>
-						<string key="draggingHandleEnabledCheckbox">NSButton</string>
-						<string key="enableDisableToolbarItemsCheckbox">NSButton</string>
-						<string key="enableDisableToolbarItemsDelimiterCheckbox">NSButton</string>
-						<string key="firstView">CNBaseView</string>
-						<string key="secondView">CNBaseView</string>
-						<string key="selectToolbarEdgeRadiobox">NSMatrix</string>
-						<string key="showHideToolbarCheckbox">NSButton</string>
-						<string key="splitView">CNSplitView</string>
-						<string key="splitViewOrientationPopUp">NSPopUpButton</string>
-						<string key="useAnimationsCheckbox">NSButton</string>
-						<string key="window">NSWindow</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="centerToolbarItemsCheckbox">
-							<string key="name">centerToolbarItemsCheckbox</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="draggingHandleEnabledCheckbox">
-							<string key="name">draggingHandleEnabledCheckbox</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="enableDisableToolbarItemsCheckbox">
-							<string key="name">enableDisableToolbarItemsCheckbox</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="enableDisableToolbarItemsDelimiterCheckbox">
-							<string key="name">enableDisableToolbarItemsDelimiterCheckbox</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="firstView">
-							<string key="name">firstView</string>
-							<string key="candidateClassName">CNBaseView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="secondView">
-							<string key="name">secondView</string>
-							<string key="candidateClassName">CNBaseView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="selectToolbarEdgeRadiobox">
-							<string key="name">selectToolbarEdgeRadiobox</string>
-							<string key="candidateClassName">NSMatrix</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="showHideToolbarCheckbox">
-							<string key="name">showHideToolbarCheckbox</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="splitView">
-							<string key="name">splitView</string>
-							<string key="candidateClassName">CNSplitView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="splitViewOrientationPopUp">
-							<string key="name">splitViewOrientationPopUp</string>
-							<string key="candidateClassName">NSPopUpButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="useAnimationsCheckbox">
-							<string key="name">useAnimationsCheckbox</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="window">
-							<string key="name">window</string>
-							<string key="candidateClassName">NSWindow</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/CNAppDelegate.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">CNBaseView</string>
-					<string key="superclassName">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/CNBaseView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">CNSplitView</string>
-					<string key="superclassName">NSSplitView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/CNSplitView.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

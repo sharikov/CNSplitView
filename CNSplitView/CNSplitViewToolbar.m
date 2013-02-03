@@ -112,7 +112,7 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - API
 
-- (void)addButton:(CNSplitViewToolbarButton *)aButton
+- (void)addItem:(CNSplitViewToolbarButton *)aButton
 {
     if (!_buttons)
         _buttons = [[NSMutableArray alloc] init];
@@ -150,13 +150,13 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
     [self addSubview:aButton];
 }
 
-- (void)removeButton:(CNSplitViewToolbarButton *)aButton
+- (void)removeItem:(CNSplitViewToolbarButton *)aButton
 {
     [_buttons removeObject:aButton];
     [aButton removeFromSuperview];
 }
 
-- (void)removeAllButtons
+- (void)removeAllItems
 {
     self.subviews = [NSArray array];
     [_buttons removeAllObjects];
@@ -230,12 +230,14 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
 
     BOOL draggingHandleEnabled = [(NSNumber *)[notification object] boolValue];
     if (draggingHandleEnabled) {
-        _draggingHandle = [[CNSplitViewDraggingHandle alloc] init];
-        _draggingHandle.vertical = _enclosingSplitView.isVertical;
-        [self addSubview:_draggingHandle];
+        if ([_enclosingSplitView isVertical] || (![_enclosingSplitView isVertical] && self.anchoredEdge == CNSplitViewToolbarEdgeBottom)) {
+            _draggingHandle = [[CNSplitViewDraggingHandle alloc] init];
+            _draggingHandle.vertical = _enclosingSplitView.isVertical;
+            [self addSubview:_draggingHandle];
+            [self recalculateItemPositions];
+            [self setNeedsDisplay:YES];
+        }
     }
-    [self recalculateItemPositions];
-    [self setNeedsDisplay:YES];
 }
 
 
@@ -267,9 +269,9 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
 
 - (void)recalculateItemPositions
 {
-    __block CGFloat leftOffset = 0;
     CGFloat draggingHandleWidth = ([_enclosingSplitView isVertical] ? kDefaultVerticalDraggingHandleWidth : kDefaultHorizontalDraggingHandleWidth);
-    __block CGFloat rightOffset = (_enclosingSplitView.isDraggingHandleEnabled ? NSWidth(self.frame) - draggingHandleWidth : NSWidth(self.frame));
+    __block CGFloat leftOffset = 0;
+    __block CGFloat rightOffset = ([self isDraggingHandleEnabled] ? NSWidth(self.frame) - draggingHandleWidth : NSWidth(self.frame));
 
     [_delimiterOffsets removeAllObjects];
 
@@ -341,6 +343,11 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
     return containsSubView;
 }
 
+- (BOOL)isDraggingHandleEnabled
+{
+    return (_enclosingSplitView.isDraggingHandleEnabled && ([_enclosingSplitView isVertical] || (![_enclosingSplitView isVertical] && self.anchoredEdge == CNSplitViewToolbarEdgeBottom)));
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - NSView
@@ -355,8 +362,8 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
     NSBezierPath *buttonBarPath = [NSBezierPath bezierPathWithRect:dirtyRect];
     [toolbarKeyWindowGradient drawInBezierPath:buttonBarPath angle:90];
 
-    CGFloat posY = (self.anchoredEdge == CNSplitViewToolbarEdgeTop ? 0 : NSHeight(dirtyRect) - 1);
-    NSRect borderLineRect = NSMakeRect(0, posY, NSWidth(dirtyRect), 1.0);
+    CGFloat originY = (self.anchoredEdge == CNSplitViewToolbarEdgeTop ? 0 : NSHeight(dirtyRect) - 1);
+    NSRect borderLineRect = NSMakeRect(0, originY, NSWidth(dirtyRect), 1.0);
     NSBezierPath *borderLinePath = [NSBezierPath bezierPathWithRect:borderLineRect];
     NSColor *borderColor = (isKeyWindow ? kDefaultBorderColor : [kDefaultBorderColor highlightWithLevel:kDefaultColorHighlightLevel]);
     [borderColor setFill];
@@ -379,13 +386,13 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
     NSRect draggingHandleRect = NSZeroRect;
 
     NSView *aSubView = [[splitView subviews] objectAtIndex:dividerIndex];
-    if (_enclosingSplitView.isDraggingHandleEnabled) {
-        CGFloat posY = NSMinY(aSubView.frame) - (self.anchoredEdge == CNSplitViewToolbarEdgeTop ? -1 : 1);
+    if ([self isDraggingHandleEnabled]) {
+        CGFloat originY = NSMinY(aSubView.frame) - (self.anchoredEdge == CNSplitViewToolbarEdgeTop ? -1 : 1);
         if ([_enclosingSplitView isVertical]) {
-            _draggingHandle.frame = NSMakeRect(NSMaxX(aSubView.frame) - kDefaultVerticalDraggingHandleWidth, posY, kDefaultVerticalDraggingHandleWidth, NSHeight(self.bounds));
+            _draggingHandle.frame = NSMakeRect(NSMaxX(aSubView.frame) - kDefaultVerticalDraggingHandleWidth, originY, kDefaultVerticalDraggingHandleWidth, NSHeight(self.bounds));
 
         } else {
-            _draggingHandle.frame = NSMakeRect(NSMaxX(aSubView.frame) - kDefaultHorizontalDraggingHandleWidth, posY, kDefaultHorizontalDraggingHandleWidth, NSHeight(self.bounds));
+            _draggingHandle.frame = NSMakeRect(NSMaxX(aSubView.frame) - kDefaultHorizontalDraggingHandleWidth, originY, kDefaultHorizontalDraggingHandleWidth, NSHeight(self.bounds));
         }
         _draggingHandle.autoresizingMask = NSViewMinXMargin;
         draggingHandleRect = [_draggingHandle convertRect:[_draggingHandle bounds] toView:splitView];
