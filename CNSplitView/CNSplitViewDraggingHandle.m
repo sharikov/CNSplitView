@@ -69,6 +69,7 @@ static int numberOfLines;
             [lineGradient drawInBezierPath:linePath angle:90];
         }
     }
+    
     else {
         hInset = 3.0;
         vInset = ceil((NSHeight(self.bounds) + 1 - (numberOfLines * lineWidth + (numberOfLines - 1) * lineDistance)) / 2);

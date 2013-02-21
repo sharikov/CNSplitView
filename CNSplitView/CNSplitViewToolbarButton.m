@@ -117,7 +117,6 @@
 
 - (void)setImagePosition:(NSCellImagePosition)aPosition
 {
-    //    [super setImagePosition:aPosition];
     [(CNSplitViewToolbarButtonCell *)[self cell] setImagePosition:aPosition];
 }
 

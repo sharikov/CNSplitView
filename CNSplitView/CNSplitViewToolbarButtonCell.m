@@ -119,6 +119,7 @@ static CGFloat kDefaultImageFraction, kDefaultImageEnabledFraction, kDefaultImag
             }
         }
     }
+
     else {
         imageRect = NSMakeRect((NSWidth(controlView.frame) - imageSize.width) / 2,
                                (NSHeight(controlView.frame) - imageSize.height) / 2,
@@ -126,11 +127,13 @@ static CGFloat kDefaultImageFraction, kDefaultImageEnabledFraction, kDefaultImag
                                imageSize.height);
     }
 
+
     if (self.isEnabled) {
         if (self.isHighlighted)
             imageRect.origin = NSMakePoint(NSMinX(imageRect), NSMinY(imageRect)+1);
         [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:kDefaultImageFraction respectFlipped:YES hints:nil];
     }
+
     else {
         CGFloat fraction = (self.imageDimsWhenDisabled ? kDefaultImageDisabledFraction : kDefaultImageEnabledFraction);
         [image drawInRect:imageRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:fraction respectFlipped:YES hints:nil];
