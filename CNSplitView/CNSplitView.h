@@ -100,7 +100,6 @@
 - (void)toggleToolbarAnimated:(BOOL)animated;
 
 
-
 #pragma mark - Managing the Delegate and the Data Source
 /** @name Managing the Delegate and the Data Source */
 

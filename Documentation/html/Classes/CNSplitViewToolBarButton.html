@@ -120,7 +120,7 @@
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/imageTemplate">&nbsp;&nbsp;imageTemplate</a></code>
-		
+		<span class="tooltip"><p>Sets the image template for the button item.</p></span>
 	</span>
 	<span class="task-item-suffix">property</span>
 	
@@ -143,6 +143,10 @@
 	
 	
 	
+	<div class="method-subsection brief-description">
+		<p>Sets the image template for the button item.</p>
+	</div>		
+	
     
 
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, assign) CNSplitViewToolbarButtonImageTemplate imageTemplate</code></div>
@@ -154,6 +158,32 @@
 	
 	
 	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Instead of using the receivers image property you can use this one to get a quick access to the system provided icons. For more
+more detailed informations to these icons please take a look at the <a href="http://developer.apple.com/library/mac/#documentation/userexperience/conceptual/applehiguidelines/SystemProvidedIcons/SystemProvidedIcons.html">developer documentation by Apple</a></p>
+
+<p>The value of this property must be one of these enum items:</p>
+
+<pre><code>typedef enum {
+    CNSplitViewToolbarButtonImageTemplatePlain = 0,
+    CNSplitViewToolbarButtonImageTemplateAdd,
+    CNSplitViewToolbarButtonImageTemplateRemove,
+    CNSplitViewToolbarButtonImageTemplateQuickLook,
+    CNSplitViewToolbarButtonImageTemplateAction,
+    CNSplitViewToolbarButtonImageTemplateShare,
+    CNSplitViewToolbarButtonImageTemplateIconView,
+    CNSplitViewToolbarButtonImageTemplateListView,
+    CNSplitViewToolbarButtonImageTemplateLockLocked,
+    CNSplitViewToolbarButtonImageTemplateLockUnlocked,
+    CNSplitViewToolbarButtonImageTemplateGoRight,
+    CNSplitViewToolbarButtonImageTemplateGoLeft,
+    CNSplitViewToolbarButtonImageTemplateStopProgress,
+    CNSplitViewToolbarButtonImageTemplateRefresh,
+} CNSplitViewToolbarButtonImageTemplate;
+</code></pre>
+	</div>
 	
 	
 	

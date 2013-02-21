@@ -36,7 +36,30 @@
 @interface CNSplitViewToolbarButton : NSButton
 
 /**
- ...
+ Sets the image template for the button item.
+ 
+ Instead of using the receivers image property you can use this one to get a quick access to the system provided icons. For more
+ more detailed informations to these icons please take a look at the [developer documentation by Apple](http://developer.apple.com/library/mac/#documentation/userexperience/conceptual/applehiguidelines/SystemProvidedIcons/SystemProvidedIcons.html)
+ 
+ The value of this property must be one of these enum items:
+ 
+    typedef enum {
+        CNSplitViewToolbarButtonImageTemplatePlain = 0,
+        CNSplitViewToolbarButtonImageTemplateAdd,
+        CNSplitViewToolbarButtonImageTemplateRemove,
+        CNSplitViewToolbarButtonImageTemplateQuickLook,
+        CNSplitViewToolbarButtonImageTemplateAction,
+        CNSplitViewToolbarButtonImageTemplateShare,
+        CNSplitViewToolbarButtonImageTemplateIconView,
+        CNSplitViewToolbarButtonImageTemplateListView,
+        CNSplitViewToolbarButtonImageTemplateLockLocked,
+        CNSplitViewToolbarButtonImageTemplateLockUnlocked,
+        CNSplitViewToolbarButtonImageTemplateGoRight,
+        CNSplitViewToolbarButtonImageTemplateGoLeft,
+        CNSplitViewToolbarButtonImageTemplateStopProgress,
+        CNSplitViewToolbarButtonImageTemplateRefresh,
+    } CNSplitViewToolbarButtonImageTemplate;
+
  */
 @property (nonatomic, assign) CNSplitViewToolbarButtonImageTemplate imageTemplate;
 
