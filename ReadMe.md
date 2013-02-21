@@ -20,33 +20,45 @@ On the code side you keep going that easy way. The code of the example applicati
 
 ```Objective-C
 CNSplitViewToolbarButton *button1 = [[CNSplitViewToolbarButton alloc] init];
-button1.toolbarButtonImage = CNSplitViewToolbarButtonImageAdd;
+button1.imageTemplate = CNSplitViewToolbarButtonImageTemplateAdd;
 button1.keyEquivalent = @"n";
 button1.keyEquivalentModifierMask = NSCommandKeyMask;
 
 CNSplitViewToolbarButton *button2 = [[CNSplitViewToolbarButton alloc] init];
-button2.toolbarButtonImage = CNSplitViewToolbarButtonImageRemove;
+button2.imageTemplate = CNSplitViewToolbarButtonImageTemplateRemove;
 
 CNSplitViewToolbarButton *button3 = [[CNSplitViewToolbarButton alloc] init];
-button3.toolbarButtonAlign = CNSplitViewToolbarButtonAlignRight;
-button3.toolbarButtonImage = CNSplitViewToolbarButtonImageLockUnlocked;
+button3.imageTemplate = CNSplitViewToolbarButtonImageTemplateLockUnlocked;
 button3.imagePosition = NSImageRight;
 button3.title = @"Lock";
 
 CNSplitViewToolbarButton *button4 = [[CNSplitViewToolbarButton alloc] init];
-button4.toolbarButtonAlign = CNSplitViewToolbarButtonAlignRight;
-button4.toolbarButtonImage = CNSplitViewToolbarButtonImageRefresh;
+button4.imageTemplate = CNSplitViewToolbarButtonImageTemplateRefresh;
 button4.title = @"Refresh";
 
-self.toolbar = [[CNSplitViewToolbar alloc] init];
-[self.toolbar addButton:button1];
-[self.toolbar addButton:button2];
-[self.toolbar addButton:button3];
-[self.toolbar addButton:button4];
+// NSTextField *textField = [[NSTextField alloc] init];
+// [textField setBezeled:YES];
+// [textField setBezeled:NSTextFieldRoundedBezel];
+// [textField setToolbarItemWidth:120.0];
+
+NSPopUpButton *popupButton = [[NSPopUpButton alloc] init];
+[popupButton setToolbarItemWidth:120];
+[popupButton addItemsWithTitles:@[ @"Foo...", @"Bar...", @"Yelly" ]];
+[[popupButton cell] setControlSize:NSSmallControlSize];
+
+// NSSlider *slider = [[NSSlider alloc] init];
+// [slider setToolbarItemWidth:120.0];
+// [[slider cell] setControlSize:NSSmallControlSize];
+
+[toolbar addItem:button1 align:CNSplitViewToolbarItemAlignLeft];
+[toolbar addItem:button2 align:CNSplitViewToolbarItemAlignLeft];
+[toolbar addItem:button3 align:CNSplitViewToolbarItemAlignRight];
+[toolbar addItem:button4 align:CNSplitViewToolbarItemAlignRight];
+[toolbar addItem:popupButton align:CNSplitViewToolbarItemAlignLeft];
 
 self.splitView.delegate = self;
-[self.splitView addToolbar:toolbar besidesSubviewAtIndex:0 onEdge:CNSplitViewToolbarEdgeBottom];
-[self.splitView showToolbarAnimated:YES];
+self.splitView.toolbarDelegate = self;
+[self.splitView attachToolbar:toolbar toSubViewAtIndex:0 onEdge:CNSplitViewToolbarEdgeBottom];
 ```
 
 

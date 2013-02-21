@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
-		<title>CNSplitViewDelegate Protocol Reference</title>
+		<title>NSView(CNSplitViewToolbar) Category Reference</title>
 		<meta id="xcode-display" name="xcode-display" content="render"/>
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
@@ -17,7 +17,7 @@
 			</div>
 			
 			<div id="title" role="banner">
-				<h1 class="hideInXcode">CNSplitViewDelegate Protocol Reference</h1>
+				<h1 class="hideInXcode">NSView(CNSplitViewToolbar) Category Reference</h1>
 			</div>
 			<ul id="headerButtons" role="toolbar">
 				<li id="toc_button">
@@ -26,8 +26,6 @@
 				<li id="jumpto_button" role="navigation">
 					<select id="jumpTo">
 	<option value="top">Jump To&#133;</option>
-	
-	<option value="overview">Overview</option>
 	
 	
 	
@@ -44,13 +42,13 @@
 	
 	<option value="instance_methods">Instance Methods</option>
 	
-	<option value="//api/name/splitView:didHideToolbar:onEdge:">&nbsp;&nbsp;&nbsp;&nbsp;- splitView:didHideToolbar:onEdge:</option>
+	<option value="//api/name/setToolbarItemAlign:">&nbsp;&nbsp;&nbsp;&nbsp;- setToolbarItemAlign:</option>
 	
-	<option value="//api/name/splitView:didShowToolbar:onEdge:">&nbsp;&nbsp;&nbsp;&nbsp;- splitView:didShowToolbar:onEdge:</option>
+	<option value="//api/name/setToolbarItemWidth:">&nbsp;&nbsp;&nbsp;&nbsp;- setToolbarItemWidth:</option>
 	
-	<option value="//api/name/splitView:willHideToolbar:onEdge:">&nbsp;&nbsp;&nbsp;&nbsp;- splitView:willHideToolbar:onEdge:</option>
+	<option value="//api/name/toolbarItemAlign">&nbsp;&nbsp;&nbsp;&nbsp;- toolbarItemAlign</option>
 	
-	<option value="//api/name/splitView:willShowToolbar:onEdge:">&nbsp;&nbsp;&nbsp;&nbsp;- splitView:willShowToolbar:onEdge:</option>
+	<option value="//api/name/toolbarItemWidth">&nbsp;&nbsp;&nbsp;&nbsp;- toolbarItemWidth</option>
 	
 	
 	
@@ -61,8 +59,6 @@
 		<nav id="tocContainer" class="isShowingTOC">
 			<ul id="toc" role="tree">
 				
-<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
-
 
 
 
@@ -80,13 +76,13 @@
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/splitView:didHideToolbar:onEdge:">splitView:didHideToolbar:onEdge:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setToolbarItemAlign:">setToolbarItemAlign:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/splitView:didShowToolbar:onEdge:">splitView:didShowToolbar:onEdge:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setToolbarItemWidth:">setToolbarItemWidth:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/splitView:willHideToolbar:onEdge:">splitView:willHideToolbar:onEdge:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/toolbarItemAlign">toolbarItemAlign</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/splitView:willShowToolbar:onEdge:">splitView:willShowToolbar:onEdge:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/toolbarItemWidth">toolbarItemWidth</a></span></li>
 	
 </ul></li>
 
@@ -95,7 +91,7 @@
 		</nav>
 		<article>
 			<div id="contents" class="isShowingTOC" role="main">
-				<a title="CNSplitViewDelegate Protocol Reference" name="top"></a>
+				<a title="NSView(CNSplitViewToolbar) Category Reference" name="top"></a>
 				<div class="main-navigation navigation-top">
 					<ul>
 	<li><a href="../index.html">Index</a></li>
@@ -104,29 +100,18 @@
 				</div>
 				<div id="header">
 					<div class="section-header">
-						<h1 class="title title-header">CNSplitViewDelegate Protocol Reference</h1>
+						<h1 class="title title-header">NSView(CNSplitViewToolbar) Category Reference</h1>
 					</div>		
 				</div>
 				<div id="container">	
 					
 					<div class="section section-specification"><table cellspacing="0"><tbody>
 						<tr>
-	<td class="specification-title">Conforms to</td>
-	<td class="specification-value">NSSplitViewDelegate</td>
-</tr><tr>
 	<td class="specification-title">Declared in</td>
-	<td class="specification-value">CNSplitView.h</td>
+	<td class="specification-value">NSView+CNSplitViewToolbar.h</td>
 </tr>
 						</tbody></table></div>
 					
-					
-					
-					
-					<div class="section section-overview">
-						<a title="Overview" name="overview"></a>
-						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><a href="../Classes/CNSplitView.html">CNSplitView</a> is&hellip;</p>
-					</div>
 					
 					
 					
@@ -143,29 +128,29 @@
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/splitView:willShowToolbar:onEdge:">&ndash;&nbsp;splitView:willShowToolbar:onEdge:</a></code>
-		
+		<code><a href="#//api/name/toolbarItemAlign">&ndash;&nbsp;toolbarItemAlign</a></code>
+		<span class="tooltip"><p>Returns the receivers horizontal alignment inside the <a href="../Classes/CNSplitViewToolbar.html"><code>CNSplitViewToolbar</code></a>.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/splitView:didShowToolbar:onEdge:">&ndash;&nbsp;splitView:didShowToolbar:onEdge:</a></code>
-		
+		<code><a href="#//api/name/setToolbarItemAlign:">&ndash;&nbsp;setToolbarItemAlign:</a></code>
+		<span class="tooltip"><p>Set the receivers horizontal alignment inside the <a href="../Classes/CNSplitViewToolbar.html"><code>CNSplitViewToolbar</code></a>.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/splitView:willHideToolbar:onEdge:">&ndash;&nbsp;splitView:willHideToolbar:onEdge:</a></code>
-		
+		<code><a href="#//api/name/toolbarItemWidth">&ndash;&nbsp;toolbarItemWidth</a></code>
+		<span class="tooltip"><p>Returns the receivers width.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/splitView:didHideToolbar:onEdge:">&ndash;&nbsp;splitView:didHideToolbar:onEdge:</a></code>
-		
+		<code><a href="#//api/name/setToolbarItemWidth:">&ndash;&nbsp;setToolbarItemWidth:</a></code>
+		<span class="tooltip"><p>Set the receivers width.</p></span>
 	</span>
 	
 	
@@ -187,16 +172,30 @@
 						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/splitView:didHideToolbar:onEdge:" title="splitView:didHideToolbar:onEdge:"></a>
-	<h3 class="subsubtitle method-title">splitView:didHideToolbar:onEdge:</h3>
+	<a name="//api/name/setToolbarItemAlign:" title="setToolbarItemAlign:"></a>
+	<h3 class="subsubtitle method-title">setToolbarItemAlign:</h3>
 	
 	
+	
+	<div class="method-subsection brief-description">
+		<p>Set the receivers horizontal alignment inside the <a href="../Classes/CNSplitViewToolbar.html"><code>CNSplitViewToolbar</code></a>.</p>
+	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)splitView:(CNSplitView *)<em>theSplitView</em> didHideToolbar:(CNSplitViewToolbar *)<em>theToolbar</em> onEdge:(CNSplitViewToolbarEdge)<em>theEdge</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)setToolbarItemAlign:(CNSplitViewToolbarItemAlign)<em>theAlign</em></code></div>
 
     
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>theAlign</em></dt>
+			<dd><p>A value of type <code>CNSplitViewToolbarItemAlign</code>.</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
@@ -212,23 +211,37 @@
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">CNSplitView.h</code><br />
+		<code class="declared-in-ref">NSView+CNSplitViewToolbar.h</code><br />
 	</div>				
 	
 	
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/splitView:didShowToolbar:onEdge:" title="splitView:didShowToolbar:onEdge:"></a>
-	<h3 class="subsubtitle method-title">splitView:didShowToolbar:onEdge:</h3>
+	<a name="//api/name/setToolbarItemWidth:" title="setToolbarItemWidth:"></a>
+	<h3 class="subsubtitle method-title">setToolbarItemWidth:</h3>
 	
 	
+	
+	<div class="method-subsection brief-description">
+		<p>Set the receivers width.</p>
+	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)splitView:(CNSplitView *)<em>theSplitView</em> didShowToolbar:(CNSplitViewToolbar *)<em>theToolbar</em> onEdge:(CNSplitViewToolbarEdge)<em>theEdge</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)setToolbarItemWidth:(CGFloat)<em>theItemWidth</em></code></div>
 
     
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>theItemWidth</em></dt>
+			<dd><p>The width of the receiver.</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
@@ -244,25 +257,34 @@
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">CNSplitView.h</code><br />
+		<code class="declared-in-ref">NSView+CNSplitViewToolbar.h</code><br />
 	</div>				
 	
 	
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/splitView:willHideToolbar:onEdge:" title="splitView:willHideToolbar:onEdge:"></a>
-	<h3 class="subsubtitle method-title">splitView:willHideToolbar:onEdge:</h3>
+	<a name="//api/name/toolbarItemAlign" title="toolbarItemAlign"></a>
+	<h3 class="subsubtitle method-title">toolbarItemAlign</h3>
 	
 	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the receivers horizontal alignment inside the <a href="../Classes/CNSplitViewToolbar.html"><code>CNSplitViewToolbar</code></a>.</p>
+	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)splitView:(CNSplitView *)<em>theSplitView</em> willHideToolbar:(CNSplitViewToolbar *)<em>theToolbar</em> onEdge:(CNSplitViewToolbarEdge)<em>theEdge</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (CNSplitViewToolbarItemAlign)toolbarItemAlign</code></div>
 
     
 	
 	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A value of type <code>CNSplitViewToolbarItemAlign</code>.</p>
+	</div>
 	
 	
 	
@@ -276,25 +298,34 @@
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">CNSplitView.h</code><br />
+		<code class="declared-in-ref">NSView+CNSplitViewToolbar.h</code><br />
 	</div>				
 	
 	
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/splitView:willShowToolbar:onEdge:" title="splitView:willShowToolbar:onEdge:"></a>
-	<h3 class="subsubtitle method-title">splitView:willShowToolbar:onEdge:</h3>
+	<a name="//api/name/toolbarItemWidth" title="toolbarItemWidth"></a>
+	<h3 class="subsubtitle method-title">toolbarItemWidth</h3>
 	
 	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the receivers width.</p>
+	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)splitView:(CNSplitView *)<em>theSplitView</em> willShowToolbar:(CNSplitViewToolbar *)<em>theToolbar</em> onEdge:(CNSplitViewToolbarEdge)<em>theEdge</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (CGFloat)toolbarItemWidth</code></div>
 
     
 	
 	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The width of the receiver in points.</p>
+	</div>
 	
 	
 	
@@ -308,7 +339,7 @@
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">CNSplitView.h</code><br />
+		<code class="declared-in-ref">NSView+CNSplitViewToolbar.h</code><br />
 	</div>				
 	
 	
@@ -327,7 +358,7 @@
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2013 cocoa:naut. All rights reserved. (Last updated: 2013-02-02)</span><br />
+						<p><span class="copyright">&copy; 2013 cocoa:naut. All rights reserved. (Last updated: 2013-02-21)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
 						

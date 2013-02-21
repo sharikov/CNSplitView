@@ -27,6 +27,8 @@
 					<select id="jumpTo">
 	<option value="top">Jump To&#133;</option>
 	
+	<option value="overview">Overview</option>
+	
 	
 	
 	
@@ -47,7 +49,7 @@
 	
 	<option value="instance_methods">Instance Methods</option>
 	
-	<option value="//api/name/addToolbar:besidesSubviewAtIndex:onEdge:">&nbsp;&nbsp;&nbsp;&nbsp;- addToolbar:besidesSubviewAtIndex:onEdge:</option>
+	<option value="//api/name/attachToolbar:toSubViewAtIndex:onEdge:">&nbsp;&nbsp;&nbsp;&nbsp;- attachToolbar:toSubViewAtIndex:onEdge:</option>
 	
 	<option value="//api/name/hideToolbarAnimated:">&nbsp;&nbsp;&nbsp;&nbsp;- hideToolbarAnimated:</option>
 	
@@ -55,7 +57,7 @@
 	
 	<option value="//api/name/showToolbarAnimated:">&nbsp;&nbsp;&nbsp;&nbsp;- showToolbarAnimated:</option>
 	
-	<option value="//api/name/toggleToolbarVisibilityAnimated:">&nbsp;&nbsp;&nbsp;&nbsp;- toggleToolbarVisibilityAnimated:</option>
+	<option value="//api/name/toggleToolbarAnimated:">&nbsp;&nbsp;&nbsp;&nbsp;- toggleToolbarAnimated:</option>
 	
 	
 	
@@ -66,6 +68,8 @@
 		<nav id="tocContainer" class="isShowingTOC">
 			<ul id="toc" role="tree">
 				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
 
 
 
@@ -93,7 +97,7 @@
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/addToolbar:besidesSubviewAtIndex:onEdge:">addToolbar:besidesSubviewAtIndex:onEdge:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/attachToolbar:toSubViewAtIndex:onEdge:">attachToolbar:toSubViewAtIndex:onEdge:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hideToolbarAnimated:">hideToolbarAnimated:</a></span></li>
 	
@@ -101,7 +105,7 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/showToolbarAnimated:">showToolbarAnimated:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/toggleToolbarVisibilityAnimated:">toggleToolbarVisibilityAnimated:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/toggleToolbarAnimated:">toggleToolbarAnimated:</a></span></li>
 	
 </ul></li>
 
@@ -129,11 +133,26 @@
 	<td class="specification-title">Inherits from</td>
 	<td class="specification-value">NSSplitView</td>
 </tr><tr>
+	<td class="specification-title">Conforms to</td>
+	<td class="specification-value">NSSplitViewDelegate</td>
+</tr><tr>
 	<td class="specification-title">Declared in</td>
 	<td class="specification-value">CNSplitView.h</td>
 </tr>
 						</tbody></table></div>
 					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>The intention of <code>CNSplitView</code> was to create an extended version of the standard <code>NSSplitView</code> to implement the so beloved
+feature of Brandon Walkin&rsquo;s <a href="http://brandonwalkin.com/bwtoolkit/">BWToolkit</a> that has support for an anchored toolbar. Since
+the release of Xcode 4 Apple broke with the less or more well known plugin structure of Xcode 3 and BWToolkit is no longer supported.</p>
+
+<p>Well, <code>CNSplitView</code> tries to fill the hole and provides a feature for adding such a toolbar.</p>
+					</div>
 					
 					
 					
@@ -150,29 +169,29 @@
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/addToolbar:besidesSubviewAtIndex:onEdge:">&ndash;&nbsp;addToolbar:besidesSubviewAtIndex:onEdge:</a></code>
-		
+		<code><a href="#//api/name/attachToolbar:toSubViewAtIndex:onEdge:">&ndash;&nbsp;attachToolbar:toSubViewAtIndex:onEdge:</a></code>
+		<span class="tooltip"><p>Adds a toolbar besides a <code>CNSplitView</code>&rsquo;s subview.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/showToolbarAnimated:">&ndash;&nbsp;showToolbarAnimated:</a></code>
-		
+		<span class="tooltip"><p>Shows an attached toolbar.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/hideToolbarAnimated:">&ndash;&nbsp;hideToolbarAnimated:</a></code>
-		
+		<span class="tooltip"><p>Hides an already visible toolbar.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/toggleToolbarVisibilityAnimated:">&ndash;&nbsp;toggleToolbarVisibilityAnimated:</a></code>
-		
+		<code><a href="#//api/name/toggleToolbarAnimated:">&ndash;&nbsp;toggleToolbarAnimated:</a></code>
+		<span class="tooltip"><p>Toggles the visibility of an attached toolbar.</p></span>
 	</span>
 	
 	
@@ -187,14 +206,14 @@
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/setDeviderColor:">&ndash;&nbsp;setDeviderColor:</a></code>
-		
+		<span class="tooltip"><p>Sets the color of the split view divider.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/draggingHandleEnabled">&nbsp;&nbsp;draggingHandleEnabled</a></code>
-		
+		<span class="tooltip"><p>Property that indicates whether an assistive split view dragging handle is enabled or not.</p></span>
 	</span>
 	<span class="task-item-suffix">property</span>
 	
@@ -216,6 +235,10 @@
 	<h3 class="subsubtitle method-title">draggingHandleEnabled</h3>
 	
 	
+	
+	<div class="method-subsection brief-description">
+		<p>Property that indicates whether an assistive split view dragging handle is enabled or not.</p>
+	</div>		
 	
     
 
@@ -254,22 +277,59 @@
 						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/addToolbar:besidesSubviewAtIndex:onEdge:" title="addToolbar:besidesSubviewAtIndex:onEdge:"></a>
-	<h3 class="subsubtitle method-title">addToolbar:besidesSubviewAtIndex:onEdge:</h3>
+	<a name="//api/name/attachToolbar:toSubViewAtIndex:onEdge:" title="attachToolbar:toSubViewAtIndex:onEdge:"></a>
+	<h3 class="subsubtitle method-title">attachToolbar:toSubViewAtIndex:onEdge:</h3>
 	
 	
+	
+	<div class="method-subsection brief-description">
+		<p>Adds a toolbar besides a <code>CNSplitView</code>&rsquo;s subview.</p>
+	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)addToolbar:(CNSplitViewToolbar *)<em>theToolbar</em> besidesSubviewAtIndex:(NSUInteger)<em>theSubviewIndex</em> onEdge:(CNSplitViewToolbarEdge)<em>theEdge</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)attachToolbar:(CNSplitViewToolbar *)<em>theToolbar</em> toSubViewAtIndex:(NSUInteger)<em>dividerIndex</em> onEdge:(CNSplitViewToolbarEdge)<em>anchorEdge</em></code></div>
 
     
 	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>theToolbar</em></dt>
+			<dd><p>An instance of <a href="../Classes/CNSplitViewToolbar.html"><code>CNSplitViewToolbar</code></a>.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>theSubviewIndex</em></dt>
+			<dd><p>The subview&rsquo;s index the toolbar will be attached to. The first index <code>0</code> is the leftmost (on vertical orientation) or the topmost (on horizontal orientation) subview.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>theEdge</em></dt>
+			<dd><p>A value provided by the <code>CNSplitViewToolbarEdge</code> enum.</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
 	
 	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>This method attaches an instance of a <a href="../Classes/CNSplitViewToolbar.html"><code>CNSplitViewToolbar</code></a> to a receivers subview specified by its index on the top or bottom edge of it.
+The edge the toolbar should be attached to is a value of the <code>CNSplitViewToolbarEdge</code> enum:</p>
+
+<pre><code>typedef enum {
+    CNSplitViewToolbarEdgeUndefined = 0,
+    CNSplitViewToolbarEdgeBottom,
+    CNSplitViewToolbarEdgeTop
+} CNSplitViewToolbarEdge;
+</code></pre><div class="note"><p><strong>Note:</strong> Attaching a toolbar to the split view doesn&rsquo;t imply that it will be visible. You have to call <a href="#//api/name/showToolbarAnimated:">showToolbarAnimated:</a> or <a href="#//api/name/toggleToolbarAnimated:">toggleToolbarAnimated:</a> explicitly.</p></div>
+	</div>
 	
 	
 	
@@ -291,11 +351,25 @@
 	
 	
 	
+	<div class="method-subsection brief-description">
+		<p>Hides an already visible toolbar.</p>
+	</div>		
+	
     
 
 	<div class="method-subsection method-declaration"><code>- (void)hideToolbarAnimated:(BOOL)<em>animated</em></code></div>
 
     
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>animated</em></dt>
+			<dd><p><code>YES</code> the toolbar will be hidden using a slide out animation, otherwise <code>NO</code> for no animation.</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
@@ -323,17 +397,36 @@
 	
 	
 	
+	<div class="method-subsection brief-description">
+		<p>Sets the color of the split view divider.</p>
+	</div>		
+	
     
 
 	<div class="method-subsection method-declaration"><code>- (void)setDeviderColor:(NSColor *)<em>theColor</em></code></div>
 
     
 	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>theColor</em></dt>
+			<dd><p>An instance of <code>NSColor</code>.</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
 	
 	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>You can make use of any <code>NSColor</code> instance even with pattern images.</p>
+	</div>
 	
 	
 	
@@ -355,17 +448,36 @@
 	
 	
 	
+	<div class="method-subsection brief-description">
+		<p>Shows an attached toolbar.</p>
+	</div>		
+	
     
 
 	<div class="method-subsection method-declaration"><code>- (void)showToolbarAnimated:(BOOL)<em>animated</em></code></div>
 
     
 	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>animated</em></dt>
+			<dd><p><code>YES</code> the toolbar will be shown using a slide in animation, otherwise <code>NO</code> for no animation.</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
 	
 	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Before you can use this function you have to add a toolbar to the split view, of course.</p>
+	</div>
 	
 	
 	
@@ -382,16 +494,30 @@
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/toggleToolbarVisibilityAnimated:" title="toggleToolbarVisibilityAnimated:"></a>
-	<h3 class="subsubtitle method-title">toggleToolbarVisibilityAnimated:</h3>
+	<a name="//api/name/toggleToolbarAnimated:" title="toggleToolbarAnimated:"></a>
+	<h3 class="subsubtitle method-title">toggleToolbarAnimated:</h3>
 	
 	
+	
+	<div class="method-subsection brief-description">
+		<p>Toggles the visibility of an attached toolbar.</p>
+	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)toggleToolbarVisibilityAnimated:(BOOL)<em>animated</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)toggleToolbarAnimated:(BOOL)<em>animated</em></code></div>
 
     
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>animated</em></dt>
+			<dd><p><code>YES</code> for an animated toggle effect, otherwise <code>NO</code>.</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
@@ -426,7 +552,7 @@
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2013 cocoa:naut. All rights reserved. (Last updated: 2013-02-02)</span><br />
+						<p><span class="copyright">&copy; 2013 cocoa:naut. All rights reserved. (Last updated: 2013-02-21)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
 						

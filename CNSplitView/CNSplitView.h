@@ -30,47 +30,74 @@
 
 #import <Cocoa/Cocoa.h>
 #import "CNSplitViewDefinitions.h"
-#import "CNSplitViewDelegate.h"
 #import "CNSplitViewToolbar.h"
 #import "CNSplitViewToolbarButton.h"
+#import "CNSplitViewToolbarDelegate.h"
+#import "NSView+CNSplitViewToolbar.h"
 
 
 /**
- CNSplitView is...
-
+ The intention of `CNSplitView` was to create an extended version of the standard `NSSplitView` to implement the so beloved
+ feature of Brandon Walkin's [BWToolkit](http://brandonwalkin.com/bwtoolkit/) that has support for an anchored toolbar. Since
+ the release of Xcode 4 Apple broke with the less or more well known plugin structure of Xcode 3 and BWToolkit is no longer supported.
+ 
+ Well, `CNSplitView` tries to fill the hole and provides a feature for adding such a toolbar.
  */
 
 
 
-@interface CNSplitView : NSSplitView
+@interface CNSplitView : NSSplitView <NSSplitViewDelegate>
 
 #pragma mark - Initializing a CNSplitView Object
 /** @name Initializing a CNSplitView Object */
 
-@property (strong) id<CNSplitViewDelegate> delegate;
+@property (weak, nonatomic) id<CNSplitViewToolbarDelegate> toolbarDelegate;
 
 #pragma mark - Configuring & Handling Toolbars
 /** @name Configuring & Handling Toolbars */
 
 /**
- ...
+ Adds a toolbar besides a `CNSplitView`'s subview.
+ 
+ This method attaches an instance of a `CNSplitViewToolbar` to a receivers subview specified by its index on the top or bottom edge of it.
+ The edge the toolbar should be attached to is a value of the `CNSplitViewToolbarEdge` enum:
+
+    typedef enum {
+        CNSplitViewToolbarEdgeUndefined = 0,
+        CNSplitViewToolbarEdgeBottom,
+        CNSplitViewToolbarEdgeTop
+    } CNSplitViewToolbarEdge;
+
+ @note Attaching a toolbar to the split view doesn't imply that it will be visible. You have to call showToolbarAnimated: or toggleToolbarAnimated: explicitly.
+
+ @param theToolbar      An instance of `CNSplitViewToolbar`.
+ @param theSubviewIndex The subview's index the toolbar will be attached to. The first index `0` is the leftmost (on vertical orientation) or the topmost (on horizontal orientation) subview.
+ @param theEdge         A value provided by the `CNSplitViewToolbarEdge` enum.
  */
-- (void)addToolbar:(CNSplitViewToolbar *)theToolbar besidesSubviewAtIndex:(NSUInteger)theSubviewIndex onEdge:(CNSplitViewToolbarEdge)theEdge;
+- (void)attachToolbar:(CNSplitViewToolbar *)theToolbar toSubViewAtIndex:(NSUInteger)dividerIndex onEdge:(CNSplitViewToolbarEdge)anchorEdge;
 
 /**
- ...
+ Shows an attached toolbar.
+ 
+ Before you can use this function you have to add a toolbar to the split view, of course.
+ 
+ @param animated    `YES` the toolbar will be shown using a slide in animation, otherwise `NO` for no animation.
  */
 - (void)showToolbarAnimated:(BOOL)animated;
 
 /**
- ...
+ Hides an already visible toolbar.
+
+ @param animated    `YES` the toolbar will be hidden using a slide out animation, otherwise `NO` for no animation.
  */
 - (void)hideToolbarAnimated:(BOOL)animated;
 
 /**
- ...
+ Toggles the visibility of an attached toolbar.
+
+ @param animated    `YES` for an animated toggle effect, otherwise `NO`.
  */
-- (void)toggleToolbarVisibilityAnimated:(BOOL)animated;
+- (void)toggleToolbarAnimated:(BOOL)animated;
 
 
 
@@ -78,12 +105,16 @@
 /** @name Managing the Delegate and the Data Source */
 
 /**
- ...
+ Sets the color of the split view divider.
+ 
+ You can make use of any `NSColor` instance even with pattern images.
+ 
+ @param theColor    An instance of `NSColor`.
  */
 - (void)setDeviderColor:(NSColor *)theColor;
 
 /**
- ...
+ Property that indicates whether an assistive split view dragging handle is enabled or not.
  */
 @property (assign, nonatomic, getter = isDraggingHandleEnabled) BOOL draggingHandleEnabled;
 

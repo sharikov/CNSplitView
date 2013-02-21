@@ -10,12 +10,11 @@
 #import "CNBaseView.h"
 #import "CNSplitView.h"
 
-@interface CNAppDelegate : NSObject <NSApplicationDelegate, CNSplitViewDelegate>
+@interface CNAppDelegate : NSObject <NSApplicationDelegate, CNSplitViewToolbarDelegate, NSSplitViewDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet CNSplitView *splitView;
 
-@property (assign, nonatomic) IBOutlet CNBaseView *firstView;
 @property (assign, nonatomic) IBOutlet CNBaseView *secondView;
 
 @property (assign) IBOutlet NSButton *showHideToolbarCheckbox;

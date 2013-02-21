@@ -8,17 +8,17 @@
 /*
  The MIT License (MIT)
  Copyright © 2012 Frank Gregor, <phranck@cocoanaut.com>
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the “Software”), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in
  all copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,7 +33,7 @@
 #import "CNSplitViewToolbarButtonCell.h"
 
 
-static CGFloat kDefaultButtonWidth = 28.0;
+//static CGFloat kDefaultItemWidth = 28.0;
 
 @implementation CNSplitViewToolbarButton
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,24 +47,25 @@ static CGFloat kDefaultButtonWidth = 28.0;
 {
     self = [super init];
     if (self) {
-        _toolbarButtonAlign = CNSplitViewToolbarButtonAlignLeft;
-        [(CNSplitViewToolbarButtonCell *)[self cell] setAlign:_toolbarButtonAlign];
-        
-        _toolbarButtonImage = CNSplitViewToolbarButtonImagePlain;
-        _toolbarButtonWidth = kDefaultButtonWidth;
-
-        [self setAutoresizingMask:NSViewNotSizable];
-        [self setImagePosition:NSImageLeft];
-        [self setButtonType:NSMomentaryPushInButton];
-        [self setBezelStyle:NSSmallSquareBezelStyle];
-        [self setTitle:@""];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableMe) name:CNSplitViewToolbarItemsEnableNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disableMe) name:CNSplitViewToolbarItemsDisableNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowStatusChanged) name:NSWindowDidBecomeKeyNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowStatusChanged) name:NSWindowDidResignKeyNotification object:nil];
+        [self commonConfiguration];
     }
     return self;
+}
+
+- (void)commonConfiguration
+{
+    _imageTemplate = CNSplitViewToolbarButtonImageTemplatePlain;
+
+    [self setAutoresizingMask:NSViewNotSizable];
+    [self setImagePosition:NSImageLeft];
+    [self setButtonType:NSMomentaryPushInButton];
+    [self setBezelStyle:NSSmallSquareBezelStyle];
+    [self setTitle:@""];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableMe) name:CNSplitViewToolbarItemsEnableNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disableMe) name:CNSplitViewToolbarItemsDisableNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowStatusChanged) name:NSWindowDidBecomeKeyNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowStatusChanged) name:NSWindowDidResignKeyNotification object:nil];
 }
 
 
@@ -114,38 +115,31 @@ static CGFloat kDefaultButtonWidth = 28.0;
     [self setAttributedTitle:attributedTitle];
 }
 
-- (void)setToolbarButtonAlign:(CNSplitViewToolbarButtonAlign)align
-{
-    _toolbarButtonAlign = align;
-    [(CNSplitViewToolbarButtonCell *)[self cell] setAlign:_toolbarButtonAlign];
-}
-
 - (void)setImagePosition:(NSCellImagePosition)aPosition
 {
-    [super setImagePosition:aPosition];
+    //    [super setImagePosition:aPosition];
     [(CNSplitViewToolbarButtonCell *)[self cell] setImagePosition:aPosition];
 }
 
-- (void)setToolbarButtonImage:(CNSplitViewToolbarButtonImage)toolbarButtonImage
+- (void)setImageTemplate:(CNSplitViewToolbarButtonImageTemplate)theImageTemplate
 {
-    _toolbarButtonImage = toolbarButtonImage;
-    switch (_toolbarButtonImage) {
-        case CNSplitViewToolbarButtonImageAdd:           self.image = [NSImage imageNamed:NSImageNameAddTemplate]; break;
-        case CNSplitViewToolbarButtonImageRemove:        self.image = [NSImage imageNamed:NSImageNameRemoveTemplate]; break;
-        case CNSplitViewToolbarButtonImageQuickLook:     self.image = [NSImage imageNamed:NSImageNameQuickLookTemplate]; break;
-        case CNSplitViewToolbarButtonImageAction:        self.image = [NSImage imageNamed:NSImageNameActionTemplate]; break;
-        case CNSplitViewToolbarButtonImageShare:         self.image = [NSImage imageNamed:NSImageNameShareTemplate]; break;
-        case CNSplitViewToolbarButtonImageIconView:      self.image = [NSImage imageNamed:NSImageNameIconViewTemplate]; break;
-        case CNSplitViewToolbarButtonImageListView:      self.image = [NSImage imageNamed:NSImageNameListViewTemplate]; break;
-        case CNSplitViewToolbarButtonImageLockLocked:    self.image = [NSImage imageNamed:NSImageNameLockLockedTemplate]; break;
-        case CNSplitViewToolbarButtonImageLockUnlocked:  self.image = [NSImage imageNamed:NSImageNameLockUnlockedTemplate]; break;
-        case CNSplitViewToolbarButtonImageGoRight:       self.image = [NSImage imageNamed:NSImageNameGoRightTemplate]; break;
-        case CNSplitViewToolbarButtonImageGoLeft:        self.image = [NSImage imageNamed:NSImageNameGoLeftTemplate]; break;
-        case CNSplitViewToolbarButtonImageStopProgress:  self.image = [NSImage imageNamed:NSImageNameStopProgressTemplate]; break;
-        case CNSplitViewToolbarButtonImageRefresh:       self.image = [NSImage imageNamed:NSImageNameRefreshTemplate]; break;
+    _imageTemplate = theImageTemplate;
+    switch (_imageTemplate) {
+        case CNSplitViewToolbarButtonImageTemplateAdd:           self.image = [NSImage imageNamed:NSImageNameAddTemplate]; break;
+        case CNSplitViewToolbarButtonImageTemplateRemove:        self.image = [NSImage imageNamed:NSImageNameRemoveTemplate]; break;
+        case CNSplitViewToolbarButtonImageTemplateQuickLook:     self.image = [NSImage imageNamed:NSImageNameQuickLookTemplate]; break;
+        case CNSplitViewToolbarButtonImageTemplateAction:        self.image = [NSImage imageNamed:NSImageNameActionTemplate]; break;
+        case CNSplitViewToolbarButtonImageTemplateShare:         self.image = [NSImage imageNamed:NSImageNameShareTemplate]; break;
+        case CNSplitViewToolbarButtonImageTemplateIconView:      self.image = [NSImage imageNamed:NSImageNameIconViewTemplate]; break;
+        case CNSplitViewToolbarButtonImageTemplateListView:      self.image = [NSImage imageNamed:NSImageNameListViewTemplate]; break;
+        case CNSplitViewToolbarButtonImageTemplateLockLocked:    self.image = [NSImage imageNamed:NSImageNameLockLockedTemplate]; break;
+        case CNSplitViewToolbarButtonImageTemplateLockUnlocked:  self.image = [NSImage imageNamed:NSImageNameLockUnlockedTemplate]; break;
+        case CNSplitViewToolbarButtonImageTemplateGoRight:       self.image = [NSImage imageNamed:NSImageNameGoRightTemplate]; break;
+        case CNSplitViewToolbarButtonImageTemplateGoLeft:        self.image = [NSImage imageNamed:NSImageNameGoLeftTemplate]; break;
+        case CNSplitViewToolbarButtonImageTemplateStopProgress:  self.image = [NSImage imageNamed:NSImageNameStopProgressTemplate]; break;
+        case CNSplitViewToolbarButtonImageTemplateRefresh:       self.image = [NSImage imageNamed:NSImageNameRefreshTemplate]; break;
         default: break;
     }
 }
-
 
 @end

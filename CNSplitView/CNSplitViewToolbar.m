@@ -31,12 +31,13 @@
 
 #import "CNSplitView.h"
 #import "CNSplitViewToolbar.h"
+#import "CNSplitViewToolbarButton.h"
 #import "CNSplitViewToolbarButtonCell.h"
 #import "CNSplitViewDraggingHandle.h"
 
 
+CGFloat  kDefaultVerticalDraggingHandleWidth, kDefaultHorizontalDraggingHandleWidth;
 static CGFloat  kDefaultToolbarHeight, kDefaultItemDelimiterWidth;
-static CGFloat  kDefaultVerticalDraggingHandleWidth, kDefaultHorizontalDraggingHandleWidth;
 static NSColor  *kDefaultBorderColor, *kDefaultGradientStartColor, *kDefaultGradientEndColor;
 static NSColor  *delimiterGradientEndColor, *delimiterGradientMiddleColor, *delimiterGradientCenterColor;
 
@@ -45,17 +46,22 @@ NSString *CNSplitViewToolbarItemsDisableNotification = @"ToolbarItemsDisableNoti
 NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleEnableDisableNotification";
 
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 @interface CNSplitViewToolbar () {
     NSRect _previousToolbarRect;
     NSMutableArray *_delimiterOffsets;
     CNSplitView *_enclosingSplitView;
-    NSMutableArray *_buttons;
+    NSMutableArray *_toolbarItems;
     CNSplitViewDraggingHandle *_draggingHandle;
 }
 
+- (NSSize)sizeForToolbarButton:(CNSplitViewToolbarButton *)theButton;
+- (NSSize)sizeForToolbarItem:(NSView *)theItem;
 - (void)drawItemDelimiter;
 - (void)recalculateItemPositions;
+- (BOOL)containsSubView:(NSView *)subview;
+- (BOOL)isDraggingHandleEnabled;
 @end
 
 
@@ -94,13 +100,13 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
     _itemDelimiterEnabled = YES;
     _contentAlign = CNSplitViewToolbarContentAlignItemDirected;
 
-    _buttons = [[NSMutableArray alloc] init];
+    _toolbarItems = [[NSMutableArray alloc] init];
     _previousToolbarRect = NSZeroRect;
     _delimiterOffsets = [NSMutableArray array];
     _enclosingSplitView = nil;
     _draggingHandle = nil;
-    _anchoredEdge = CNSplitViewToolbarEdgeUndefined;
-    [self setAnchoredEdge:CNSplitViewToolbarEdgeBottom];
+    _anchorEdge = CNSplitViewToolbarEdgeUndefined;
+    [self setAnchorEdge:CNSplitViewToolbarEdgeBottom];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowStatusChanged) name:NSWindowDidBecomeKeyNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowStatusChanged) name:NSWindowDidResignKeyNotification object:nil];
@@ -112,54 +118,40 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - API
 
-- (void)addItem:(CNSplitViewToolbarButton *)aButton
+- (void)addItem:(id)theItem align:(CNSplitViewToolbarItemAlign)align
 {
-    if (!_buttons)
-        _buttons = [[NSMutableArray alloc] init];
+    [theItem setToolbarItemAlign:align];
 
-    /// calculate or set the correct button width
-    NSSize buttonSize = NSZeroSize;
-    NSSize imageSize = (aButton.image ? aButton.image.size : NSMakeSize(0, 0));
-    NSSize textSize = (aButton.attributedTitle ? aButton.attributedTitle.size : NSMakeSize(0, 0));
+    [_toolbarItems addObject:theItem];
+    [self addSubview:theItem];
 
-    CGFloat buttonWidth = aButton.toolbarButtonWidth;
-    /// text + image
-    if (textSize.width > 0 && imageSize.width > 0) {
-        buttonWidth = kCNSplitViewToolbarButtonImageInset + imageSize.width + kCNSplitViewToolbarButtonImageToTextDistance + textSize.width + kCNSplitViewToolbarButtonTextInset;
+    NSSize itemSize;
+    if ([theItem isKindOfClass:[CNSplitViewToolbarButton class]]) {
+        itemSize = [self sizeForToolbarButton:theItem];
+        [(CNSplitViewToolbarButton *)theItem setFrame:NSMakeRect(0, 0, itemSize.width, itemSize.height)];
     }
-    /// image only
-    else if (textSize.width == 0 && imageSize.width > 0) {
-        CGFloat width = (kCNSplitViewToolbarButtonImageInset + imageSize.width + kCNSplitViewToolbarButtonImageInset);
-        buttonWidth = (aButton.toolbarButtonWidth > width ? aButton.toolbarButtonWidth : width);
+    else {
+        itemSize = [self sizeForToolbarItem:theItem];
+        [(NSView *)theItem setFrame:NSMakeRect(0, 0, itemSize.width, itemSize.height)];
     }
-    /// text only
-    else if (textSize.width > 0 && imageSize.width == 0) {
-        buttonWidth = kCNSplitViewToolbarButtonTextInset + textSize.width + kCNSplitViewToolbarButtonTextInset;
-    }
-    buttonWidth = (buttonWidth < aButton.toolbarButtonWidth ? aButton.toolbarButtonWidth : buttonWidth);
-    buttonSize = NSMakeSize(buttonWidth, self.height - 1);
 
     /// set the correct button alignment
-    switch (aButton.toolbarButtonAlign) {
-        case CNSplitViewToolbarButtonAlignLeft: aButton.autoresizingMask = NSViewMaxXMargin; break;
-        case CNSplitViewToolbarButtonAlignRight: aButton.autoresizingMask = NSViewMinXMargin; break;
+    switch ([theItem toolbarItemAlign]) {
+        case CNSplitViewToolbarItemAlignLeft:   [(NSView *)theItem setAutoresizingMask:NSViewMaxXMargin]; break;
+        case CNSplitViewToolbarItemAlignRight:  [(NSView *)theItem setAutoresizingMask:NSViewMinXMargin]; break;
     }
-    aButton.frame = NSMakeRect(0, 0, buttonSize.width, buttonSize.height);
-
-    [_buttons addObject:aButton];
-    [self addSubview:aButton];
 }
 
-- (void)removeItem:(CNSplitViewToolbarButton *)aButton
+- (void)removeItem:(id)theItem
 {
-    [_buttons removeObject:aButton];
-    [aButton removeFromSuperview];
+    [_toolbarItems removeObject:theItem];
+    [theItem removeFromSuperview];
 }
 
 - (void)removeAllItems
 {
     self.subviews = [NSArray array];
-    [_buttons removeAllObjects];
+    [_toolbarItems removeAllObjects];
     [self setNeedsDisplay:YES];
 }
 
@@ -176,16 +168,172 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Private Helper
+
+- (NSSize)sizeForToolbarButton:(CNSplitViewToolbarButton *)theButton
+{
+    /// calculate or set the correct button width
+    NSSize buttonSize = NSZeroSize;
+    NSSize imageSize = (theButton.image ? theButton.image.size : NSMakeSize(0, 0));
+    NSSize textSize = (theButton.attributedTitle ? theButton.attributedTitle.size : NSMakeSize(0, 0));
+
+    CGFloat buttonWidth = theButton.toolbarItemWidth;
+    /// text + image
+    if (textSize.width > 0 && imageSize.width > 0) {
+        buttonWidth = kCNSplitViewToolbarButtonImageInset + imageSize.width + kCNSplitViewToolbarButtonImageToTextDistance + textSize.width + kCNSplitViewToolbarButtonTextInset;
+    }
+    /// image only
+    else if (textSize.width == 0 && imageSize.width > 0) {
+        CGFloat width = (kCNSplitViewToolbarButtonImageInset + imageSize.width + kCNSplitViewToolbarButtonImageInset);
+        buttonWidth = (theButton.toolbarItemWidth > width ? theButton.toolbarItemWidth : width);
+    }
+    /// text only
+    else if (textSize.width > 0 && imageSize.width == 0) {
+        buttonWidth = kCNSplitViewToolbarButtonTextInset + textSize.width + kCNSplitViewToolbarButtonTextInset;
+    }
+    buttonWidth = (buttonWidth < theButton.toolbarItemWidth ? theButton.toolbarItemWidth : buttonWidth);
+    buttonSize = NSMakeSize(buttonWidth, self.height - 1);
+
+    return buttonSize;
+}
+
+- (NSSize)sizeForToolbarItem:(NSView *)theItem
+{
+    NSSize itemSize = NSZeroSize;
+    CGFloat itemWidth = theItem.toolbarItemWidth;
+
+    itemWidth = (itemWidth < theItem.toolbarItemWidth ? theItem.toolbarItemWidth : itemWidth);
+    itemSize = NSMakeSize(itemWidth, self.height - 1);
+
+    return itemSize;
+}
+
+- (void)drawItemDelimiter
+{
+    if (!self.itemDelimiterEnabled)
+        return;
+
+    BOOL isKeyWindow = [[self window] isKeyWindow];
+    NSGradient *gradient = [[NSGradient alloc] initWithColorsAndLocations:
+                            (isKeyWindow ? delimiterGradientEndColor       : [delimiterGradientEndColor highlightWithLevel:kDefaultColorHighlightLevel]), 0.0,
+                            (isKeyWindow ? delimiterGradientMiddleColor    : [delimiterGradientMiddleColor highlightWithLevel:kDefaultColorHighlightLevel]), 0.10,
+                            (isKeyWindow ? delimiterGradientCenterColor    : [delimiterGradientCenterColor highlightWithLevel:kDefaultColorHighlightLevel]), 0.50,
+                            (isKeyWindow ? delimiterGradientMiddleColor    : [delimiterGradientMiddleColor highlightWithLevel:kDefaultColorHighlightLevel]), 0.90,
+                            (isKeyWindow ? delimiterGradientEndColor       : [delimiterGradientEndColor highlightWithLevel:kDefaultColorHighlightLevel]), 1.0,
+                            nil];
+
+    [_delimiterOffsets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        CGFloat posX = [(NSNumber *)obj doubleValue];
+        NSRect delimiterRect = NSMakeRect(posX, (self.anchorEdge == CNSplitViewToolbarEdgeBottom ? 0 : 1), kDefaultItemDelimiterWidth, NSHeight(self.bounds) - 1);
+        NSBezierPath *delimiterLine = [NSBezierPath bezierPathWithRect:delimiterRect];
+        [gradient drawInBezierPath:delimiterLine angle:90];
+    }];
+}
+
+- (void)recalculateItemPositions
+{
+    CGFloat draggingHandleWidth = ([_enclosingSplitView isVertical] ? kDefaultVerticalDraggingHandleWidth : kDefaultHorizontalDraggingHandleWidth);
+    __block CGFloat leftOffset = 0;
+    __block CGFloat rightOffset = ([self isDraggingHandleEnabled] ? NSWidth(self.frame) - draggingHandleWidth : NSWidth(self.frame));
+
+    [_delimiterOffsets removeAllObjects];
+
+    switch (self.contentAlign) {
+        case CNSplitViewToolbarContentAlignItemDirected: {
+            [_toolbarItems enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if ([obj isKindOfClass:[NSView class]]) {
+                    NSView *item = (NSView *)obj;
+
+                    CGFloat originY = ([self bounds].size.height - [item bounds].size.height - 1) / 2;
+                    if (self.anchorEdge == CNSplitViewToolbarEdgeTop)
+                        originY++;
+
+                    if (item.toolbarItemAlign == CNSplitViewToolbarItemAlignLeft) {
+                        item.autoresizingMask |= NSViewMaxXMargin;
+                        [item setFrameOrigin:NSMakePoint(leftOffset, originY)];
+                        leftOffset += NSWidth(item.frame) + (self.isItemDelimiterEnabled ? kDefaultItemDelimiterWidth : 0);
+                        [_delimiterOffsets setObject:[NSNumber numberWithDouble:ceil(NSMaxX(item.frame))] atIndexedSubscript:idx];
+
+                    } else {
+                        item.autoresizingMask |= NSViewMinXMargin;
+                        [item setFrameOrigin:NSMakePoint(rightOffset - NSWidth(item.frame), originY)];
+                        rightOffset -= (NSWidth(item.frame) + (self.isItemDelimiterEnabled ? kDefaultItemDelimiterWidth : 0));
+                        [_delimiterOffsets setObject:[NSNumber numberWithDouble:ceil(NSMinX(item.frame))-1] atIndexedSubscript:idx];
+                    }
+                }
+            }];
+            break;
+        }
+
+        case CNSplitViewToolbarContentAlignCentered: {
+            __block CGFloat allButtonsWidth = 0;
+
+            /// calculate the left offset related to all button widths
+            [_toolbarItems enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if ([obj isKindOfClass:[NSView class]]) {
+                    NSView *item = (NSView *)obj;
+                    allButtonsWidth += NSWidth(item.frame) + (self.isItemDelimiterEnabled ? kDefaultItemDelimiterWidth : 0);
+                }
+            }];
+            leftOffset = ceil((NSWidth(self.bounds) - allButtonsWidth) / 2);
+
+            /// calculate the button positions
+            [_toolbarItems enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if ([obj isKindOfClass:[NSView class]]) {
+                    NSView *item = (NSView *)obj;
+
+                    CGFloat originY = ([self bounds].size.height - [item bounds].size.height - 1) / 2;
+                    if (self.anchorEdge == CNSplitViewToolbarEdgeTop)
+                        originY++;
+
+                    item.autoresizingMask = NSViewNotSizable;
+                    [item setFrameOrigin:NSMakePoint(leftOffset, originY)];
+                    leftOffset += ceil(NSWidth(item.frame)) + (self.isItemDelimiterEnabled ? kDefaultItemDelimiterWidth : 0);
+
+                    /// As we draw the delimiter always on the right side of an item,
+                    /// the first item needs to get space for an additional delimiter on its left side.
+                    if (idx == 0)
+                        [_delimiterOffsets setObject:[NSNumber numberWithDouble:ceil(NSMinX(item.frame))-1] atIndexedSubscript:idx];
+
+                    [_delimiterOffsets setObject:[NSNumber numberWithDouble:ceil(NSMaxX(item.frame))] atIndexedSubscript:idx+1];
+                }
+            }];
+            break;
+        }
+    }
+}
+
+- (BOOL)containsSubView:(NSView *)subview
+{
+    __block BOOL containsSubView = NO;
+    [[self subviews] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([subview isEqualTo:(NSView *)obj]) {
+            containsSubView = YES;
+            *stop = YES;
+        }
+    }];
+    return containsSubView;
+}
+
+- (BOOL)isDraggingHandleEnabled
+{
+    return (_enclosingSplitView.isDraggingHandleEnabled && ([_enclosingSplitView isVertical] || (![_enclosingSplitView isVertical] && self.anchorEdge == CNSplitViewToolbarEdgeBottom)));
+}
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Accessors
 
-- (void)setAnchoredEdge:(CNSplitViewToolbarEdge)anchoredEdge
+- (void)setAnchorEdge:(CNSplitViewToolbarEdge)anchorEdge
 {
-    _anchoredEdge = anchoredEdge;
-    [self setAutoresizingMask:NSViewWidthSizable | (_anchoredEdge == CNSplitViewToolbarEdgeBottom ? NSViewMaxYMargin : NSViewMinYMargin)];
+    _anchorEdge = anchorEdge;
+    [self setAutoresizingMask:NSViewWidthSizable | (_anchorEdge == CNSplitViewToolbarEdgeBottom ? NSViewMaxYMargin : NSViewMinYMargin)];
 
     /// In case of the toolbar is on top, we have to draw a 1 pixel wide separator line on the bottom side (origin.y == 0).
     /// For this reason all toolbar buttons have to placed this 1 pixel above that line for not overpainting it.
-    if (_anchoredEdge == CNSplitViewToolbarEdgeTop) {
+    if (_anchorEdge == CNSplitViewToolbarEdgeTop) {
         [self.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSPoint adjustedOrigin = [(NSView *)obj frame].origin;
             adjustedOrigin.y++;
@@ -230,122 +378,14 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
 
     BOOL draggingHandleEnabled = [(NSNumber *)[notification object] boolValue];
     if (draggingHandleEnabled) {
-        if ([_enclosingSplitView isVertical] || (![_enclosingSplitView isVertical] && self.anchoredEdge == CNSplitViewToolbarEdgeBottom)) {
+        if ([_enclosingSplitView isVertical] || (![_enclosingSplitView isVertical] && self.anchorEdge == CNSplitViewToolbarEdgeBottom)) {
             _draggingHandle = [[CNSplitViewDraggingHandle alloc] init];
             _draggingHandle.vertical = _enclosingSplitView.isVertical;
             [self addSubview:_draggingHandle];
-            [self recalculateItemPositions];
-            [self setNeedsDisplay:YES];
         }
     }
-}
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark - Private Helper
-
-- (void)drawItemDelimiter
-{
-    if (!self.itemDelimiterEnabled)
-        return;
-
-    BOOL isKeyWindow = [[self window] isKeyWindow];
-    NSGradient *gradient = [[NSGradient alloc] initWithColorsAndLocations:
-                            (isKeyWindow ? delimiterGradientEndColor       : [delimiterGradientEndColor highlightWithLevel:kDefaultColorHighlightLevel]), 0.0,
-                            (isKeyWindow ? delimiterGradientMiddleColor    : [delimiterGradientMiddleColor highlightWithLevel:kDefaultColorHighlightLevel]), 0.10,
-                            (isKeyWindow ? delimiterGradientCenterColor    : [delimiterGradientCenterColor highlightWithLevel:kDefaultColorHighlightLevel]), 0.50,
-                            (isKeyWindow ? delimiterGradientMiddleColor    : [delimiterGradientMiddleColor highlightWithLevel:kDefaultColorHighlightLevel]), 0.90,
-                            (isKeyWindow ? delimiterGradientEndColor       : [delimiterGradientEndColor highlightWithLevel:kDefaultColorHighlightLevel]), 1.0,
-                            nil];
-
-    [_delimiterOffsets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        CGFloat posX = [(NSNumber *)obj doubleValue];
-        NSRect delimiterRect = NSMakeRect(posX, (self.anchoredEdge == CNSplitViewToolbarEdgeBottom ? 0 : 1), kDefaultItemDelimiterWidth, NSHeight(self.bounds) - 1);
-        NSBezierPath *delimiterLine = [NSBezierPath bezierPathWithRect:delimiterRect];
-        [gradient drawInBezierPath:delimiterLine angle:90];
-    }];
-}
-
-- (void)recalculateItemPositions
-{
-    CGFloat draggingHandleWidth = ([_enclosingSplitView isVertical] ? kDefaultVerticalDraggingHandleWidth : kDefaultHorizontalDraggingHandleWidth);
-    __block CGFloat leftOffset = 0;
-    __block CGFloat rightOffset = ([self isDraggingHandleEnabled] ? NSWidth(self.frame) - draggingHandleWidth : NSWidth(self.frame));
-
-    [_delimiterOffsets removeAllObjects];
-
-    switch (self.contentAlign) {
-        case CNSplitViewToolbarContentAlignItemDirected: {
-            [_buttons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                if ([obj isKindOfClass:[CNSplitViewToolbarButton class]]) {
-                    CNSplitViewToolbarButton *theButton = (CNSplitViewToolbarButton *)obj;
-
-                    if (theButton.toolbarButtonAlign == CNSplitViewToolbarButtonAlignLeft) {
-                        theButton.autoresizingMask = NSViewMaxXMargin;
-                        [theButton setFrameOrigin:NSMakePoint(leftOffset, (self.anchoredEdge == CNSplitViewToolbarEdgeBottom ? 0 : 1))];
-                        leftOffset += NSWidth(theButton.frame) + (self.isItemDelimiterEnabled ? kDefaultItemDelimiterWidth : 0);
-                        [_delimiterOffsets setObject:[NSNumber numberWithDouble:ceil(NSMaxX(theButton.frame))] atIndexedSubscript:idx];
-
-                    } else {
-                        theButton.autoresizingMask = NSViewMinXMargin;
-                        [theButton setFrameOrigin:NSMakePoint(rightOffset - NSWidth(theButton.frame), (self.anchoredEdge == CNSplitViewToolbarEdgeBottom ? 0 : 1))];
-                        rightOffset -= (NSWidth(theButton.frame) + (self.isItemDelimiterEnabled ? kDefaultItemDelimiterWidth : 0));
-                        [_delimiterOffsets setObject:[NSNumber numberWithDouble:ceil(NSMinX(theButton.frame))-1] atIndexedSubscript:idx];
-                    }
-                }
-            }];
-            break;
-        }
-
-        case CNSplitViewToolbarContentAlignCentered: {
-            __block CGFloat allButtonsWidth = 0;
-
-            /// calculate the left offset related to all button widths
-            [_buttons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                if ([obj isKindOfClass:[CNSplitViewToolbarButton class]]) {
-                    CNSplitViewToolbarButton *theButton = (CNSplitViewToolbarButton *)obj;
-                    allButtonsWidth += NSWidth(theButton.frame) + (self.isItemDelimiterEnabled ? kDefaultItemDelimiterWidth : 0);
-                }
-            }];
-            leftOffset = ceil((NSWidth(self.bounds) - allButtonsWidth) / 2);
-
-            /// calculate the button positions
-            [_buttons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                if ([obj isKindOfClass:[CNSplitViewToolbarButton class]]) {
-                    CNSplitViewToolbarButton *theButton = (CNSplitViewToolbarButton *)obj;
-                    theButton.autoresizingMask = NSViewNotSizable;
-                    [theButton setFrameOrigin:NSMakePoint(leftOffset, (self.anchoredEdge == CNSplitViewToolbarEdgeBottom ? 0 : 1))];
-                    leftOffset += ceil(NSWidth(theButton.frame)) + (self.isItemDelimiterEnabled ? kDefaultItemDelimiterWidth : 0);
-
-                    /// As we draw the delimiter always on the right side of an item,
-                    /// the first item needs to get space for an additional delimiter on its left side.
-                    if (idx == 0)
-                        [_delimiterOffsets setObject:[NSNumber numberWithDouble:ceil(NSMinX(theButton.frame))-1] atIndexedSubscript:idx];
-
-                    [_delimiterOffsets setObject:[NSNumber numberWithDouble:ceil(NSMaxX(theButton.frame))] atIndexedSubscript:idx+1];
-                }
-            }];
-            break;
-        }
-    }
-}
-
-- (BOOL)containsSubView:(NSView *)subview
-{
-    __block BOOL containsSubView = NO;
-    [[self subviews] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if ([subview isEqualTo:(NSView *)obj]) {
-            containsSubView = YES;
-            *stop = YES;
-        }
-    }];
-    return containsSubView;
-}
-
-- (BOOL)isDraggingHandleEnabled
-{
-    return (_enclosingSplitView.isDraggingHandleEnabled && ([_enclosingSplitView isVertical] || (![_enclosingSplitView isVertical] && self.anchoredEdge == CNSplitViewToolbarEdgeBottom)));
+    [self recalculateItemPositions];
+    [self setNeedsDisplay:YES];
 }
 
 
@@ -362,7 +402,7 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
     NSBezierPath *buttonBarPath = [NSBezierPath bezierPathWithRect:dirtyRect];
     [toolbarKeyWindowGradient drawInBezierPath:buttonBarPath angle:90];
 
-    CGFloat originY = (self.anchoredEdge == CNSplitViewToolbarEdgeTop ? 0 : NSHeight(dirtyRect) - 1);
+    CGFloat originY = (self.anchorEdge == CNSplitViewToolbarEdgeTop ? 0 : NSHeight(dirtyRect) - 1);
     NSRect borderLineRect = NSMakeRect(0, originY, NSWidth(dirtyRect), 1.0);
     NSBezierPath *borderLinePath = [NSBezierPath bezierPathWithRect:borderLineRect];
     NSColor *borderColor = (isKeyWindow ? kDefaultBorderColor : [kDefaultBorderColor highlightWithLevel:kDefaultColorHighlightLevel]);
@@ -387,7 +427,7 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
 
     NSView *aSubView = [[splitView subviews] objectAtIndex:dividerIndex];
     if ([self isDraggingHandleEnabled]) {
-        CGFloat originY = NSMinY(aSubView.frame) - (self.anchoredEdge == CNSplitViewToolbarEdgeTop ? -1 : 1);
+        CGFloat originY = NSMinY(aSubView.frame) - (self.anchorEdge == CNSplitViewToolbarEdgeTop ? -1 : 1);
         if ([_enclosingSplitView isVertical]) {
             _draggingHandle.frame = NSMakeRect(NSMaxX(aSubView.frame) - kDefaultVerticalDraggingHandleWidth, originY, kDefaultVerticalDraggingHandleWidth, NSHeight(self.bounds));
 

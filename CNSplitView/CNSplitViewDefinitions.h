@@ -59,36 +59,46 @@ typedef enum {
 } CNSplitViewToolbarContentAlign;
 
 typedef enum {
-    CNSplitViewToolbarButtonAlignLeft = 0,
-    CNSplitViewToolbarButtonAlignRight
-} CNSplitViewToolbarButtonAlign;
+    CNSplitViewToolbarItemAlignLeft = 0,
+    CNSplitViewToolbarItemAlignRight
+} CNSplitViewToolbarItemAlign;
 
 /// Notifications
 extern NSString *CNSplitViewInjectReferenceNotification;
 extern NSString *CNSplitViewToolbarItemsEnableNotification;
 extern NSString *CNSplitViewToolbarItemsDisableNotification;
 extern NSString *CNSplitViewDraggingHandleEnableDisableNotification;
+extern NSString *CNSplitViewWillShowToolbarNotification;
+extern NSString *CNSplitViewDidShowToolbarNotification;
+extern NSString *CNSplitViewWillHideToolbarNotification;
+extern NSString *CNSplitViewDidHideToolbarNotification;
+
+/// Keys for the userInfo dictionary of Notifications
+extern NSString *CNUserInfoToolbarKey;
+extern NSString *CNUserInfoEdgeKey;
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Toolbar button related parameter
 /// @see http://developer.apple.com/library/mac/#documentation/userexperience/conceptual/applehiguidelines/SystemProvidedIcons/SystemProvidedIcons.html
 typedef enum {
-    CNSplitViewToolbarButtonImagePlain = 0,
-    CNSplitViewToolbarButtonImageAdd,
-    CNSplitViewToolbarButtonImageRemove,
-    CNSplitViewToolbarButtonImageQuickLook,
-    CNSplitViewToolbarButtonImageAction,
-    CNSplitViewToolbarButtonImageShare,
-    CNSplitViewToolbarButtonImageIconView,
-    CNSplitViewToolbarButtonImageListView,
-    CNSplitViewToolbarButtonImageLockLocked,
-    CNSplitViewToolbarButtonImageLockUnlocked,
-    CNSplitViewToolbarButtonImageGoRight,
-    CNSplitViewToolbarButtonImageGoLeft,
-    CNSplitViewToolbarButtonImageStopProgress,
-    CNSplitViewToolbarButtonImageRefresh,
-} CNSplitViewToolbarButtonImage;
+    CNSplitViewToolbarButtonImageTemplatePlain = 0,
+    CNSplitViewToolbarButtonImageTemplateAdd,
+    CNSplitViewToolbarButtonImageTemplateRemove,
+    CNSplitViewToolbarButtonImageTemplateQuickLook,
+    CNSplitViewToolbarButtonImageTemplateAction,
+    CNSplitViewToolbarButtonImageTemplateShare,
+    CNSplitViewToolbarButtonImageTemplateIconView,
+    CNSplitViewToolbarButtonImageTemplateListView,
+    CNSplitViewToolbarButtonImageTemplateLockLocked,
+    CNSplitViewToolbarButtonImageTemplateLockUnlocked,
+    CNSplitViewToolbarButtonImageTemplateGoRight,
+    CNSplitViewToolbarButtonImageTemplateGoLeft,
+    CNSplitViewToolbarButtonImageTemplateStopProgress,
+    CNSplitViewToolbarButtonImageTemplateRefresh,
+} CNSplitViewToolbarButtonImageTemplate;
+
+extern CGFloat kDefaultVerticalDraggingHandleWidth, kDefaultHorizontalDraggingHandleWidth;
 
 static CGFloat kCNSplitViewToolbarButtonTextInset = 10.0;
 static CGFloat kCNSplitViewToolbarButtonImageInset = 10.0;
