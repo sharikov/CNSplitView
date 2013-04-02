@@ -33,7 +33,7 @@
 @interface CNSplitViewDraggingHandle : NSView
 
 /**
- Boolean property that indicates whether the handle should draw for horizontal or vertical splitview pane support.
+ Boolean property that indicates whether the handle should be drawn for horizontal or vertical splitview pane support.
  
  You should *never* set this property manually. Its value will be passed through `CNSplitView`.
  */

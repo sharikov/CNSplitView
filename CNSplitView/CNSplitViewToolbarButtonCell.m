@@ -56,8 +56,8 @@ static CGFloat kDefaultImageFraction, kDefaultImageEnabledFraction, kDefaultImag
 {
     self = [super init];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parentWindowDidBecomeKey) name:NSWindowDidBecomeKeyNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parentWindowDidResignKey) name:NSWindowDidResignKeyNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parentWindowDidBecomeKeyWindow) name:NSWindowDidBecomeKeyNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parentWindowDidResignKeyWindow) name:NSWindowDidResignKeyNotification object:nil];
     }
     return self;
 }
@@ -67,14 +67,14 @@ static CGFloat kDefaultImageFraction, kDefaultImageEnabledFraction, kDefaultImag
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Notifications
 
-- (void)parentWindowDidBecomeKey
+- (void)parentWindowDidBecomeKeyWindow
 {
     btnGradient = [[NSGradient alloc] initWithStartingColor: gradientStartColor
                                                 endingColor: gradientEndColor];
     kDefaultImageFraction = kDefaultImageEnabledFraction;
 }
 
-- (void)parentWindowDidResignKey
+- (void)parentWindowDidResignKeyWindow
 {
     btnGradient = [[NSGradient alloc] initWithStartingColor: [gradientStartColor highlightWithLevel:kDefaultColorHighlightLevel]
                                                 endingColor: [gradientEndColor highlightWithLevel:kDefaultColorHighlightLevel]];

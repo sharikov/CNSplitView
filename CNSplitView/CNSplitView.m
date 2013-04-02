@@ -314,6 +314,16 @@ NSString *CNUserInfoEdgeKey = @"edge";
     return proposedPosition;
 }
 
+- (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize
+{
+    if ([self.secondaryDelegate respondsToSelector:_cmd]) {
+        [self.secondaryDelegate splitView:splitView resizeSubviewsWithOldSize:oldSize];
+    }
+    else {
+        [self adjustSubviews];
+    }
+}
+
 - (BOOL)splitView:(NSSplitView *)splitView shouldAdjustSizeOfSubview:(NSView *)view
 {
     if ([self.secondaryDelegate respondsToSelector:_cmd]) {
