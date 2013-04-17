@@ -95,7 +95,7 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
 
 - (void)commonConfiguration
 {
-    _frame = NSZeroRect;
+    [self setFrame:NSZeroRect];
     _height = kDefaultToolbarHeight;
     _itemDelimiterEnabled = YES;
     _contentAlign = CNSplitViewToolbarContentAlignItemDirected;
