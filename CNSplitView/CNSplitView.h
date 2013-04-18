@@ -46,12 +46,12 @@
 
 
 
-@interface CNSplitView : NSSplitView <NSSplitViewDelegate>
+@interface CNSplitView : NSSplitView <NSSplitViewDelegate, CNToolbarDelegate>
 
 #pragma mark - Initializing a CNSplitView Object
 /** @name Initializing a CNSplitView Object */
 
-@property (weak, nonatomic) id<CNSplitViewToolbarDelegate> toolbarDelegate;
+@property (nonatomic) id<CNSplitViewToolbarDelegate> toolbarDelegate;
 
 #pragma mark - Configuring & Handling Toolbars
 /** @name Configuring & Handling Toolbars */
@@ -75,6 +75,8 @@
  @param theEdge         A value provided by the `CNSplitViewToolbarEdge` enum.
  */
 - (void)attachToolbar:(CNSplitViewToolbar *)theToolbar toSubViewAtIndex:(NSUInteger)dividerIndex onEdge:(CNSplitViewToolbarEdge)anchorEdge;
+
+@property (assign, readonly) NSUInteger attachedSubviewIndex;
 
 /**
  Shows an attached toolbar.

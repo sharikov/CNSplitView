@@ -67,7 +67,7 @@
 
     self.splitView.delegate = self;
     self.splitView.toolbarDelegate = self;
-    [self.splitView attachToolbar:toolbar toSubViewAtIndex:0 onEdge:CNSplitViewToolbarEdgeBottom];
+    [self.splitView attachToolbar:toolbar toSubViewAtIndex:0 onEdge:CNSplitViewToolbarEdgeTop];
 }
 
 - (void)awakeFromNib

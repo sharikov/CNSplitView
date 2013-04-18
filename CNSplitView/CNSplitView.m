@@ -95,6 +95,7 @@ NSString *CNUserInfoEdgeKey = @"edge";
     _animationIsRunning = NO;
     _toolbarDelegate = nil;
     _secondaryDelegate = nil;
+    _attachedSubviewIndex = NSNotFound;
 }
 
 
@@ -107,22 +108,26 @@ NSString *CNUserInfoEdgeKey = @"edge";
     /// via notification we inject a refernce to ourself into the toolbar
     [[NSNotificationCenter defaultCenter] postNotificationName:CNSplitViewInjectReferenceNotification object:self];
 
-    _anchoredView = [[self subviews] objectAtIndex:dividerIndex];
+    _attachedSubviewIndex = dividerIndex;
+    _anchoredView = [[self subviews] objectAtIndex:_attachedSubviewIndex];
     [_anchoredView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
     /// we need a new container view for our toolbar + anchoredView
-    _toolbarContainer = [[NSView alloc] initWithFrame:_anchoredView.frame];
+    _toolbarContainer = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, NSWidth(_anchoredView.frame), NSHeight(_anchoredView.frame))];
     [_toolbarContainer setWantsLayer:YES];
     [_toolbarContainer setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
     [self replaceSubview:_anchoredView with:_toolbarContainer];
-    [self adjustSubviews];
 
     _toolbar = theToolbar;
+    _toolbar.delegate = self;
     _toolbar.anchorEdge = anchorEdge;
     CGFloat posY = (_toolbar.anchorEdge == CNSplitViewToolbarEdgeBottom ? NSMinY(_anchoredView.frame) - _toolbar.height : NSHeight(_anchoredView.frame));
-    [_toolbar setFrame:NSMakeRect(NSMinX(_anchoredView.frame), posY, NSWidth(_anchoredView.frame), _toolbar.height)];
+    [_toolbar setFrame:NSMakeRect(0, posY, NSWidth(_anchoredView.frame), _toolbar.height)];
 
+    NSRect anchoredViewRect = NSMakeRect(0, 0, NSWidth(_anchoredView.frame), NSHeight(_anchoredView.frame));
+    _anchoredView.frame = anchoredViewRect;
+    
     [_toolbarContainer addSubview:_toolbar];
     [_toolbarContainer addSubview:_anchoredView];
 }
@@ -391,6 +396,16 @@ NSString *CNUserInfoEdgeKey = @"edge";
     if ([self.toolbarDelegate respondsToSelector:_cmd]) {
         [self.toolbarDelegate splitView:theSplitView didHideToolbar:theToolbar onEdge:theEdge];
     }
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - CNToolbar Delegate
+
+- (NSUInteger)toolbarAttachedSubviewIndex:(CNSplitViewToolbar *)theToolbar
+{
+    return _attachedSubviewIndex;
 }
 
 

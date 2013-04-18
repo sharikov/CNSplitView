@@ -38,9 +38,20 @@
  bottom or top edge of a spcified split view divider.
  */
 
+@class CNSplitViewToolbar;
+
+@protocol CNToolbarDelegate <NSObject>
+@required
+- (NSUInteger)toolbarAttachedSubviewIndex:(CNSplitViewToolbar *)theToolbar;
+@end
+
+
 
 @interface CNSplitViewToolbar : NSView <NSSplitViewDelegate>
 
+@property id<CNToolbarDelegate> delegate;
+
+#pragma mark - Configuring the toolbar behavior
 /** @name Configuring the toolbar behavior */
 
 /**
@@ -82,6 +93,7 @@
 
 
 
+#pragma mark - Toolbar and Item handling
 /** @name Toolbar and Item handling */
 
 /**
