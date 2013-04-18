@@ -325,14 +325,10 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
 -  (BOOL)isAttachedToEnclosingSplitViewLastSubview
 {
     BOOL result = NO;
-    CNLog(@"result: %i", result);
     if ([self.delegate respondsToSelector:@selector(toolbarAttachedSubviewIndex:)]) {
         NSUInteger toolbarAttachedSubviewIndex = [self.delegate toolbarAttachedSubviewIndex:self];
-        CNLog(@"toolbarAttachedSubviewIndex: %li", toolbarAttachedSubviewIndex);
-        CNLog(@"[[_enclosingSplitView subviews] count]: %li", [[_enclosingSplitView subviews] count] - 1);
         result = (toolbarAttachedSubviewIndex == [[_enclosingSplitView subviews] count] - 1);
     }
-    CNLog(@"result: %i", result);
     return result;
 }
 
@@ -441,22 +437,17 @@ NSString *CNSplitViewDraggingHandleEnableDisableNotification = @"DraggingHandleE
 {
     NSRect draggingHandleRect = NSZeroRect;
 
-//    NSView *aSubView = [[splitView subviews] objectAtIndex:dividerIndex];
     NSView *aSubView = [[splitView subviews] objectAtIndex:dividerIndex];
     if ([self isDraggingHandleEnabled]) {
         CGFloat originY = NSMinY(aSubView.frame) - (self.anchorEdge == CNSplitViewToolbarEdgeTop ? -1 : 1);
         if ([_enclosingSplitView isVertical]) {
-            CNLog(@"isVertical");
             _draggingHandle.frame = NSMakeRect(NSMaxX(aSubView.frame) - kDefaultVerticalDraggingHandleWidth, originY, kDefaultVerticalDraggingHandleWidth, NSHeight(self.bounds));
 
         } else {
-            CNLog(@"isHorizontal");
             _draggingHandle.frame = NSMakeRect(NSMaxX(aSubView.frame) - kDefaultHorizontalDraggingHandleWidth, originY, kDefaultHorizontalDraggingHandleWidth, NSHeight(self.bounds));
         }
         _draggingHandle.autoresizingMask = NSViewMinXMargin;
         draggingHandleRect = [_draggingHandle convertRect:[_draggingHandle bounds] toView:splitView];
-        CNLogForRect(_draggingHandle.frame);
-        CNLogForRect(draggingHandleRect);
     }
     
     return draggingHandleRect;
