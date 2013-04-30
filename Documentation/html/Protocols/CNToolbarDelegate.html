@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
-		<title>CNSplitViewToolbarButton Class Reference</title>
+		<title>CNToolbarDelegate Protocol Reference</title>
 		<meta id="xcode-display" name="xcode-display" content="render"/>
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
@@ -17,7 +17,7 @@
 			</div>
 			
 			<div id="title" role="banner">
-				<h1 class="hideInXcode">CNSplitViewToolbarButton Class Reference</h1>
+				<h1 class="hideInXcode">CNToolbarDelegate Protocol Reference</h1>
 			</div>
 			<ul id="headerButtons" role="toolbar">
 				<li id="toc_button">
@@ -36,13 +36,13 @@
 	
 	
 	
-	<option value="properties">Properties</option>
-	
-	<option value="//api/name/imageTemplate">&nbsp;&nbsp;&nbsp;&nbsp;imageTemplate</option>
 	
 	
 	
 	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/toolbarAttachedSubviewIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- toolbarAttachedSubviewIndex:</option>
 	
 	
 	
@@ -64,22 +64,22 @@
 
 
 
-<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/imageTemplate">imageTemplate</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/toolbarAttachedSubviewIndex:">toolbarAttachedSubviewIndex:</a></span></li>
 	
 </ul></li>
-
-
-
-
 
 
 			</ul>
 		</nav>
 		<article>
 			<div id="contents" class="isShowingTOC" role="main">
-				<a title="CNSplitViewToolbarButton Class Reference" name="top"></a>
+				<a title="CNToolbarDelegate Protocol Reference" name="top"></a>
 				<div class="main-navigation navigation-top">
 					<ul>
 	<li><a href="../index.html">Index</a></li>
@@ -88,18 +88,18 @@
 				</div>
 				<div id="header">
 					<div class="section-header">
-						<h1 class="title title-header">CNSplitViewToolbarButton Class Reference</h1>
+						<h1 class="title title-header">CNToolbarDelegate Protocol Reference</h1>
 					</div>		
 				</div>
 				<div id="container">	
 					
 					<div class="section section-specification"><table cellspacing="0"><tbody>
 						<tr>
-	<td class="specification-title">Inherits from</td>
-	<td class="specification-value">NSButton</td>
+	<td class="specification-title">Conforms to</td>
+	<td class="specification-value">NSObject</td>
 </tr><tr>
 	<td class="specification-title">Declared in</td>
-	<td class="specification-value">CNSplitViewToolbarButton.h</td>
+	<td class="specification-value">CNSplitViewToolbar.h</td>
 </tr>
 						</tbody></table></div>
 					
@@ -119,11 +119,11 @@
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/imageTemplate">&nbsp;&nbsp;imageTemplate</a></code>
-		<span class="tooltip"><p>Sets the image template for the button item.</p></span>
+		<code><a href="#//api/name/toolbarAttachedSubviewIndex:">&ndash;&nbsp;toolbarAttachedSubviewIndex:</a></code>
+		<span class="tooltip"><p>Asks the delegate about the index of the subview where the toolbar is attached to.</p></span>
 	</span>
-	<span class="task-item-suffix">property</span>
 	
+	<span class="task-item-suffix">required method</span>
 </li>
 						</ul>
 						
@@ -133,23 +133,27 @@
 					
 					
 					
+					
+					
+					
+					
 					<div class="section section-methods">
-						<a title="Properties" name="properties"></a>
-						<h2 class="subtitle subtitle-methods">Properties</h2>
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/imageTemplate" title="imageTemplate"></a>
-	<h3 class="subsubtitle method-title">imageTemplate</h3>
+	<a name="//api/name/toolbarAttachedSubviewIndex:" title="toolbarAttachedSubviewIndex:"></a>
+	<h3 class="subsubtitle method-title">toolbarAttachedSubviewIndex:</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Sets the image template for the button item.</p>
+		<p>Asks the delegate about the index of the subview where the toolbar is attached to.</p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>@property (nonatomic, assign) CNSplitViewToolbarButtonImageTemplate imageTemplate</code></div>
+	<div class="method-subsection method-declaration"><code>- (NSUInteger)toolbarAttachedSubviewIndex:(CNSplitViewToolbar *)<em>theToolbar</em></code></div>
 
     
 	
@@ -158,32 +162,6 @@
 	
 	
 	
-	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<p>Instead of using the receivers image property you can use this one to get a quick access to the system provided icons. For more<br/>
-more detailed informations to these icons please take a look at the <a href="http://developer.apple.com/library/mac/#documentation/userexperience/conceptual/applehiguidelines/SystemProvidedIcons/SystemProvidedIcons.html">developer documentation by Apple</a></p>
-
-<p>The value of this property must be one of these enum items:</p>
-
-<pre><code>typedef enum {  
-    CNSplitViewToolbarButtonImageTemplatePlain = 0,  
-    CNSplitViewToolbarButtonImageTemplateAdd,  
-    CNSplitViewToolbarButtonImageTemplateRemove,  
-    CNSplitViewToolbarButtonImageTemplateQuickLook,  
-    CNSplitViewToolbarButtonImageTemplateAction,  
-    CNSplitViewToolbarButtonImageTemplateShare,  
-    CNSplitViewToolbarButtonImageTemplateIconView,  
-    CNSplitViewToolbarButtonImageTemplateListView,  
-    CNSplitViewToolbarButtonImageTemplateLockLocked,  
-    CNSplitViewToolbarButtonImageTemplateLockUnlocked,  
-    CNSplitViewToolbarButtonImageTemplateGoRight,  
-    CNSplitViewToolbarButtonImageTemplateGoLeft,  
-    CNSplitViewToolbarButtonImageTemplateStopProgress,  
-    CNSplitViewToolbarButtonImageTemplateRefresh,  
-} CNSplitViewToolbarButtonImageTemplate;
-</code></pre>
-	</div>
 	
 	
 	
@@ -193,17 +171,13 @@ more detailed informations to these icons please take a look at the <a href="htt
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">CNSplitViewToolbarButton.h</code><br />
+		<code class="declared-in-ref">CNSplitViewToolbar.h</code><br />
 	</div>				
 	
 	
 </div>
 						
 					</div>
-					
-					
-					
-					
 					
 					
 				</div>

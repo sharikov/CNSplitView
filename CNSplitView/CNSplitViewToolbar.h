@@ -33,18 +33,22 @@
 #import "CNSplitViewDefinitions.h"
 
 
-/**
- `CNSplitViewToolbar` is a flexible and easy to use anchored button bar that will be placed on the
- bottom or top edge of a spcified split view divider.
- */
-
 @class CNSplitViewToolbar;
 
 @protocol CNToolbarDelegate <NSObject>
 @required
+/**
+ Asks the delegate about the index of the subview where the toolbar is attached to.
+ */
 - (NSUInteger)toolbarAttachedSubviewIndex:(CNSplitViewToolbar *)theToolbar;
 @end
 
+
+
+/**
+ `CNSplitViewToolbar` is a flexible and easy to use anchored button bar that will be placed on the
+ bottom or top edge of a spcified split view divider.
+ */
 
 
 @interface CNSplitViewToolbar : NSView <NSSplitViewDelegate>
