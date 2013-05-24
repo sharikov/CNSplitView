@@ -52,6 +52,8 @@
 	
 	<option value="//api/name/splitView:willShowToolbar:onEdge:">&nbsp;&nbsp;&nbsp;&nbsp;- splitView:willShowToolbar:onEdge:</option>
 	
+	<option value="//api/name/toolbarAttachedSubviewIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- toolbarAttachedSubviewIndex:</option>
+	
 	
 	
 </select>
@@ -87,6 +89,8 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/splitView:willHideToolbar:onEdge:">splitView:willHideToolbar:onEdge:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/splitView:willShowToolbar:onEdge:">splitView:willShowToolbar:onEdge:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/toolbarAttachedSubviewIndex:">toolbarAttachedSubviewIndex:</a></span></li>
 	
 </ul></li>
 
@@ -125,7 +129,7 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p>Each of these delegate methods will also perform a notification post with the sender (<a href="../Classes/CNSplitView.html"><code>CNSplitView</code></a> instance) as notification object and a userInfo dictionary.
+						<p>Each of these delegate methods will also perform a notification post with the sender (<a href="../Classes/CNSplitView.html"><code>CNSplitView</code></a> instance) as notification object and a userInfo dictionary (except <a href="#//api/name/toolbarAttachedSubviewIndex:"><code>toolbarAttachedSubviewIndex:</code></a>).
 The userInfo dictionary contains two elements that are accessible by these constants:</p>
 
 <p><code>CNUserInfoToolbarKey</code><br />
@@ -149,6 +153,13 @@ This object is a <code>NSNumber</code> containing the <code>CNSplitViewToolbarEd
 
 						<ul class="task-list">
 							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/toolbarAttachedSubviewIndex:">&ndash;&nbsp;toolbarAttachedSubviewIndex:</a></code>
+		<span class="tooltip"><p>Asks the delegate about the index of the subview where the toolbar is attached to.</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/splitView:willShowToolbar:onEdge:">&ndash;&nbsp;splitView:willShowToolbar:onEdge:</a></code>
 		<span class="tooltip"><p>Informs the delegate that the splitview will show the specified toolbar on the given edge.</p></span>
@@ -396,6 +407,42 @@ This object is a <code>NSNumber</code> containing the <code>CNSplitViewToolbarEd
 		</dl>
 		
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">CNSplitViewToolbarDelegate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/toolbarAttachedSubviewIndex:" title="toolbarAttachedSubviewIndex:"></a>
+	<h3 class="subsubtitle method-title">toolbarAttachedSubviewIndex:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Asks the delegate about the index of the subview where the toolbar is attached to.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSUInteger)toolbarAttachedSubviewIndex:(CNSplitViewToolbar *)<em>theToolbar</em></code></div>
+
+    
 	
 	
 	
