@@ -27,10 +27,11 @@
     useAnimations = NO;
     toolbar = [[CNSplitViewToolbar alloc] init];
 
-    CNSplitViewToolbarButton *button1 = [[CNSplitViewToolbarButton alloc] init];
+    NSMenu *contextMenu = [[NSMenu alloc] init];
+    [contextMenu addItemWithTitle:@"Add new Item" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
+    [contextMenu addItemWithTitle:@"Add new Group" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
+    CNSplitViewToolbarButton *button1 = [[CNSplitViewToolbarButton alloc] initWithContextMenu:contextMenu];
     button1.imageTemplate = CNSplitViewToolbarButtonImageTemplateAdd;
-    button1.keyEquivalent = @"n";
-    button1.keyEquivalentModifierMask = NSCommandKeyMask;
 
     CNSplitViewToolbarButton *button2 = [[CNSplitViewToolbarButton alloc] init];
     button2.imageTemplate = CNSplitViewToolbarButtonImageTemplateRemove;
@@ -43,12 +44,6 @@
     CNSplitViewToolbarButton *button4 = [[CNSplitViewToolbarButton alloc] init];
     button4.imageTemplate = CNSplitViewToolbarButtonImageTemplateRefresh;
     button4.title = @"Refresh";
-
-    NSMenu *contextMenu = [[NSMenu alloc] init];
-    [contextMenu addItemWithTitle:@"Context Menu Item 1" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
-    [contextMenu addItemWithTitle:@"Context Menu Item 2" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
-    CNSplitViewToolbarButton *menuButton = [[CNSplitViewToolbarButton alloc] initWithContextMenu:contextMenu];
-    menuButton.imageTemplate = CNSplitViewToolbarButtonImageTemplateAction;
 
     NSTextField *textField = [[NSTextField alloc] init];
     [textField setBezeled:YES];
@@ -67,14 +62,13 @@
 
     [toolbar addItem:button1 align:CNSplitViewToolbarItemAlignLeft];
     [toolbar addItem:button2 align:CNSplitViewToolbarItemAlignLeft];
-    [toolbar addItem:menuButton align:CNSplitViewToolbarItemAlignRight];
     [toolbar addItem:button3 align:CNSplitViewToolbarItemAlignRight];
     [toolbar addItem:button4 align:CNSplitViewToolbarItemAlignRight];
-    [toolbar addItem:popupButton align:CNSplitViewToolbarItemAlignLeft];
+//    [toolbar addItem:popupButton align:CNSplitViewToolbarItemAlignLeft];
 
     self.splitView.delegate = self;
     self.splitView.toolbarDelegate = self;
-    [self.splitView attachToolbar:toolbar toSubViewAtIndex:1 onEdge:CNSplitViewToolbarEdgeBottom];
+    [self.splitView attachToolbar:toolbar toSubViewAtIndex:0 onEdge:CNSplitViewToolbarEdgeBottom];
 }
 
 - (void)awakeFromNib
