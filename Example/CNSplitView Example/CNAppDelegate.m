@@ -44,6 +44,12 @@
     button4.imageTemplate = CNSplitViewToolbarButtonImageTemplateRefresh;
     button4.title = @"Refresh";
 
+    NSMenu *contextMenu = [[NSMenu alloc] init];
+    [contextMenu addItemWithTitle:@"Context Menu Item 1" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
+    [contextMenu addItemWithTitle:@"Context Menu Item 2" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
+    CNSplitViewToolbarButton *menuButton = [[CNSplitViewToolbarButton alloc] initWithContextMenu:contextMenu];
+    menuButton.imageTemplate = CNSplitViewToolbarButtonImageTemplateAction;
+
     NSTextField *textField = [[NSTextField alloc] init];
     [textField setBezeled:YES];
     [textField setBezeled:NSTextFieldRoundedBezel];
@@ -61,6 +67,7 @@
 
     [toolbar addItem:button1 align:CNSplitViewToolbarItemAlignLeft];
     [toolbar addItem:button2 align:CNSplitViewToolbarItemAlignLeft];
+    [toolbar addItem:menuButton align:CNSplitViewToolbarItemAlignRight];
     [toolbar addItem:button3 align:CNSplitViewToolbarItemAlignRight];
     [toolbar addItem:button4 align:CNSplitViewToolbarItemAlignRight];
     [toolbar addItem:popupButton align:CNSplitViewToolbarItemAlignLeft];
@@ -72,6 +79,11 @@
 
 - (void)awakeFromNib
 {
+}
+
+- (void)contextMenuItemSelection:(id)sender
+{
+    CNLog(@"selected menu item: %@", [(NSMenuItem *)sender title]);
 }
 
 - (IBAction)showHideToolbarAction:(id)sender

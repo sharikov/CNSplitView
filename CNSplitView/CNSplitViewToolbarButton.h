@@ -35,6 +35,22 @@
 
 @interface CNSplitViewToolbarButton : NSButton
 
+/** @name Toolbar Button Creation */
+
+/**
+ Creates and returns an initialized `CNSplitViewToolbarButton` object using the given menu on mouse click.
+ 
+ This initializer takes a fully configured `NSMenu` object including all the needed `NSMenuItem` items. If a valid menu is 
+ present it will be displayed via left mouse click on the toolbar button. In this case the button won't show a highlight effect.
+ 
+ @param theContextMenu  The context menu.
+ */
+- (instancetype)initWithContextMenu:(NSMenu *)theContextMenu;
+
+
+
+/** @name Toolbar Button Image */
+
 /**
  Sets the image template for the button item.
  

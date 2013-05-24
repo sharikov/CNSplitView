@@ -33,6 +33,10 @@
 #import "CNSplitViewToolbarButtonCell.h"
 
 
+@interface CNSplitViewToolbarButton () {}
+@property (strong) NSMenu *itemContextMenu;
+@end
+
 @implementation CNSplitViewToolbarButton
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Initialzation
@@ -41,7 +45,16 @@
     return [CNSplitViewToolbarButtonCell class];
 }
 
-- (id)init
+- (instancetype)initWithContextMenu:(NSMenu *)theContextMenu
+{
+    self = [self init];
+    if (self) {
+        _itemContextMenu = theContextMenu;
+    }
+    return self;
+}
+
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -53,6 +66,7 @@
 - (void)commonConfiguration
 {
     _imageTemplate = CNSplitViewToolbarButtonImageTemplatePlain;
+    _itemContextMenu = nil;
 
     [self setAutoresizingMask:NSViewNotSizable];
     [self setImagePosition:NSImageLeft];
@@ -84,6 +98,30 @@
 - (void)windowStatusChanged
 {
     [self setNeedsDisplay:YES];
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Handling Context Menus
+
+- (void)mouseDown:(NSEvent *)theEvent
+{
+    if (self.itemContextMenu) {
+        NSEvent *leftMouseDown = [NSEvent mouseEventWithType:NSLeftMouseDown
+                                                    location:theEvent.locationInWindow
+                                               modifierFlags:0
+                                                   timestamp:0
+                                                windowNumber:[self.window windowNumber]
+                                                     context:nil
+                                                 eventNumber:0
+                                                  clickCount:theEvent.clickCount
+                                                    pressure:0];
+        [NSMenu popUpContextMenu:self.itemContextMenu withEvent:leftMouseDown forView:self];
+    }
+
+    else {
+        [super mouseDown:theEvent];
+    }
 }
 
 
