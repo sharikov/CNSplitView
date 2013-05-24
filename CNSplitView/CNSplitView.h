@@ -46,7 +46,7 @@
 
 
 
-@interface CNSplitView : NSSplitView <NSSplitViewDelegate, CNToolbarDelegate>
+@interface CNSplitView : NSSplitView <NSSplitViewDelegate, CNSplitViewToolbarDelegate>
 
 #pragma mark - Initializing a CNSplitView Object
 /** @name Initializing a CNSplitView Object */

@@ -34,15 +34,7 @@
 
 
 @class CNSplitViewToolbar;
-
-@protocol CNToolbarDelegate <NSObject>
-@required
-/**
- Asks the delegate about the index of the subview where the toolbar is attached to.
- */
-- (NSUInteger)toolbarAttachedSubviewIndex:(CNSplitViewToolbar *)theToolbar;
-@end
-
+@protocol CNSplitViewToolbarDelegate;
 
 
 /**
@@ -53,7 +45,7 @@
 
 @interface CNSplitViewToolbar : NSView <NSSplitViewDelegate>
 
-@property id<CNToolbarDelegate> delegate;
+@property id<CNSplitViewToolbarDelegate> delegate;
 
 #pragma mark - Configuring the toolbar behavior
 /** @name Configuring the toolbar behavior */

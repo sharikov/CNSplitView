@@ -42,7 +42,6 @@
  
  This initializer takes a fully configured `NSMenu` object including all the needed `NSMenuItem` items. If a valid menu is 
  present it will be displayed via left mouse click on the toolbar button. In this case the button won't show a highlight effect.
- An eventually set `keyEquivalent` property will be intialized.
  
  @param theContextMenu  The context menu.
  */

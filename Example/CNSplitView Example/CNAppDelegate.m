@@ -8,6 +8,7 @@
 
 #import "CNAppDelegate.h"
 
+static NSUInteger attachedSubViewIndex = 0;
 
 @interface CNAppDelegate () {
     CNSplitViewToolbar *toolbar;
@@ -68,7 +69,7 @@
 
     self.splitView.delegate = self;
     self.splitView.toolbarDelegate = self;
-    [self.splitView attachToolbar:toolbar toSubViewAtIndex:0 onEdge:CNSplitViewToolbarEdgeBottom];
+    [self.splitView attachToolbar:toolbar toSubViewAtIndex:attachedSubViewIndex onEdge:CNSplitViewToolbarEdgeBottom];
 }
 
 - (void)awakeFromNib
@@ -141,9 +142,13 @@
 }
 
 
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark - CNSplitView Delegate
+#pragma mark - CNSplitViewToolbar Delegate
+
+- (NSUInteger)toolbarAttachedSubviewIndex:(CNSplitViewToolbar *)theToolbar
+{
+    return attachedSubViewIndex;
+}
 
 - (void)splitView:(CNSplitView *)theSplitView willShowToolbar:(CNSplitViewToolbar *)theToolbar onEdge:(CNSplitViewToolbarEdge)theEdge
 {

@@ -10,7 +10,7 @@
 
 
 /**
- Each of these delegate methods will also perform a notification post with the sender (`CNSplitView` instance) as notification object and a userInfo dictionary.
+ Each of these delegate methods will also perform a notification post with the sender (`CNSplitView` instance) as notification object and a userInfo dictionary (except `toolbarAttachedSubviewIndex:`).
  The userInfo dictionary contains two elements that are accessible by these constants:
  
  `CNUserInfoToolbarKey`<br />
@@ -23,6 +23,13 @@
 @class CNSplitView, CNSplitViewToolbar;
 
 @protocol CNSplitViewToolbarDelegate <NSObject>
+@required
+/**
+ Asks the delegate about the index of the subview where the toolbar is attached to.
+ */
+- (NSUInteger)toolbarAttachedSubviewIndex:(CNSplitViewToolbar *)theToolbar;
+
+
 @optional
 
 /**
