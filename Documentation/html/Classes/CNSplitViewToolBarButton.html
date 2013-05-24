@@ -45,6 +45,11 @@
 	
 	
 	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/initWithContextMenu:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithContextMenu:</option>
+	
+	
 	
 </select>
 				</li>
@@ -57,6 +62,10 @@
 
 
 <li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Toolbar Button Creation">Toolbar Button Creation</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Toolbar Button Image">Toolbar Button Image</a></span></li>
 	
 </ul></li>
 
@@ -73,6 +82,12 @@
 
 
 
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithContextMenu:">initWithContextMenu:</a></span></li>
+	
+</ul></li>
 
 
 			</ul>
@@ -113,8 +128,23 @@
 						<h2 class="subtitle subtitle-tasks">Tasks</h2>
 						
 						
+						<a title="Toolbar Button Creation" name="task_Toolbar Button Creation"></a>
+						<h3 class="subsubtitle task-title">Toolbar Button Creation</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithContextMenu:">&ndash;&nbsp;initWithContextMenu:</a></code>
+		<span class="tooltip"><p>Creates and returns an initialized <code>CNSplitViewToolbarButton</code> object using the given menu on mouse click.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
 						
 						
+						<a title="Toolbar Button Image" name="task_Toolbar Button Image"></a>
+						<h3 class="subsubtitle task-title">Toolbar Button Image</h3>
 
 						<ul class="task-list">
 							<li>
@@ -161,26 +191,26 @@
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>Instead of using the receivers image property you can use this one to get a quick access to the system provided icons. For more<br/>
+		<p>Instead of using the receivers image property you can use this one to get a quick access to the system provided icons. For more
 more detailed informations to these icons please take a look at the <a href="http://developer.apple.com/library/mac/#documentation/userexperience/conceptual/applehiguidelines/SystemProvidedIcons/SystemProvidedIcons.html">developer documentation by Apple</a></p>
 
 <p>The value of this property must be one of these enum items:</p>
 
-<pre><code>typedef enum {  
-    CNSplitViewToolbarButtonImageTemplatePlain = 0,  
-    CNSplitViewToolbarButtonImageTemplateAdd,  
-    CNSplitViewToolbarButtonImageTemplateRemove,  
-    CNSplitViewToolbarButtonImageTemplateQuickLook,  
-    CNSplitViewToolbarButtonImageTemplateAction,  
-    CNSplitViewToolbarButtonImageTemplateShare,  
-    CNSplitViewToolbarButtonImageTemplateIconView,  
-    CNSplitViewToolbarButtonImageTemplateListView,  
-    CNSplitViewToolbarButtonImageTemplateLockLocked,  
-    CNSplitViewToolbarButtonImageTemplateLockUnlocked,  
-    CNSplitViewToolbarButtonImageTemplateGoRight,  
-    CNSplitViewToolbarButtonImageTemplateGoLeft,  
-    CNSplitViewToolbarButtonImageTemplateStopProgress,  
-    CNSplitViewToolbarButtonImageTemplateRefresh,  
+<pre><code>typedef enum {
+    CNSplitViewToolbarButtonImageTemplatePlain = 0,
+    CNSplitViewToolbarButtonImageTemplateAdd,
+    CNSplitViewToolbarButtonImageTemplateRemove,
+    CNSplitViewToolbarButtonImageTemplateQuickLook,
+    CNSplitViewToolbarButtonImageTemplateAction,
+    CNSplitViewToolbarButtonImageTemplateShare,
+    CNSplitViewToolbarButtonImageTemplateIconView,
+    CNSplitViewToolbarButtonImageTemplateListView,
+    CNSplitViewToolbarButtonImageTemplateLockLocked,
+    CNSplitViewToolbarButtonImageTemplateLockUnlocked,
+    CNSplitViewToolbarButtonImageTemplateGoRight,
+    CNSplitViewToolbarButtonImageTemplateGoLeft,
+    CNSplitViewToolbarButtonImageTemplateStopProgress,
+    CNSplitViewToolbarButtonImageTemplateRefresh,
 } CNSplitViewToolbarButtonImageTemplate;
 </code></pre>
 	</div>
@@ -205,6 +235,64 @@ more detailed informations to these icons please take a look at the <a href="htt
 					
 					
 					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithContextMenu:" title="initWithContextMenu:"></a>
+	<h3 class="subsubtitle method-title">initWithContextMenu:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Creates and returns an initialized <code>CNSplitViewToolbarButton</code> object using the given menu on mouse click.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (instancetype)initWithContextMenu:(NSMenu *)<em>theContextMenu</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>theContextMenu</em></dt>
+			<dd><p>The context menu.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>This initializer takes a fully configured <code>NSMenu</code> object including all the needed <code>NSMenuItem</code> items. If a valid menu is
+present it will be displayed via left mouse click on the toolbar button. In this case the button won&rsquo;t show a highlight effect.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">CNSplitViewToolbarButton.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
 					
 				</div>
 				<div class="main-navigation navigation-bottom">
@@ -216,7 +304,7 @@ more detailed informations to these icons please take a look at the <a href="htt
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2013 cocoa:naut. All rights reserved. (Last updated: 2013-04-19)</span><br />
+						<p><span class="copyright">&copy; 2013 cocoa:naut. All rights reserved. (Last updated: 2013-05-24)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
 						
