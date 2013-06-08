@@ -31,10 +31,11 @@ The usage of `CNSplitView` is quite simple. In Interfacebuilder just create a ne
 On the code side you keep going that easy way. The code of the example application looks like this:
 
 ```Objective-C
-CNSplitViewToolbarButton *button1 = [[CNSplitViewToolbarButton alloc] init];
+NSMenu *contextMenu = [[NSMenu alloc] init];
+[contextMenu addItemWithTitle:@"Add new Item" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
+[contextMenu addItemWithTitle:@"Add new Group" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
+CNSplitViewToolbarButton *button1 = [[CNSplitViewToolbarButton alloc] initWithContextMenu:contextMenu];
 button1.imageTemplate = CNSplitViewToolbarButtonImageTemplateAdd;
-button1.keyEquivalent = @"n";
-button1.keyEquivalentModifierMask = NSCommandKeyMask;
 
 CNSplitViewToolbarButton *button2 = [[CNSplitViewToolbarButton alloc] init];
 button2.imageTemplate = CNSplitViewToolbarButtonImageTemplateRemove;
@@ -48,25 +49,25 @@ CNSplitViewToolbarButton *button4 = [[CNSplitViewToolbarButton alloc] init];
 button4.imageTemplate = CNSplitViewToolbarButtonImageTemplateRefresh;
 button4.title = @"Refresh";
 
-// NSTextField *textField = [[NSTextField alloc] init];
-// [textField setBezeled:YES];
-// [textField setBezeled:NSTextFieldRoundedBezel];
-// [textField setToolbarItemWidth:120.0];
+NSTextField *textField = [[NSTextField alloc] init];
+[textField setBezeled:YES];
+[textField setBezeled:NSTextFieldRoundedBezel];
+[textField setToolbarItemWidth:120.0];
 
 NSPopUpButton *popupButton = [[NSPopUpButton alloc] init];
 [popupButton setToolbarItemWidth:120];
 [popupButton addItemsWithTitles:@[ @"Foo...", @"Bar...", @"Yelly" ]];
 [[popupButton cell] setControlSize:NSSmallControlSize];
 
-// NSSlider *slider = [[NSSlider alloc] init];
-// [slider setToolbarItemWidth:120.0];
-// [[slider cell] setControlSize:NSSmallControlSize];
+NSSlider *slider = [[NSSlider alloc] init];
+[slider setToolbarItemWidth:120.0];
+[[slider cell] setControlSize:NSSmallControlSize];
+
 
 [toolbar addItem:button1 align:CNSplitViewToolbarItemAlignLeft];
 [toolbar addItem:button2 align:CNSplitViewToolbarItemAlignLeft];
 [toolbar addItem:button3 align:CNSplitViewToolbarItemAlignRight];
 [toolbar addItem:button4 align:CNSplitViewToolbarItemAlignRight];
-[toolbar addItem:popupButton align:CNSplitViewToolbarItemAlignLeft];
 
 self.splitView.delegate = self;
 self.splitView.toolbarDelegate = self;
