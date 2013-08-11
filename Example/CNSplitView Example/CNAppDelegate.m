@@ -11,7 +11,10 @@
 static NSUInteger attachedSubViewIndex = 0;
 
 @interface CNAppDelegate () {
-    CNSplitViewToolbar *toolbar;
+    CNSplitViewToolbar *toolbarTop;
+    CNSplitViewToolbar *toolbarBottom;
+    CNSplitViewToolbar *secondaryToolbarTop;
+    CNSplitViewToolbar *secondaryToolbarBottom;
     BOOL useAnimations;
 }
 @end
@@ -24,52 +27,76 @@ static NSUInteger attachedSubViewIndex = 0;
     self.secondView.textBoxWidth = 380;
     self.secondView.icon = [NSImage imageNamed:@"SplitLeaf-Icon"];
     self.secondView.iconVerticalOffset = 70;
-
+    
     useAnimations = NO;
-    toolbar = [[CNSplitViewToolbar alloc] init];
+    toolbarTop = [[CNSplitViewToolbar alloc] init];
+    toolbarTop.itemDelimiterEnabled = NO;
+    toolbarBottom = [[CNSplitViewToolbar alloc] init];
+    
+    secondaryToolbarTop = [[CNSplitViewToolbar alloc] init];
+    secondaryToolbarBottom = [[CNSplitViewToolbar alloc] init];
+    secondaryToolbarBottom.itemDelimiterEnabled= NO;
 
     NSMenu *contextMenu = [[NSMenu alloc] init];
     [contextMenu addItemWithTitle:@"Add new Item" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
     [contextMenu addItemWithTitle:@"Add new Group" action:@selector(contextMenuItemSelection:) keyEquivalent:@""];
     CNSplitViewToolbarButton *button1 = [[CNSplitViewToolbarButton alloc] initWithContextMenu:contextMenu];
     button1.imageTemplate = CNSplitViewToolbarButtonImageTemplateAdd;
-
+    
     CNSplitViewToolbarButton *button2 = [[CNSplitViewToolbarButton alloc] init];
     button2.imageTemplate = CNSplitViewToolbarButtonImageTemplateRemove;
-
+    
     CNSplitViewToolbarButton *button3 = [[CNSplitViewToolbarButton alloc] init];
     button3.imageTemplate = CNSplitViewToolbarButtonImageTemplateLockUnlocked;
     button3.imagePosition = NSImageRight;
     button3.title = @"Lock";
-
+    
     CNSplitViewToolbarButton *button4 = [[CNSplitViewToolbarButton alloc] init];
     button4.imageTemplate = CNSplitViewToolbarButtonImageTemplateRefresh;
     button4.title = @"Refresh";
-
+    
+    
+    NSSearchField *searchField = [[NSSearchField alloc] initWithFrame:NSMakeRect(0, 0, 200, 16)];
+    [searchField setToolbarItemWidth:200];
+    [searchField.cell setControlSize:NSMiniControlSize];
+    
     NSTextField *textField = [[NSTextField alloc] init];
-    [textField setBezeled:YES];
-    [textField setBezeled:NSTextFieldRoundedBezel];
-    [textField setToolbarItemWidth:120.0];
-
+    [textField setBordered:NO];
+    [textField setDrawsBackground:NO];
+    [textField setToolbarItemWidth:80.0];
+    textField.stringValue = @"hello";
+    [textField setEditable:NO];
+    [textField setAlignment:NSRightTextAlignment];
+    [textField.cell setControlSize:NSSmallControlSize];
+    
     NSPopUpButton *popupButton = [[NSPopUpButton alloc] init];
     [popupButton setToolbarItemWidth:120];
     [popupButton addItemsWithTitles:@[ @"Foo...", @"Bar...", @"Yelly" ]];
     [[popupButton cell] setControlSize:NSSmallControlSize];
-
+    
     NSSlider *slider = [[NSSlider alloc] init];
-    [slider setToolbarItemWidth:120.0];
+    [slider setToolbarItemWidth:100.0];
     [[slider cell] setControlSize:NSSmallControlSize];
+    
+    
+    [toolbarTop addItem:popupButton align:CNSplitViewToolbarItemAlignLeft];
+    [toolbarTop addItem:searchField align:CNSplitViewToolbarItemAlignRight];
+    
+    [secondaryToolbarBottom addItem:slider align:CNSplitViewToolbarItemAlignRight];
 
-
-    [toolbar addItem:button1 align:CNSplitViewToolbarItemAlignLeft];
-    [toolbar addItem:button2 align:CNSplitViewToolbarItemAlignLeft];
-    [toolbar addItem:button3 align:CNSplitViewToolbarItemAlignRight];
-    [toolbar addItem:button4 align:CNSplitViewToolbarItemAlignRight];
-//    [toolbar addItem:popupButton align:CNSplitViewToolbarItemAlignLeft];
-
+    
+    [toolbarBottom addItem:button1 align:CNSplitViewToolbarItemAlignLeft];
+    [toolbarBottom addItem:button2 align:CNSplitViewToolbarItemAlignLeft];
+    [toolbarBottom addItem:button3 align:CNSplitViewToolbarItemAlignRight];
+    [toolbarBottom addItem:button4 align:CNSplitViewToolbarItemAlignRight];
+    
     self.splitView.delegate = self;
     self.splitView.toolbarDelegate = self;
-    [self.splitView attachToolbar:toolbar toSubViewAtIndex:attachedSubViewIndex onEdge:CNSplitViewToolbarEdgeBottom];
+    [self.splitView attachToolbar:toolbarTop toSubViewAtIndex:attachedSubViewIndex onEdge:CNSplitViewToolbarEdgeTop];
+    [self.splitView attachToolbar:toolbarBottom toSubViewAtIndex:attachedSubViewIndex onEdge:CNSplitViewToolbarEdgeBottom];
+    [self.splitView attachToolbar:secondaryToolbarTop toSubViewAtIndex:1 onEdge:CNSplitViewToolbarEdgeTop];
+    [self.splitView attachToolbar:secondaryToolbarBottom toSubViewAtIndex:1 onEdge:CNSplitViewToolbarEdgeBottom];
+    
 }
 
 - (void)awakeFromNib
@@ -83,8 +110,18 @@ static NSUInteger attachedSubViewIndex = 0;
 
 - (IBAction)showHideToolbarAction:(id)sender
 {
-    if ([(NSButton *)sender state] == NSOnState)    [self.splitView showToolbarAnimated:useAnimations];
-    else                                            [self.splitView hideToolbarAnimated:useAnimations];
+    if ([(NSButton *)sender state] == NSOnState) {
+        
+        [self.splitView showHideToolbarsAnimated:useAnimations show:YES forSubViewAtIndex:attachedSubViewIndex];
+        [self.splitView showHideToolbarsAnimated:useAnimations show:YES forSubViewAtIndex:1];
+        //        [self.splitView showToolbarAnimated:useAnimations forToolbar:toolbar];
+        //        [self.splitView showToolbarAnimated:useAnimations forToolbar:toolbar2];
+    } else {
+        
+        [self.splitView showHideToolbarsAnimated:useAnimations show:NO forSubViewAtIndex:attachedSubViewIndex];
+        [self.splitView showHideToolbarsAnimated:useAnimations show:NO forSubViewAtIndex:1];
+        
+   }
 }
 
 - (IBAction)useAnimationsAction:(id)sender
@@ -95,26 +132,27 @@ static NSUInteger attachedSubViewIndex = 0;
 
 - (IBAction)enableDisableToolbarItemsAction:(id)sender
 {
-    if ([(NSButton *)sender state] == NSOnState)    [toolbar disable];
-    else                                            [toolbar enable];
+    if ([(NSButton *)sender state] == NSOnState)    {[toolbarTop disable]; [toolbarBottom disable];}
+    
+    else                                            {[toolbarTop enable]; [toolbarBottom enable];}
 }
 
 - (IBAction)enableDisableToolbarItemsDelimiterAction:(id)sender
 {
-    if ([(NSButton *)sender state] == NSOnState)    toolbar.itemDelimiterEnabled = NO;
-    else                                            toolbar.itemDelimiterEnabled = YES;
+    if ([(NSButton *)sender state] == NSOnState)    toolbarTop.itemDelimiterEnabled = NO;
+    else                                            toolbarTop.itemDelimiterEnabled = YES;
 }
 
 - (IBAction)centerToolbarItemsAction:(id)sender
 {
-    if ([(NSButton *)sender state] == NSOnState)    toolbar.contentAlign = CNSplitViewToolbarContentAlignCentered;
-    else                                            toolbar.contentAlign = CNSplitViewToolbarContentAlignItemDirected;
+    if ([(NSButton *)sender state] == NSOnState)    toolbarTop.contentAlign = CNSplitViewToolbarContentAlignCentered;
+    else                                            toolbarTop.contentAlign = CNSplitViewToolbarContentAlignItemDirected;
 }
 
 - (IBAction)draggingHandleEnabledAction:(id)sender
 {
-    if ([(NSButton *)sender state] == NSOnState)    self.splitView.draggingHandleEnabled = YES;
-    else                                            self.splitView.draggingHandleEnabled = NO;
+    if ([(NSButton *)sender state] == NSOnState)    [self.splitView setDraggingHandleEnabledForToolbar:toolbarTop enabled:YES];
+    else                                            [self.splitView setDraggingHandleEnabledForToolbar:toolbarTop enabled:NO];
 }
 
 - (IBAction)splitViewOrientationAction:(id)sender

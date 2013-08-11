@@ -103,7 +103,7 @@
 				FDD47B3416B471D000ADAB76 /* CNBaseView.m */,
 			);
 			name = CNBaseView;
-			path = CNBaseView/CNBaseView;
+			path = ../../../../CNBaseView/CNBaseView;
 			sourceTree = "<group>";
 		};
 		FDDC62C31695B39F00BE7A82 = {
@@ -387,7 +387,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CNSplitView Example/CNSplitView Example-Prefix.pch";
 				INFOPLIST_FILE = "CNSplitView Example/CNSplitView Example-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -400,7 +400,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CNSplitView Example/CNSplitView Example-Prefix.pch";
 				INFOPLIST_FILE = "CNSplitView Example/CNSplitView Example-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

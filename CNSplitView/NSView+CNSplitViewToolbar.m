@@ -21,7 +21,7 @@ static char toolbarItemAlignKey, toolbarItemWidthKey;
 }
 - (void)setToolbarItemAlign:(CNSplitViewToolbarItemAlign)theAlign
 {
-    objc_setAssociatedObject(self, &toolbarItemAlignKey, [NSNumber numberWithInteger:theAlign], OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &toolbarItemAlignKey, @(theAlign), OBJC_ASSOCIATION_RETAIN);
 }
 
 - (CGFloat)toolbarItemWidth
@@ -31,8 +31,7 @@ static char toolbarItemAlignKey, toolbarItemWidthKey;
 }
 - (void)setToolbarItemWidth:(CGFloat)theItemWidth
 {
-    objc_setAssociatedObject(self, &toolbarItemWidthKey, [NSNumber numberWithDouble:theItemWidth], OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &toolbarItemWidthKey, @(theItemWidth), OBJC_ASSOCIATION_RETAIN);
 }
-
 
 @end

@@ -147,6 +147,7 @@
                                 textStyle,  NSParagraphStyleAttributeName,
                                 font,       NSFontAttributeName,
                                 nil];
+    
     NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:aString attributes:attributes];
     [self setAttributedTitle:attributedTitle];
 }
