@@ -34,6 +34,7 @@ static NSUInteger attachedSubViewIndex = 0;
     toolbarBottom = [[CNSplitViewToolbar alloc] init];
     
     secondaryToolbarTop = [[CNSplitViewToolbar alloc] init];
+    secondaryToolbarTop.itemDelimiterEnabled = NO;
     secondaryToolbarBottom = [[CNSplitViewToolbar alloc] init];
     secondaryToolbarBottom.itemDelimiterEnabled= NO;
 
@@ -79,8 +80,9 @@ static NSUInteger attachedSubViewIndex = 0;
     [[slider cell] setControlSize:NSSmallControlSize];
     
     
-    [toolbarTop addItem:popupButton align:CNSplitViewToolbarItemAlignLeft];
-    [toolbarTop addItem:searchField align:CNSplitViewToolbarItemAlignRight];
+    [toolbarTop addItem:searchField align:CNSplitViewToolbarItemAlignLeft];
+    
+    [secondaryToolbarTop addItem:popupButton align:CNSplitViewToolbarItemAlignLeft];
     
     [secondaryToolbarBottom addItem:slider align:CNSplitViewToolbarItemAlignRight];
 
